@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>FitCounter</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:#0b0d12;color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  padding-bottom:95px
+}
+header{padding:55px 20px 15px}
+h1{margin:0;font-size:34px}
+.sub{color:#9aa1ad;margin-top:6px}
+.tabs{
+  position:fixed;bottom:0;left:0;right:0;
+  background:#171a21;border-top:1px solid #2a2e37;
+  display:flex;padding:10px 4px 24px;z-index:9
+}
+.tab{
+  flex:1;text-align:center;color:#858c98;
+  font-size:12px;padding:6px;cursor:pointer
+}
+.tab.active{color:#4da3ff}
+.tab .icon{font-size:24px;display:block;margin-bottom:4px}
+.page{display:none;padding:0 16px}
+.page.active{display:block}
+.card{
+  background:#171a21;border:1px solid #292e38;
+  border-radius:20px;padding:18px;margin-bottom:14px
+}
+.exercise{
+  display:flex;align-items:center;gap:14px;cursor:pointer
+}
+.exercise .emoji{font-size:34px}
+.exercise .info{flex:1}
+.exercise h3{margin:0 0 5px}
+.muted{color:#9299a5;font-size:14px}
+.big{font-size:30px;font-weight:800}
+.stats{display:flex;justify-content:space-between;text-align:center}
+.stat{flex:1}
+input{
+  width:95px;background:#252a34;color:#fff;border:0;
+  border-radius:12px;padding:12px;font-size:20px;
+  text-align:center;outline:none
+}
+.setrow{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:10px 0
+}
+button{
+  border:0;border-radius:14px;padding:14px;
+  font-size:16px;font-weight:700;cursor:pointer
+}
+.primary{width:100%;background:#2d8cff;color:white;margin-top:12px}
+.secondary{width:100%;background:#262b35;color:#fff;margin-top:10px}
+.danger{background:#412329;color:#ff7b87;padding:8px 12px;font-size:13px}
+.history{
+  display:flex;justify-content:space-between;
+  gap:10px;align-items:center
+}
+.history+.history{border-top:1px solid #292e38;margin-top:12px;padding-top:12px}
+.totalNow{text-align:right;color:#73b7ff;font-weight:700}
+.empty{color:#8c939f;text-align:center;padding:15px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>FitCounter</h1>
+  <div class="sub">Твой прогресс каждый день 💪</div>
+</header>
+
+<div id="home" class="page active">
+  <div class="card exercise" onclick="openExercise('pushups')">
+    <div class="emoji">💪</div>
+    <div class="info">
+      <h3>Отжимания</h3>
+      <div class="muted">Сегодня: <span id="homePushToday">0</span></div>
+    </div>
+    <div>
+      <div class="big" id="homePushTotal">0</div>
+      <div class="muted">всего</div>
+    </div>
+  </div>
+
+  <div class="card exercise" onclick="openExercise('squats')">
+    <div class="emoji">🏋️</div>
+    <div class="info">
+      <h3>Приседания</h3>
+      <div class="muted">Сегодня: <span id="homeSquatToday">0</span></div>
+    </div>
+    <div>
+      <div class="big" id="homeSquatTotal">0</div>
+      <div class="muted">всего</div>
+    </div>
+  </div>
+</div>
+
+<div id="exercise" class="page">
+  <div class="card">
+    <h2 id="exerciseTitle">Отжимания</h2>
+    <div class="stats">
+      <div class="stat">
+        <div class="muted">Сегодня</div>
+        <div class="big" id="todayCount">0</div>
+      </div>
+      <div class="stat">
+        <div class="muted">За всё время</div>
+        <div class="big" id="allCount">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between">
+      <b>Подходы</b>
+      <span class="totalNow">Сейчас: <span id="currentTotal">0</span></span>
+    </div>
+    <div id="sets"></div>
+    <button class="secondary" onclick="addSet()">＋ Добавить подход</button>
+    <button class="primary" onclick="saveWorkout()">Сохранить тренировку</button>
+  </div>
+
+  <div class="card">
+    <h3>История</h3>
+    <div id="history"></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" id="tabHome" onclick="showHome()">
+    <span class="icon">🏠</span>Главная
+  </div>
+  <div class="tab" id="tabPush" onclick="openExercise('pushups')">
+    <span class="icon">💪</span>Отжимания
+  </div>
+  <div class="tab" id="tabSquat" onclick="openExercise('squats')">
+    <span class="icon">🏋️</span>Приседания
+  </div>
+</div>
+
+<script>
+const KEY='fitcounter_v1';
+let data=JSON.parse(localStorage.getItem(KEY)||'[]');
+let current='pushups';
+let setCount=3;
+
+function saveData(){
+  localStorage.setItem(KEY,JSON.stringify(data));
+}
+
+function todayKey(date=new Date()){
+  return date.toISOString().slice(0,10);
+}
+
+function exerciseName(type){
+  return type==='pushups'?'Отжимания':'Приседания';
+}
+
+function getTotal(type){
+  return data.filter(x=>x.type===type)
+    .reduce((s,x)=>s+x.total,0);
+}
+
+function getToday(type){
+  const t=todayKey();
+  return data.filter(x=>x.type===type && x.day===t)
+    .reduce((s,x)=>s+x.total,0);
+}
+
+function updateHome(){
+  homePushTotal.textContent=getTotal('pushups');
+  homePushToday.textContent=getToday('pushups');
+  homeSquatTotal.textContent=getTotal('squats');
+  homeSquatToday.textContent=getToday('squats');
+}
+
+function showHome(){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  home.classList.add('active');
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  tabHome.classList.add('active');
+  updateHome();
+}
+
+function openExercise(type){
+  current=type;
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  exercise.classList.add('active');
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  (type==='pushups'?tabPush:tabSquat).classList.add('active');
+  exerciseTitle.textContent=exerciseName(type);
+  setCount=3;
+  renderSets();
+  refreshExercise();
+}
+
+function renderSets(){
+  sets.innerHTML='';
+  for(let i=1;i<=setCount;i++){
+    sets.insertAdjacentHTML('beforeend',`
+      <div class="setrow">
+        <span>Подход ${i}</span>
+        <input type="number" inputmode="numeric" min="0"
+          class="setInput" placeholder="0" oninput="sumCurrent()">
+      </div>
+    `);
+  }
+  sumCurrent();
+}
+
+function addSet(){
+  setCount++;
+  const div=document.createElement('div');
+  div.className='setrow';
+  div.innerHTML=`
+    <span>Подход ${setCount}</span>
+    <input type="number" inputmode="numeric" min="0"
+      class="setInput" placeholder="0" oninput="sumCurrent()">
+  `;
+  sets.appendChild(div);
+}
+
+function values(){
+  return [...document.querySelectorAll('.setInput')]
+    .map(x=>parseInt(x.value)||0)
+    .filter(x=>x>0);
+}
+
+function sumCurrent(){
+  currentTotal.textContent=values().reduce((a,b)=>a+b,0);
+}
+
+function saveWorkout(){
+  const v=values();
+  const total=v.reduce((a,b)=>a+b,0);
+  if(!total){
+    alert('Введи количество повторений');
+    return;
+  }
+
+  data.unshift({
+    id:Date.now(),
+    type:current,
+    day:todayKey(),
+    time:new Date().toLocaleString('ru-RU'),
+    sets:v,
+    total
+  });
+
+  saveData();
+  renderSets();
+  refreshExercise();
+  updateHome();
+  alert(`Сохранено: ${total}`);
+}
+
+function deleteWorkout(id){
+  if(!confirm('Удалить эту запись?'))return;
+  data=data.filter(x=>x.id!==id);
+  saveData();
+  refreshExercise();
+  updateHome();
+}
+
+function refreshExercise(){
+  todayCount.textContent=getToday(current);
+  allCount.textContent=getTotal(current);
+
+  const items=data.filter(x=>x.type===current);
+  if(!items.length){
+    history.innerHTML='<div class="empty">Тренировок пока нет</div>';
+    return;
+  }
+
+  history.innerHTML=items.map(x=>`
+    <div class="history">
+      <div>
+        <b>${x.total} повторений</b>
+        <div class="muted">${x.time}</div>
+        <div class="muted">${x.sets.join(' + ')}</div>
+      </div>
+      <button class="danger" onclick="deleteWorkout(${x.id})">Удалить</button>
+    </div>
+  `).join('');
+}
+
+updateHome();
+</script>
+</body>
+</html>
