@@ -9,65 +9,130 @@
 
 <style>
 *{box-sizing:border-box}
+
 :root{
   --bg:#090c11;
   --card:#171b23;
-  --line:#2b313c;
+  --card2:#202630;
+  --line:#2c333f;
   --text:#fff;
-  --muted:#9199a7;
-  --blue:#3d98ff;
+  --muted:#9099a8;
+  --blue:#2483ff;
   --green:#45d274;
-  --gold:#ffb51c;
-  --purple:#a45cff;
+  --red:#ff646e;
+  --gold:#ffbd2e;
 }
+
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  padding-bottom:105px;
+  padding-bottom:110px;
 }
-header{padding:55px 20px 20px}
-h1{margin:0;font-size:38px}
-.subtitle{color:var(--muted);margin-top:8px;font-size:17px}
-.page{display:none;padding:0 16px 30px}
-.page.active{display:block}
+
+header{
+  padding:54px 18px 18px;
+}
+
+h1{
+  margin:0;
+  font-size:35px;
+}
+
+.subtitle{
+  margin-top:7px;
+  color:var(--muted);
+}
+
+.page{
+  display:none;
+  padding:0 15px 25px;
+}
+
+.page.active{
+  display:block;
+}
+
 .card{
   background:var(--card);
   border:1px solid var(--line);
-  border-radius:22px;
-  padding:18px;
-  margin-bottom:14px;
+  border-radius:20px;
+  padding:17px;
+  margin-bottom:13px;
 }
+
 .exercise-card{
   display:flex;
   align-items:center;
-  gap:16px;
+  gap:14px;
 }
-.exercise-icon{font-size:38px;width:55px;text-align:center}
-.exercise-info{flex:1}
-.exercise-info h3{margin:0 0 6px;font-size:21px}
-.muted{color:var(--muted)}
-.big{font-size:34px;font-weight:800}
-.right{text-align:right}
-.stats{display:flex;text-align:center}
-.stat{width:50%}
+
+.exercise-icon{
+  width:50px;
+  text-align:center;
+  font-size:34px;
+}
+
+.flex1{flex:1}
+
+.exercise-card h3{
+  margin:0 0 5px;
+  font-size:20px;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+.big{
+  font-size:30px;
+  font-weight:800;
+}
+
+.right{
+  text-align:right;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.stat{
+  background:var(--card2);
+  border-radius:15px;
+  padding:13px 6px;
+  text-align:center;
+}
+
+.stat-value{
+  display:block;
+  margin-top:5px;
+  font-size:23px;
+  font-weight:800;
+}
+
 .setrow{
   display:flex;
   align-items:center;
   justify-content:space-between;
   margin:11px 0;
 }
-.setrow input{
+
+input{
   width:100px;
-  background:#252a34;
-  color:#fff;
   border:0;
-  border-radius:13px;
-  padding:12px;
+  outline:none;
+  border-radius:12px;
+  background:#272d37;
+  color:#fff;
   font-size:20px;
   text-align:center;
+  padding:11px;
 }
+
 button{
   border:0;
   border-radius:14px;
@@ -75,153 +140,244 @@ button{
   font-size:16px;
   font-weight:700;
 }
+
 .primary{
   width:100%;
-  background:var(--blue);
+  margin-top:11px;
   color:#fff;
-  margin-top:12px;
+  background:var(--blue);
 }
+
 .secondary{
   width:100%;
-  background:#262c36;
+  margin-top:9px;
   color:#fff;
-  margin-top:10px;
+  background:#272e38;
 }
+
 .danger{
-  background:#44252b;
-  color:#ff8791;
-  padding:8px 12px;
+  color:#ff8990;
+  background:#47262b;
+  padding:8px 10px;
   font-size:13px;
 }
+
 .history-row{
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   gap:10px;
+  padding:11px 0;
 }
+
 .history-row+.history-row{
   border-top:1px solid var(--line);
-  padding-top:13px;
-  margin-top:13px;
 }
-.tabs{
-  position:fixed;
-  left:0;right:0;bottom:0;
-  z-index:100;
-  background:#171b23;
-  border-top:1px solid var(--line);
-  display:flex;
-  padding:10px 2px calc(20px + env(safe-area-inset-bottom));
-}
-.tab{
-  flex:1;
+
+.empty{
   text-align:center;
-  color:#868e9c;
-  font-size:11px;
-  padding:5px 1px;
+  padding:18px 5px;
+  color:var(--muted);
 }
-.tab.active{color:var(--blue)}
-.tab-icon{display:block;font-size:24px;margin-bottom:3px}
-.section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:24px 3px 12px;
+
+/* timer */
+
+.timer-wrap{
+  text-align:center;
+  padding:25px 0 10px;
 }
-.section-title h2{font-size:23px;margin:0}
-.section-count{color:var(--blue);font-weight:700}
-.progress-card{
-  display:flex;
-  align-items:center;
-  gap:18px;
-}
-.progress-circle{
-  width:82px;height:82px;border-radius:50%;
-  display:grid;place-items:center;font-size:30px;
-  background:conic-gradient(var(--purple) calc(var(--p)*1%),#303642 0);
-}
-.progress-inner{
-  width:64px;height:64px;
-  background:var(--card);
+
+.timer-circle{
+  width:245px;
+  height:245px;
+  max-width:78vw;
+  max-height:78vw;
+  margin:0 auto 22px;
   border-radius:50%;
+  border:8px solid #232a34;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:inset 0 0 0 2px #11161d;
+}
+
+.timer-circle.running{
+  border-color:var(--blue);
+}
+
+.timer-time{
+  font-size:55px;
+  font-weight:300;
+  letter-spacing:1px;
+}
+
+.timer-label{
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.timer-actions{
   display:grid;
-  place-items:center;
+  gap:9px;
 }
-.progress-info{flex:1}
-.progress-info h3{margin:0 0 7px}
-.bar{
+
+/* achievements */
+
+.achievement-tabs{
+  display:flex;
+  gap:7px;
+  overflow:auto;
+  padding-bottom:10px;
+}
+
+.achievement-tabs button{
+  flex:none;
+  padding:9px 13px;
+  background:#242a34;
+  color:#c7ccd4;
+  font-size:13px;
+}
+
+.achievement-tabs button.active{
+  color:#fff;
+  background:var(--blue);
+}
+
+.rank-hero{
+  text-align:center;
+  padding:20px;
+}
+
+.rank-icon{
+  font-size:56px;
+}
+
+.rank-name{
+  font-size:31px;
+  font-weight:800;
+  margin:5px 0;
+}
+
+.progress{
   height:10px;
-  background:#2c323d;
-  border-radius:20px;
+  background:#2c333d;
   overflow:hidden;
-  margin-top:10px;
+  border-radius:20px;
+  margin:12px 0;
 }
-.bar span{
+
+.progress span{
   display:block;
   height:100%;
+  background:var(--blue);
   border-radius:20px;
-  background:linear-gradient(90deg,var(--purple),var(--blue));
 }
-.achievement{
+
+.rank-row{
   display:flex;
   align-items:center;
-  gap:14px;
-  border:1px solid var(--line);
-  background:var(--card);
-  border-radius:18px;
+  gap:12px;
   padding:14px;
-  margin-bottom:11px;
+  margin-bottom:9px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--card);
 }
-.achievement.unlocked{
-  border-color:#2f8450;
-  background:linear-gradient(90deg,#14251b,#171b23);
+
+.rank-row.current{
+  border-color:var(--blue);
 }
-.achievement.progress{border-color:#87671b}
-.achievement.locked{opacity:.58}
-.badge{
-  width:58px;height:58px;border-radius:50%;
-  display:grid;place-items:center;
-  font-size:28px;flex-shrink:0;
-  background:#252b35;
-  border:2px solid #3a414d;
+
+.rank-row.done{
+  border-color:#2f7549;
 }
-.achievement.unlocked .badge{
-  background:#244b32;
-  border-color:var(--green);
+
+.rank-row.locked{
+  opacity:.58;
 }
-.achievement.progress .badge{
-  background:#4a3815;
-  border-color:var(--gold);
+
+.rank-symbol{
+  width:37px;
+  text-align:center;
+  font-size:26px;
 }
-.achievement-body{flex:1}
-.achievement-body h3{margin:0 0 5px;font-size:18px}
-.achievement-side{text-align:right;min-width:86px}
-.done{color:var(--green);font-weight:700}
-.lock{color:#a6adba}
-.empty{text-align:center;color:var(--muted);padding:18px}
+
+.rank-title{
+  flex:1;
+  font-weight:700;
+}
+
+.rank-target{
+  font-weight:700;
+}
+
+/* popup */
+
 .overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.72);
   display:none;
+  z-index:999;
   align-items:center;
   justify-content:center;
-  padding:25px;
-  z-index:999;
+  padding:24px;
+  background:rgba(0,0,0,.75);
 }
-.overlay.show{display:flex}
+
+.overlay.show{
+  display:flex;
+}
+
 .popup{
   width:100%;
-  max-width:360px;
-  background:#191e27;
-  border:1px solid #3a414d;
-  border-radius:28px;
-  padding:26px 22px;
+  max-width:355px;
+  border:1px solid var(--line);
+  border-radius:25px;
+  background:#181e27;
+  padding:25px 20px;
   text-align:center;
 }
-.popup-icon{font-size:68px}
-.popup h2{margin:8px 0}
-.popup p{color:var(--muted)}
+
+.popup-icon{
+  font-size:65px;
+}
+
+/* bottom nav */
+
+.tabs{
+  position:fixed;
+  z-index:100;
+  left:0;
+  right:0;
+  bottom:0;
+  display:flex;
+  border-top:1px solid var(--line);
+  background:#171b23;
+  padding:8px 1px calc(18px + env(safe-area-inset-bottom));
+}
+
+.tab{
+  flex:1;
+  text-align:center;
+  color:#848c9a;
+  font-size:9px;
+  padding:4px 0;
+}
+
+.tab.active{
+  color:var(--blue);
+}
+
+.tab-icon{
+  display:block;
+  font-size:21px;
+  margin-bottom:3px;
+}
+
+.section-title{
+  font-size:21px;
+  margin:21px 3px 10px;
+}
 </style>
 </head>
 
@@ -232,43 +388,81 @@ button{
   <div class="subtitle" id="headerSubtitle">Твой прогресс каждый день 💪</div>
 </header>
 
-<section id="home" class="page active">
-  <div class="card exercise-card" onclick="openExercise('pushups')">
+<!-- HOME -->
+
+<section id="homePage" class="page active">
+
+  <div class="card exercise-card" data-open="pushups">
     <div class="exercise-icon">💪</div>
-    <div class="exercise-info">
+    <div class="flex1">
       <h3>Отжимания</h3>
-      <div class="muted">Сегодня: <span id="homePushToday">0</span></div>
+      <div class="muted">Сегодня: <span id="pushTodayHome">0</span></div>
     </div>
     <div class="right">
-      <div class="big" id="homePushTotal">0</div>
+      <div class="big" id="pushTotalHome">0</div>
       <div class="muted">всего</div>
     </div>
   </div>
 
-  <div class="card exercise-card" onclick="openExercise('squats')">
+  <div class="card exercise-card" data-open="squats">
     <div class="exercise-icon">🏋️</div>
-    <div class="exercise-info">
+    <div class="flex1">
       <h3>Приседания</h3>
-      <div class="muted">Сегодня: <span id="homeSquatToday">0</span></div>
+      <div class="muted">Сегодня: <span id="squatTodayHome">0</span></div>
     </div>
     <div class="right">
-      <div class="big" id="homeSquatTotal">0</div>
+      <div class="big" id="squatTotalHome">0</div>
       <div class="muted">всего</div>
     </div>
   </div>
+
+  <div class="card exercise-card" data-open="pullups">
+    <div class="exercise-icon">🧗</div>
+    <div class="flex1">
+      <h3>Подтягивания</h3>
+      <div class="muted">Сегодня: <span id="pullTodayHome">0</span></div>
+    </div>
+    <div class="right">
+      <div class="big" id="pullTotalHome">0</div>
+      <div class="muted">всего</div>
+    </div>
+  </div>
+
+  <div class="card exercise-card" data-page="plank">
+    <div class="exercise-icon">⏱️</div>
+    <div class="flex1">
+      <h3>Планка</h3>
+      <div class="muted">Сегодня: <span id="plankTodayHome">00:00</span></div>
+    </div>
+    <div class="right">
+      <div class="big" id="plankRecordHome">00:00</div>
+      <div class="muted">рекорд</div>
+    </div>
+  </div>
+
 </section>
 
-<section id="exercise" class="page">
+<!-- REP EXERCISE -->
+
+<section id="exercisePage" class="page">
+
   <div class="card">
     <h2 id="exerciseTitle">Отжимания</h2>
+
     <div class="stats">
       <div class="stat">
-        <div class="muted">Сегодня</div>
-        <div class="big" id="todayCount">0</div>
+        <span class="muted">Сегодня</span>
+        <span class="stat-value" id="exerciseToday">0</span>
       </div>
+
       <div class="stat">
-        <div class="muted">За всё время</div>
-        <div class="big" id="allCount">0</div>
+        <span class="muted">Всего</span>
+        <span class="stat-value" id="exerciseTotal">0</span>
+      </div>
+
+      <div class="stat">
+        <span class="muted">Лучший день</span>
+        <span class="stat-value" id="exerciseRecord">0</span>
       </div>
     </div>
   </div>
@@ -276,105 +470,179 @@ button{
   <div class="card">
     <div style="display:flex;justify-content:space-between">
       <b>Подходы</b>
-      <b style="color:#6bb2ff">Сейчас: <span id="currentTotal">0</span></b>
+      <b style="color:#69adff">Сейчас: <span id="currentSetTotal">0</span></b>
     </div>
 
-    <div id="sets"></div>
+    <div id="setsContainer"></div>
 
-    <button class="secondary" onclick="addSet()">＋ Добавить подход</button>
-    <button class="primary" onclick="saveWorkout()">Сохранить тренировку</button>
+    <button class="secondary" id="addSetBtn">＋ Добавить подход</button>
+    <button class="primary" id="saveExerciseBtn">Сохранить тренировку</button>
   </div>
 
   <div class="card">
     <h3>История</h3>
-    <div id="history"></div>
+    <div id="exerciseHistory"></div>
   </div>
+
 </section>
 
-<section id="achievements" class="page">
-  <div class="card progress-card">
-    <div class="progress-circle" id="achievementCircle" style="--p:0">
-      <div class="progress-inner">🏆</div>
+<!-- PLANK -->
+
+<section id="plankPage" class="page">
+
+  <div class="stats">
+    <div class="stat">
+      <span class="muted">Сегодня</span>
+      <span class="stat-value" id="plankToday">00:00</span>
     </div>
 
-    <div class="progress-info">
-      <h3>Общий прогресс</h3>
+    <div class="stat">
+      <span class="muted">Рекорд</span>
+      <span class="stat-value" id="plankRecord">00:00</span>
+    </div>
+
+    <div class="stat">
+      <span class="muted">Всего</span>
+      <span class="stat-value" id="plankTotal">00:00</span>
+    </div>
+  </div>
+
+  <div class="timer-wrap">
+    <div class="timer-circle" id="timerCircle">
       <div>
-        <b id="achievementUnlocked">0</b>
-        <span class="muted">из <span id="achievementTotal">0</span> открыто</span>
+        <div class="timer-time" id="timerDisplay">00:00</div>
+        <div class="timer-label">МИН : СЕК</div>
       </div>
-      <div class="bar">
-        <span id="achievementBar" style="width:0%"></span>
-      </div>
+    </div>
+
+    <div class="timer-actions">
+      <button class="primary" id="timerMainBtn">▶ Начать</button>
+      <button class="secondary" id="timerFinishBtn" style="display:none">Завершить</button>
+      <button class="secondary" id="timerResetBtn">Сбросить</button>
     </div>
   </div>
 
-  <div id="achievementsContent"></div>
+  <div class="card">
+    <h3>История</h3>
+    <div id="plankHistory"></div>
+  </div>
+
 </section>
 
-<nav class="tabs">
-  <div class="tab active" id="tabHome" onclick="showHome()">
-    <span class="tab-icon">🏠</span>Главная
+<!-- ACHIEVEMENTS -->
+
+<section id="achievementsPage" class="page">
+
+  <div class="achievement-tabs">
+    <button class="active" data-achievement="pushups">💪 Отжимания</button>
+    <button data-achievement="squats">🏋️ Приседания</button>
+    <button data-achievement="pullups">🧗 Подтягивания</button>
+    <button data-achievement="plank">⏱️ Планка</button>
   </div>
 
-  <div class="tab" id="tabPush" onclick="openExercise('pushups')">
-    <span class="tab-icon">💪</span>Отжимания
+  <div class="card rank-hero">
+    <div class="muted">Текущий ранг</div>
+    <div class="rank-icon" id="rankHeroIcon">🌱</div>
+    <div class="rank-name" id="rankHeroName">Начало пути</div>
+
+    <div id="rankHeroProgressText">0 / 300</div>
+
+    <div class="progress">
+      <span id="rankHeroProgress" style="width:0"></span>
+    </div>
+
+    <div class="muted" id="rankHeroNext"></div>
   </div>
 
-  <div class="tab" id="tabSquat" onclick="openExercise('squats')">
-    <span class="tab-icon">🏋️</span>Приседания
-  </div>
+  <div id="rankList"></div>
 
-  <div class="tab" id="tabAchievements" onclick="showAchievements()">
-    <span class="tab-icon">🏆</span>Достижения
-  </div>
-</nav>
+</section>
 
-<div class="overlay" id="achievementPopup">
+<!-- POPUP -->
+
+<div class="overlay" id="rankPopup">
   <div class="popup">
-    <div class="popup-icon">🏆</div>
-    <h2>Новое достижение!</h2>
-    <h3 id="popupTitle"></h3>
-    <p id="popupText"></p>
-    <button class="primary" onclick="closeAchievementPopup()">Отлично!</button>
+    <div class="popup-icon" id="rankPopupIcon">🏆</div>
+    <h2>Новый ранг!</h2>
+    <h2 id="rankPopupName"></h2>
+    <p class="muted" id="rankPopupText"></p>
+    <button class="primary" id="rankPopupClose">Продолжить</button>
   </div>
 </div>
 
+<!-- NAV -->
+
+<nav class="tabs">
+
+  <div class="tab active" data-tab="home">
+    <span class="tab-icon">🏠</span>
+    Главная
+  </div>
+
+  <div class="tab" data-tab="pushups">
+    <span class="tab-icon">💪</span>
+    Отжимания
+  </div>
+
+  <div class="tab" data-tab="squats">
+    <span class="tab-icon">🏋️</span>
+    Приседания
+  </div>
+
+  <div class="tab" data-tab="pullups">
+    <span class="tab-icon">🧗</span>
+    Подтягивания
+  </div>
+
+  <div class="tab" data-tab="plank">
+    <span class="tab-icon">⏱️</span>
+    Планка
+  </div>
+
+  <div class="tab" data-tab="achievements">
+    <span class="tab-icon">🏆</span>
+    Достижения
+  </div>
+
+</nav>
+
 <script>
-const STORAGE_KEY='fitcounter_v2';
-const OLD_STORAGE_KEY='fitcounter_v1';
-const UNLOCK_KEY='fitcounter_achievement_unlocks';
+
+/* ---------------------------
+   STORAGE + MIGRATION
+--------------------------- */
+
+const DATA_KEY='fitcounter_v3';
+const PLANK_KEY='fitcounter_plank_v1';
+const RANK_KEY='fitcounter_rank_unlocks';
 
 let data=JSON.parse(
-  localStorage.getItem(STORAGE_KEY) ||
-  localStorage.getItem(OLD_STORAGE_KEY) ||
+  localStorage.getItem(DATA_KEY) ||
+  localStorage.getItem('fitcounter_v2') ||
+  localStorage.getItem('fitcounter_v1') ||
   '[]'
 );
 
-let knownUnlocks=JSON.parse(localStorage.getItem(UNLOCK_KEY)||'[]');
-let current='pushups';
-let setCount=3;
+let plankSessions=JSON.parse(
+  localStorage.getItem(PLANK_KEY) ||
+  '[]'
+);
 
-const achievementsList=[
-  {id:'push10',group:'pushups',icon:'🥉',title:'Первый шаг',description:'Сделай 10 отжиманий',target:10},
-  {id:'push100',group:'pushups',icon:'🥈',title:'Сотня',description:'Сделай 100 отжиманий',target:100},
-  {id:'push1000',group:'pushups',icon:'🥇',title:'Железная воля',description:'Сделай 1 000 отжиманий',target:1000},
-  {id:'push10000',group:'pushups',icon:'👑',title:'Машина',description:'Сделай 10 000 отжиманий',target:10000},
+let knownRanks=JSON.parse(
+  localStorage.getItem(RANK_KEY) ||
+  '[]'
+);
 
-  {id:'squat10',group:'squats',icon:'🥉',title:'Первые приседания',description:'Сделай 10 приседаний',target:10},
-  {id:'squat100',group:'squats',icon:'🥈',title:'Сотня приседаний',description:'Сделай 100 приседаний',target:100},
-  {id:'squat1000',group:'squats',icon:'🥇',title:'Мастер приседаний',description:'Сделай 1 000 приседаний',target:1000},
-  {id:'squat10000',group:'squats',icon:'👑',title:'Король приседаний',description:'Сделай 10 000 приседаний',target:10000},
-
-  {id:'firstWorkout',group:'general',icon:'🟢',title:'Первая тренировка',description:'Проведи свою первую тренировку',target:1},
-  {id:'workout10',group:'general',icon:'🔥',title:'Вошёл во вкус',description:'Проведи 10 тренировок',target:10},
-  {id:'total1000',group:'general',icon:'⚡️',title:'Тысяча повторений',description:'Сделай 1 000 повторений суммарно',target:1000},
-  {id:'total10000',group:'general',icon:'💎',title:'Легенда',description:'Сделай 10 000 повторений суммарно',target:10000}
-];
-
-function saveData(){
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+function saveAll(){
+  localStorage.setItem(DATA_KEY,JSON.stringify(data));
+  localStorage.setItem(PLANK_KEY,JSON.stringify(plankSessions));
 }
+
+saveAll();
+
+/* ---------------------------
+   HELPERS
+--------------------------- */
 
 function todayKey(date=new Date()){
   const y=date.getFullYear();
@@ -384,263 +652,849 @@ function todayKey(date=new Date()){
 }
 
 function exerciseName(type){
-  return type==='pushups'?'Отжимания':'Приседания';
+  if(type==='pushups') return 'Отжимания';
+  if(type==='squats') return 'Приседания';
+  if(type==='pullups') return 'Подтягивания';
+  return '';
 }
 
-function getTotal(type){
-  return data.filter(x=>x.type===type).reduce((s,x)=>s+x.total,0);
+function totalFor(type){
+  return data
+    .filter(x=>x.type===type)
+    .reduce((s,x)=>s+Number(x.total||0),0);
 }
 
-function getToday(type){
-  const t=todayKey();
-  return data.filter(x=>x.type===type&&x.day===t).reduce((s,x)=>s+x.total,0);
+function todayFor(type){
+  const today=todayKey();
+
+  return data
+    .filter(x=>x.type===type && x.day===today)
+    .reduce((s,x)=>s+Number(x.total||0),0);
 }
 
-function allReps(){
-  return data.reduce((s,x)=>s+x.total,0);
+function bestDay(type){
+
+  const map={};
+
+  data
+    .filter(x=>x.type===type)
+    .forEach(x=>{
+      map[x.day]=(map[x.day]||0)+Number(x.total||0);
+    });
+
+  const vals=Object.values(map);
+
+  return vals.length
+    ? Math.max(...vals)
+    : 0;
 }
+
+function formatTime(seconds){
+
+  seconds=Math.max(0,Math.floor(seconds));
+
+  const h=Math.floor(seconds/3600);
+  const m=Math.floor((seconds%3600)/60);
+  const s=seconds%60;
+
+  if(h>0){
+    return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function plankTodayValue(){
+
+  const today=todayKey();
+
+  return plankSessions
+    .filter(x=>x.day===today)
+    .reduce((s,x)=>s+x.seconds,0);
+}
+
+function plankTotalValue(){
+
+  return plankSessions
+    .reduce((s,x)=>s+x.seconds,0);
+}
+
+function plankRecordValue(){
+
+  if(!plankSessions.length) return 0;
+
+  return Math.max(...plankSessions.map(x=>x.seconds));
+}
+
+/* ---------------------------
+   HOME
+--------------------------- */
 
 function updateHome(){
-  homePushTotal.textContent=getTotal('pushups');
-  homePushToday.textContent=getToday('pushups');
-  homeSquatTotal.textContent=getTotal('squats');
-  homeSquatToday.textContent=getToday('squats');
+
+  pushTodayHome.textContent=todayFor('pushups');
+  pushTotalHome.textContent=totalFor('pushups');
+
+  squatTodayHome.textContent=todayFor('squats');
+  squatTotalHome.textContent=totalFor('squats');
+
+  pullTodayHome.textContent=todayFor('pullups');
+  pullTotalHome.textContent=totalFor('pullups');
+
+  plankTodayHome.textContent=formatTime(plankTodayValue());
+  plankRecordHome.textContent=formatTime(plankRecordValue());
 }
 
-function resetTabs(){
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+/* ---------------------------
+   NAVIGATION
+--------------------------- */
+
+function hidePages(){
+  document.querySelectorAll('.page')
+    .forEach(x=>x.classList.remove('active'));
 }
 
-function resetPages(){
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+function clearTabs(){
+  document.querySelectorAll('.tab')
+    .forEach(x=>x.classList.remove('active'));
+}
+
+function activateTab(name){
+
+  clearTabs();
+
+  const t=document.querySelector(`.tab[data-tab="${name}"]`);
+
+  if(t) t.classList.add('active');
 }
 
 function showHome(){
-  resetPages();
-  resetTabs();
-  home.classList.add('active');
-  tabHome.classList.add('active');
+
+  hidePages();
+  homePage.classList.add('active');
+
+  activateTab('home');
+
   headerTitle.textContent='FitCounter';
   headerSubtitle.textContent='Твой прогресс каждый день 💪';
+
   updateHome();
 }
 
-function openExercise(type){
-  current=type;
-  resetPages();
-  resetTabs();
+/* ---------------------------
+   REP EXERCISES
+--------------------------- */
 
-  exercise.classList.add('active');
-  (type==='pushups'?tabPush:tabSquat).classList.add('active');
+let currentExercise='pushups';
+let setCount=3;
+
+function openExercise(type){
+
+  currentExercise=type;
+
+  hidePages();
+  exercisePage.classList.add('active');
+
+  activateTab(type);
 
   headerTitle.textContent=exerciseName(type);
   headerSubtitle.textContent='Добавляй подходы и следи за прогрессом';
+
   exerciseTitle.textContent=exerciseName(type);
 
   setCount=3;
+
   renderSets();
-  refreshExercise();
+  renderExercise();
 }
 
 function renderSets(){
-  sets.innerHTML='';
+
+  setsContainer.innerHTML='';
+
   for(let i=1;i<=setCount;i++){
-    sets.insertAdjacentHTML('beforeend',`
-      <div class="setrow">
-        <span>Подход ${i}</span>
-        <input type="number" inputmode="numeric" min="0" class="setInput" placeholder="0" oninput="sumCurrent()">
-      </div>
-    `);
+
+    const row=document.createElement('div');
+
+    row.className='setrow';
+
+    row.innerHTML=`
+      <span>Подход ${i}</span>
+      <input
+        class="setInput"
+        inputmode="numeric"
+        type="number"
+        min="0"
+        placeholder="0"
+      >
+    `;
+
+    setsContainer.appendChild(row);
   }
-  sumCurrent();
+
+  document.querySelectorAll('.setInput')
+    .forEach(input=>{
+      input.addEventListener('input',updateCurrentSetTotal);
+    });
+
+  updateCurrentSetTotal();
 }
 
 function addSet(){
+
   setCount++;
-  sets.insertAdjacentHTML('beforeend',`
-    <div class="setrow">
-      <span>Подход ${setCount}</span>
-      <input type="number" inputmode="numeric" min="0" class="setInput" placeholder="0" oninput="sumCurrent()">
-    </div>
-  `);
+
+  const row=document.createElement('div');
+
+  row.className='setrow';
+
+  row.innerHTML=`
+    <span>Подход ${setCount}</span>
+    <input
+      class="setInput"
+      inputmode="numeric"
+      type="number"
+      min="0"
+      placeholder="0"
+    >
+  `;
+
+  setsContainer.appendChild(row);
+
+  row.querySelector('input')
+    .addEventListener('input',updateCurrentSetTotal);
 }
 
-function currentValues(){
+function setValues(){
+
   return [...document.querySelectorAll('.setInput')]
     .map(x=>parseInt(x.value)||0)
     .filter(x=>x>0);
 }
 
-function sumCurrent(){
-  currentTotal.textContent=currentValues().reduce((a,b)=>a+b,0);
+function updateCurrentSetTotal(){
+
+  currentSetTotal.textContent=
+    setValues().reduce((a,b)=>a+b,0);
 }
 
-function saveWorkout(){
-  const values=currentValues();
-  const total=values.reduce((a,b)=>a+b,0);
+function saveExercise(){
 
-  if(!total){
+  const sets=setValues();
+  const total=sets.reduce((a,b)=>a+b,0);
+
+  if(total<=0){
     alert('Введи количество повторений');
     return;
   }
 
   data.unshift({
     id:Date.now(),
-    type:current,
+    type:currentExercise,
     day:todayKey(),
     time:new Date().toLocaleString('ru-RU'),
-    sets:values,
+    sets,
     total
   });
 
-  saveData();
+  saveAll();
+
   renderSets();
-  refreshExercise();
+  renderExercise();
   updateHome();
-  checkNewAchievements();
+
+  checkNewRank(currentExercise);
 }
 
-function deleteWorkout(id){
-  if(!confirm('Удалить эту запись?')) return;
+function deleteExercise(id){
+
+  if(!confirm('Удалить запись?')) return;
 
   data=data.filter(x=>x.id!==id);
-  saveData();
-  refreshExercise();
+
+  saveAll();
+  renderExercise();
   updateHome();
 }
 
-function refreshExercise(){
-  todayCount.textContent=getToday(current);
-  allCount.textContent=getTotal(current);
+function renderExercise(){
 
-  const items=data.filter(x=>x.type===current);
+  exerciseToday.textContent=todayFor(currentExercise);
+  exerciseTotal.textContent=totalFor(currentExercise);
+  exerciseRecord.textContent=bestDay(currentExercise);
+
+  const items=data.filter(x=>x.type===currentExercise);
 
   if(!items.length){
-    history.innerHTML='<div class="empty">Тренировок пока нет</div>';
+
+    exerciseHistory.innerHTML=
+      '<div class="empty">Записей пока нет</div>';
+
     return;
   }
 
-  history.innerHTML=items.map(x=>`
-    <div class="history-row">
+  exerciseHistory.innerHTML='';
+
+  items.forEach(item=>{
+
+    const row=document.createElement('div');
+
+    row.className='history-row';
+
+    row.innerHTML=`
       <div>
-        <b>${x.total} повторений</b>
-        <div class="muted">${x.time}</div>
-        <div class="muted">${x.sets.join(' + ')}</div>
+        <b>${item.total} повторений</b>
+        <div class="muted">${item.time}</div>
+        <div class="muted">${(item.sets||[]).join(' + ')}</div>
       </div>
-      <button class="danger" onclick="deleteWorkout(${x.id})">Удалить</button>
-    </div>
-  `).join('');
-}
 
-function achievementValue(a){
-  if(a.group==='pushups') return getTotal('pushups');
-  if(a.group==='squats') return getTotal('squats');
-  if(a.id==='firstWorkout'||a.id==='workout10') return data.length;
-  if(a.id==='total1000'||a.id==='total10000') return allReps();
-  return 0;
-}
-
-function unlockedAchievements(){
-  return achievementsList.filter(a=>achievementValue(a)>=a.target);
-}
-
-function checkNewAchievements(){
-  const unlocked=unlockedAchievements();
-  const fresh=unlocked.filter(a=>!knownUnlocks.includes(a.id));
-
-  if(!fresh.length) return;
-
-  fresh.forEach(a=>knownUnlocks.push(a.id));
-  localStorage.setItem(UNLOCK_KEY,JSON.stringify(knownUnlocks));
-
-  showAchievementPopup(fresh[0]);
-}
-
-function showAchievementPopup(a){
-  popupTitle.textContent=a.title;
-  popupText.textContent=a.description;
-  achievementPopup.classList.add('show');
-}
-
-function closeAchievementPopup(){
-  achievementPopup.classList.remove('show');
-}
-
-function achievementCard(a){
-  const value=achievementValue(a);
-  const unlocked=value>=a.target;
-  const percent=Math.min(100,Math.round(value/a.target*100));
-
-  let statusClass='locked';
-  let side='<div class="lock">🔒<br>Ещё не открыто</div>';
-
-  if(unlocked){
-    statusClass='unlocked';
-    side='<div class="done">✓ Получено</div>';
-  }else if(value>0){
-    statusClass='progress';
-    side=`
-      <div><b>${value} / ${a.target}</b></div>
-      <div class="bar"><span style="width:${percent}%"></span></div>
+      <button class="danger">Удалить</button>
     `;
+
+    row.querySelector('button')
+      .addEventListener('click',()=>deleteExercise(item.id));
+
+    exerciseHistory.appendChild(row);
+  });
+}
+
+/* ---------------------------
+   PLANK TIMER
+--------------------------- */
+
+let timerSeconds=0;
+let timerRunning=false;
+let timerInterval=null;
+
+function openPlank(){
+
+  hidePages();
+  plankPage.classList.add('active');
+
+  activateTab('plank');
+
+  headerTitle.textContent='Планка';
+  headerSubtitle.textContent='Время, выдержка и новый рекорд';
+
+  renderPlankStats();
+  renderPlankHistory();
+}
+
+function updateTimerDisplay(){
+  timerDisplay.textContent=formatTime(timerSeconds);
+}
+
+function startTimer(){
+
+  if(timerRunning) return;
+
+  timerRunning=true;
+  timerCircle.classList.add('running');
+
+  timerMainBtn.textContent='⏸ Пауза';
+  timerFinishBtn.style.display='block';
+
+  const startedAt=Date.now()-(timerSeconds*1000);
+
+  timerInterval=setInterval(()=>{
+
+    timerSeconds=
+      Math.floor((Date.now()-startedAt)/1000);
+
+    updateTimerDisplay();
+
+  },250);
+}
+
+function pauseTimer(){
+
+  timerRunning=false;
+
+  clearInterval(timerInterval);
+
+  timerMainBtn.textContent='▶ Продолжить';
+}
+
+function toggleTimer(){
+
+  if(timerRunning){
+    pauseTimer();
+  }else{
+    startTimer();
+  }
+}
+
+function resetTimer(){
+
+  clearInterval(timerInterval);
+
+  timerRunning=false;
+  timerSeconds=0;
+
+  timerCircle.classList.remove('running');
+
+  timerMainBtn.textContent='▶ Начать';
+  timerFinishBtn.style.display='none';
+
+  updateTimerDisplay();
+}
+
+function finishTimer(){
+
+  if(timerRunning){
+    pauseTimer();
   }
 
-  return `
-    <div class="achievement ${statusClass}">
-      <div class="badge">${unlocked||value>0?a.icon:'🔒'}</div>
-      <div class="achievement-body">
-        <h3>${a.title}</h3>
-        <div class="muted">${a.description}</div>
-      </div>
-      <div class="achievement-side">${side}</div>
-    </div>
-  `;
+  if(timerSeconds<=0) return;
+
+  const seconds=timerSeconds;
+
+  const save=confirm(
+    `Сохранить результат ${formatTime(seconds)}?`
+  );
+
+  if(!save) return;
+
+  plankSessions.unshift({
+    id:Date.now(),
+    seconds,
+    day:todayKey(),
+    time:new Date().toLocaleString('ru-RU')
+  });
+
+  saveAll();
+
+  resetTimer();
+  renderPlankStats();
+  renderPlankHistory();
+  updateHome();
+
+  checkNewRank('plank');
 }
 
-function achievementSection(title,icon,group){
-  const list=achievementsList.filter(a=>a.group===group);
-  const unlocked=list.filter(a=>achievementValue(a)>=a.target).length;
+function deletePlank(id){
 
-  return `
-    <div class="section-title">
-      <h2>${icon} ${title}</h2>
-      <div class="section-count">${unlocked} из ${list.length}</div>
-    </div>
-    ${list.map(achievementCard).join('')}
-  `;
+  if(!confirm('Удалить результат?')) return;
+
+  plankSessions=
+    plankSessions.filter(x=>x.id!==id);
+
+  saveAll();
+
+  renderPlankStats();
+  renderPlankHistory();
+  updateHome();
+}
+
+function renderPlankStats(){
+
+  plankToday.textContent=
+    formatTime(plankTodayValue());
+
+  plankRecord.textContent=
+    formatTime(plankRecordValue());
+
+  plankTotal.textContent=
+    formatTime(plankTotalValue());
+}
+
+function renderPlankHistory(){
+
+  if(!plankSessions.length){
+
+    plankHistory.innerHTML=
+      '<div class="empty">Результатов пока нет</div>';
+
+    return;
+  }
+
+  plankHistory.innerHTML='';
+
+  plankSessions.forEach(item=>{
+
+    const row=document.createElement('div');
+
+    row.className='history-row';
+
+    row.innerHTML=`
+      <div>
+        <b>${formatTime(item.seconds)}</b>
+        <div class="muted">${item.time}</div>
+      </div>
+
+      <button class="danger">Удалить</button>
+    `;
+
+    row.querySelector('button')
+      .addEventListener('click',()=>deletePlank(item.id));
+
+    plankHistory.appendChild(row);
+  });
+}
+
+/* ---------------------------
+   RANKS
+--------------------------- */
+
+const rankSets={
+
+  pushups:[
+    {name:'Сопляк',icon:'🌱',target:300},
+    {name:'Трухлявый',icon:'🪵',target:500},
+    {name:'Крепыш',icon:'💪',target:1000},
+    {name:'Бугай',icon:'🦬',target:2000},
+    {name:'Воин',icon:'⚔️',target:3500},
+    {name:'Гладиатор',icon:'🛡️',target:5500},
+    {name:'Титан',icon:'🗿',target:10000},
+    {name:'Неудержимый',icon:'🔥',target:15000},
+    {name:'Халк',icon:'💚',target:20000},
+    {name:'Абсолютная мощь',icon:'⚡',target:30000},
+    {name:'Железная воля',icon:'⛓️',target:50000},
+    {name:'Легенда FitCounter',icon:'👑',target:100000},
+    {name:'Бессмертный',icon:'🌌',target:250000,secret:true},
+    {name:'Миф',icon:'☄️',target:500000,secret:true},
+    {name:'Божество силы',icon:'🌠',target:1000000,secret:true}
+  ],
+
+  squats:[
+    {name:'Новичок',icon:'🌱',target:500},
+    {name:'Крепкие ноги',icon:'🦵',target:1000},
+    {name:'Атлет',icon:'🏃',target:2500},
+    {name:'Тяжеловес',icon:'🏋️',target:5000},
+    {name:'Бизон',icon:'🦬',target:10000},
+    {name:'Машина',icon:'⚙️',target:20000},
+    {name:'Титан ног',icon:'🗿',target:50000},
+    {name:'Легенда',icon:'👑',target:100000}
+  ],
+
+  pullups:[
+    {name:'Новичок',icon:'🌱',target:50},
+    {name:'Цепкий',icon:'✊',target:100},
+    {name:'Скалолаз',icon:'🧗',target:250},
+    {name:'Турникмен',icon:'🏋️',target:500},
+    {name:'Хищник',icon:'🐆',target:1000},
+    {name:'Мастер',icon:'⚔️',target:2500},
+    {name:'Повелитель турника',icon:'🐉',target:5000},
+    {name:'Легенда',icon:'👑',target:10000}
+  ],
+
+  plank:[
+    {name:'Первые секунды',icon:'⏱️',target:30},
+    {name:'Минута воли',icon:'🔥',target:60},
+    {name:'Скала',icon:'🪨',target:120},
+    {name:'Стальной корпус',icon:'🛡️',target:300},
+    {name:'Несгибаемый',icon:'⚓',target:600},
+    {name:'Монолит',icon:'🏛️',target:900},
+    {name:'Титан времени',icon:'👑',target:1800}
+  ]
+
+};
+
+let achievementType='pushups';
+
+function achievementValue(type){
+
+  if(type==='plank'){
+    return plankRecordValue();
+  }
+
+  return totalFor(type);
 }
 
 function showAchievements(){
-  resetPages();
-  resetTabs();
 
-  achievements.classList.add('active');
-  tabAchievements.classList.add('active');
+  hidePages();
+  achievementsPage.classList.add('active');
+
+  activateTab('achievements');
 
   headerTitle.textContent='Достижения 🏆';
-  headerSubtitle.textContent='Продолжай тренироваться и открывай новые награды';
+  headerSubtitle.textContent='Прокачивай каждый вид упражнений';
 
-  renderAchievements();
+  renderRanks();
 }
 
-function renderAchievements(){
-  const total=achievementsList.length;
-  const unlocked=unlockedAchievements().length;
-  const percent=Math.round(unlocked/total*100);
+function currentRankIndex(type,value){
 
-  achievementUnlocked.textContent=unlocked;
-  achievementTotal.textContent=total;
-  achievementBar.style.width=percent+'%';
-  achievementCircle.style.setProperty('--p',percent);
+  const ranks=rankSets[type];
 
-  achievementsContent.innerHTML=
-    achievementSection('Отжимания','💪','pushups')+
-    achievementSection('Приседания','🏋️','squats')+
-    achievementSection('Общие достижения','⭐️','general');
+  let index=-1;
+
+  ranks.forEach((r,i)=>{
+    if(value>=r.target) index=i;
+  });
+
+  return index;
 }
 
-saveData();
+function renderRanks(){
+
+  const ranks=rankSets[achievementType];
+
+  const value=achievementValue(achievementType);
+
+  const currentIndex=currentRankIndex(
+    achievementType,
+    value
+  );
+
+  const current=
+    currentIndex>=0
+      ? ranks[currentIndex]
+      : null;
+
+  const next=
+    ranks[currentIndex+1] || null;
+
+  if(current){
+
+    rankHeroIcon.textContent=current.icon;
+    rankHeroName.textContent=current.name;
+
+  }else{
+
+    rankHeroIcon.textContent='🌱';
+    rankHeroName.textContent='Начало пути';
+  }
+
+  if(next){
+
+    const prevTarget=
+      current ? current.target : 0;
+
+    const range=
+      next.target-prevTarget;
+
+    const gained=
+      Math.max(0,value-prevTarget);
+
+    const percent=
+      Math.min(
+        100,
+        Math.round(gained/range*100)
+      );
+
+    rankHeroProgressText.textContent=
+      `${value} / ${next.target}`;
+
+    rankHeroProgress.style.width=
+      percent+'%';
+
+    const remaining=
+      Math.max(0,next.target-value);
+
+    const unit=
+      achievementType==='plank'
+        ? 'сек.'
+        : 'повторений';
+
+    rankHeroNext.textContent=
+      `До ранга «${next.name}» осталось ${remaining} ${unit}`;
+
+  }else{
+
+    rankHeroProgressText.textContent=
+      `${value}`;
+
+    rankHeroProgress.style.width='100%';
+
+    rankHeroNext.textContent=
+      'Максимальный открытый ранг';
+  }
+
+  rankList.innerHTML='';
+
+  ranks.forEach((rank,index)=>{
+
+    if(
+      rank.secret &&
+      currentIndex <
+      ranks.findIndex(r=>r.secret)-1
+    ){
+      return;
+    }
+
+    const row=document.createElement('div');
+
+    const done=value>=rank.target;
+    const isCurrent=index===currentIndex;
+
+    row.className='rank-row';
+
+    if(done) row.classList.add('done');
+    if(isCurrent) row.classList.add('current');
+    if(!done) row.classList.add('locked');
+
+    row.innerHTML=`
+      <div class="rank-symbol">
+        ${done ? rank.icon : '🔒'}
+      </div>
+
+      <div class="rank-title">
+        ${rank.name}
+      </div>
+
+      <div class="rank-target">
+        ${
+          achievementType==='plank'
+            ? formatTime(rank.target)
+            : rank.target.toLocaleString('ru-RU')
+        }
+      </div>
+    `;
+
+    rankList.appendChild(row);
+  });
+}
+
+function rankId(type,index){
+  return `${type}_${index}`;
+}
+
+function checkNewRank(type){
+
+  const value=achievementValue(type);
+  const ranks=rankSets[type];
+
+  let newest=null;
+  let newestIndex=-1;
+
+  ranks.forEach((rank,index)=>{
+
+    const id=rankId(type,index);
+
+    if(
+      value>=rank.target &&
+      !knownRanks.includes(id)
+    ){
+
+      knownRanks.push(id);
+      newest=rank;
+      newestIndex=index;
+    }
+
+  });
+
+  localStorage.setItem(
+    RANK_KEY,
+    JSON.stringify(knownRanks)
+  );
+
+  if(newest){
+    showRankPopup(type,newest);
+  }
+}
+
+function showRankPopup(type,rank){
+
+  rankPopupIcon.textContent=rank.icon;
+  rankPopupName.textContent=rank.name;
+
+  rankPopupText.textContent=
+    type==='plank'
+      ? `Новый рекорд открыл ранг «${rank.name}».`
+      : `Ты достиг нового уровня в упражнении «${exerciseName(type)}».`;
+
+  rankPopup.classList.add('show');
+}
+
+/* ---------------------------
+   EVENTS
+--------------------------- */
+
+document.querySelectorAll('[data-open]')
+  .forEach(el=>{
+    el.addEventListener('click',()=>{
+      openExercise(el.dataset.open);
+    });
+  });
+
+document.querySelectorAll('[data-page="plank"]')
+  .forEach(el=>{
+    el.addEventListener('click',openPlank);
+  });
+
+document.querySelectorAll('.tab')
+  .forEach(tab=>{
+
+    tab.addEventListener('click',()=>{
+
+      const name=tab.dataset.tab;
+
+      if(name==='home'){
+        showHome();
+      }
+
+      else if(name==='plank'){
+        openPlank();
+      }
+
+      else if(name==='achievements'){
+        showAchievements();
+      }
+
+      else{
+        openExercise(name);
+      }
+
+    });
+
+  });
+
+document.querySelectorAll('[data-achievement]')
+  .forEach(button=>{
+
+    button.addEventListener('click',()=>{
+
+      achievementType=
+        button.dataset.achievement;
+
+      document.querySelectorAll('[data-achievement]')
+        .forEach(x=>x.classList.remove('active'));
+
+      button.classList.add('active');
+
+      renderRanks();
+    });
+
+  });
+
+addSetBtn.addEventListener('click',addSet);
+
+saveExerciseBtn.addEventListener(
+  'click',
+  saveExercise
+);
+
+timerMainBtn.addEventListener(
+  'click',
+  toggleTimer
+);
+
+timerFinishBtn.addEventListener(
+  'click',
+  finishTimer
+);
+
+timerResetBtn.addEventListener(
+  'click',
+  resetTimer
+);
+
+rankPopupClose.addEventListener(
+  'click',
+  ()=>{
+    rankPopup.classList.remove('show');
+  }
+);
+
+/* ---------------------------
+   START
+--------------------------- */
+
 updateHome();
+updateTimerDisplay();
+
 </script>
 
 </body>
