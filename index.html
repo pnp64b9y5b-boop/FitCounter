@@ -6,102 +6,259 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>FitCounter</title>
+
 <style>
 *{box-sizing:border-box}
+:root{
+  --bg:#090c11;
+  --card:#171b23;
+  --line:#2b313c;
+  --text:#fff;
+  --muted:#9199a7;
+  --blue:#3d98ff;
+  --green:#45d274;
+  --gold:#ffb51c;
+  --purple:#a45cff;
+}
 body{
-  margin:0;background:#0b0d12;color:#fff;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  padding-bottom:95px
+  padding-bottom:105px;
 }
-header{padding:55px 20px 15px}
-h1{margin:0;font-size:34px}
-.sub{color:#9aa1ad;margin-top:6px}
-.tabs{
-  position:fixed;bottom:0;left:0;right:0;
-  background:#171a21;border-top:1px solid #2a2e37;
-  display:flex;padding:10px 4px 24px;z-index:9
-}
-.tab{
-  flex:1;text-align:center;color:#858c98;
-  font-size:12px;padding:6px;cursor:pointer
-}
-.tab.active{color:#4da3ff}
-.tab .icon{font-size:24px;display:block;margin-bottom:4px}
-.page{display:none;padding:0 16px}
+header{padding:55px 20px 20px}
+h1{margin:0;font-size:38px}
+.subtitle{color:var(--muted);margin-top:8px;font-size:17px}
+.page{display:none;padding:0 16px 30px}
 .page.active{display:block}
 .card{
-  background:#171a21;border:1px solid #292e38;
-  border-radius:20px;padding:18px;margin-bottom:14px
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:18px;
+  margin-bottom:14px;
 }
-.exercise{
-  display:flex;align-items:center;gap:14px;cursor:pointer
+.exercise-card{
+  display:flex;
+  align-items:center;
+  gap:16px;
 }
-.exercise .emoji{font-size:34px}
-.exercise .info{flex:1}
-.exercise h3{margin:0 0 5px}
-.muted{color:#9299a5;font-size:14px}
-.big{font-size:30px;font-weight:800}
-.stats{display:flex;justify-content:space-between;text-align:center}
-.stat{flex:1}
-input{
-  width:95px;background:#252a34;color:#fff;border:0;
-  border-radius:12px;padding:12px;font-size:20px;
-  text-align:center;outline:none
-}
+.exercise-icon{font-size:38px;width:55px;text-align:center}
+.exercise-info{flex:1}
+.exercise-info h3{margin:0 0 6px;font-size:21px}
+.muted{color:var(--muted)}
+.big{font-size:34px;font-weight:800}
+.right{text-align:right}
+.stats{display:flex;text-align:center}
+.stat{width:50%}
 .setrow{
-  display:flex;align-items:center;justify-content:space-between;
-  margin:10px 0
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:11px 0;
+}
+.setrow input{
+  width:100px;
+  background:#252a34;
+  color:#fff;
+  border:0;
+  border-radius:13px;
+  padding:12px;
+  font-size:20px;
+  text-align:center;
 }
 button{
-  border:0;border-radius:14px;padding:14px;
-  font-size:16px;font-weight:700;cursor:pointer
+  border:0;
+  border-radius:14px;
+  padding:14px;
+  font-size:16px;
+  font-weight:700;
 }
-.primary{width:100%;background:#2d8cff;color:white;margin-top:12px}
-.secondary{width:100%;background:#262b35;color:#fff;margin-top:10px}
-.danger{background:#412329;color:#ff7b87;padding:8px 12px;font-size:13px}
-.history{
-  display:flex;justify-content:space-between;
-  gap:10px;align-items:center
+.primary{
+  width:100%;
+  background:var(--blue);
+  color:#fff;
+  margin-top:12px;
 }
-.history+.history{border-top:1px solid #292e38;margin-top:12px;padding-top:12px}
-.totalNow{text-align:right;color:#73b7ff;font-weight:700}
-.empty{color:#8c939f;text-align:center;padding:15px}
+.secondary{
+  width:100%;
+  background:#262c36;
+  color:#fff;
+  margin-top:10px;
+}
+.danger{
+  background:#44252b;
+  color:#ff8791;
+  padding:8px 12px;
+  font-size:13px;
+}
+.history-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.history-row+.history-row{
+  border-top:1px solid var(--line);
+  padding-top:13px;
+  margin-top:13px;
+}
+.tabs{
+  position:fixed;
+  left:0;right:0;bottom:0;
+  z-index:100;
+  background:#171b23;
+  border-top:1px solid var(--line);
+  display:flex;
+  padding:10px 2px calc(20px + env(safe-area-inset-bottom));
+}
+.tab{
+  flex:1;
+  text-align:center;
+  color:#868e9c;
+  font-size:11px;
+  padding:5px 1px;
+}
+.tab.active{color:var(--blue)}
+.tab-icon{display:block;font-size:24px;margin-bottom:3px}
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:24px 3px 12px;
+}
+.section-title h2{font-size:23px;margin:0}
+.section-count{color:var(--blue);font-weight:700}
+.progress-card{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+.progress-circle{
+  width:82px;height:82px;border-radius:50%;
+  display:grid;place-items:center;font-size:30px;
+  background:conic-gradient(var(--purple) calc(var(--p)*1%),#303642 0);
+}
+.progress-inner{
+  width:64px;height:64px;
+  background:var(--card);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+}
+.progress-info{flex:1}
+.progress-info h3{margin:0 0 7px}
+.bar{
+  height:10px;
+  background:#2c323d;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+.bar span{
+  display:block;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,var(--purple),var(--blue));
+}
+.achievement{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:18px;
+  padding:14px;
+  margin-bottom:11px;
+}
+.achievement.unlocked{
+  border-color:#2f8450;
+  background:linear-gradient(90deg,#14251b,#171b23);
+}
+.achievement.progress{border-color:#87671b}
+.achievement.locked{opacity:.58}
+.badge{
+  width:58px;height:58px;border-radius:50%;
+  display:grid;place-items:center;
+  font-size:28px;flex-shrink:0;
+  background:#252b35;
+  border:2px solid #3a414d;
+}
+.achievement.unlocked .badge{
+  background:#244b32;
+  border-color:var(--green);
+}
+.achievement.progress .badge{
+  background:#4a3815;
+  border-color:var(--gold);
+}
+.achievement-body{flex:1}
+.achievement-body h3{margin:0 0 5px;font-size:18px}
+.achievement-side{text-align:right;min-width:86px}
+.done{color:var(--green);font-weight:700}
+.lock{color:#a6adba}
+.empty{text-align:center;color:var(--muted);padding:18px}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.72);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+  z-index:999;
+}
+.overlay.show{display:flex}
+.popup{
+  width:100%;
+  max-width:360px;
+  background:#191e27;
+  border:1px solid #3a414d;
+  border-radius:28px;
+  padding:26px 22px;
+  text-align:center;
+}
+.popup-icon{font-size:68px}
+.popup h2{margin:8px 0}
+.popup p{color:var(--muted)}
 </style>
 </head>
+
 <body>
 
 <header>
-  <h1>FitCounter</h1>
-  <div class="sub">Твой прогресс каждый день 💪</div>
+  <h1 id="headerTitle">FitCounter</h1>
+  <div class="subtitle" id="headerSubtitle">Твой прогресс каждый день 💪</div>
 </header>
 
-<div id="home" class="page active">
-  <div class="card exercise" onclick="openExercise('pushups')">
-    <div class="emoji">💪</div>
-    <div class="info">
+<section id="home" class="page active">
+  <div class="card exercise-card" onclick="openExercise('pushups')">
+    <div class="exercise-icon">💪</div>
+    <div class="exercise-info">
       <h3>Отжимания</h3>
       <div class="muted">Сегодня: <span id="homePushToday">0</span></div>
     </div>
-    <div>
+    <div class="right">
       <div class="big" id="homePushTotal">0</div>
       <div class="muted">всего</div>
     </div>
   </div>
 
-  <div class="card exercise" onclick="openExercise('squats')">
-    <div class="emoji">🏋️</div>
-    <div class="info">
+  <div class="card exercise-card" onclick="openExercise('squats')">
+    <div class="exercise-icon">🏋️</div>
+    <div class="exercise-info">
       <h3>Приседания</h3>
       <div class="muted">Сегодня: <span id="homeSquatToday">0</span></div>
     </div>
-    <div>
+    <div class="right">
       <div class="big" id="homeSquatTotal">0</div>
       <div class="muted">всего</div>
     </div>
   </div>
-</div>
+</section>
 
-<div id="exercise" class="page">
+<section id="exercise" class="page">
   <div class="card">
     <h2 id="exerciseTitle">Отжимания</h2>
     <div class="stats">
@@ -119,9 +276,11 @@ button{
   <div class="card">
     <div style="display:flex;justify-content:space-between">
       <b>Подходы</b>
-      <span class="totalNow">Сейчас: <span id="currentTotal">0</span></span>
+      <b style="color:#6bb2ff">Сейчас: <span id="currentTotal">0</span></b>
     </div>
+
     <div id="sets"></div>
+
     <button class="secondary" onclick="addSet()">＋ Добавить подход</button>
     <button class="primary" onclick="saveWorkout()">Сохранить тренировку</button>
   </div>
@@ -130,32 +289,98 @@ button{
     <h3>История</h3>
     <div id="history"></div>
   </div>
-</div>
+</section>
 
-<div class="tabs">
+<section id="achievements" class="page">
+  <div class="card progress-card">
+    <div class="progress-circle" id="achievementCircle" style="--p:0">
+      <div class="progress-inner">🏆</div>
+    </div>
+
+    <div class="progress-info">
+      <h3>Общий прогресс</h3>
+      <div>
+        <b id="achievementUnlocked">0</b>
+        <span class="muted">из <span id="achievementTotal">0</span> открыто</span>
+      </div>
+      <div class="bar">
+        <span id="achievementBar" style="width:0%"></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="achievementsContent"></div>
+</section>
+
+<nav class="tabs">
   <div class="tab active" id="tabHome" onclick="showHome()">
-    <span class="icon">🏠</span>Главная
+    <span class="tab-icon">🏠</span>Главная
   </div>
+
   <div class="tab" id="tabPush" onclick="openExercise('pushups')">
-    <span class="icon">💪</span>Отжимания
+    <span class="tab-icon">💪</span>Отжимания
   </div>
+
   <div class="tab" id="tabSquat" onclick="openExercise('squats')">
-    <span class="icon">🏋️</span>Приседания
+    <span class="tab-icon">🏋️</span>Приседания
+  </div>
+
+  <div class="tab" id="tabAchievements" onclick="showAchievements()">
+    <span class="tab-icon">🏆</span>Достижения
+  </div>
+</nav>
+
+<div class="overlay" id="achievementPopup">
+  <div class="popup">
+    <div class="popup-icon">🏆</div>
+    <h2>Новое достижение!</h2>
+    <h3 id="popupTitle"></h3>
+    <p id="popupText"></p>
+    <button class="primary" onclick="closeAchievementPopup()">Отлично!</button>
   </div>
 </div>
 
 <script>
-const KEY='fitcounter_v1';
-let data=JSON.parse(localStorage.getItem(KEY)||'[]');
+const STORAGE_KEY='fitcounter_v2';
+const OLD_STORAGE_KEY='fitcounter_v1';
+const UNLOCK_KEY='fitcounter_achievement_unlocks';
+
+let data=JSON.parse(
+  localStorage.getItem(STORAGE_KEY) ||
+  localStorage.getItem(OLD_STORAGE_KEY) ||
+  '[]'
+);
+
+let knownUnlocks=JSON.parse(localStorage.getItem(UNLOCK_KEY)||'[]');
 let current='pushups';
 let setCount=3;
 
+const achievementsList=[
+  {id:'push10',group:'pushups',icon:'🥉',title:'Первый шаг',description:'Сделай 10 отжиманий',target:10},
+  {id:'push100',group:'pushups',icon:'🥈',title:'Сотня',description:'Сделай 100 отжиманий',target:100},
+  {id:'push1000',group:'pushups',icon:'🥇',title:'Железная воля',description:'Сделай 1 000 отжиманий',target:1000},
+  {id:'push10000',group:'pushups',icon:'👑',title:'Машина',description:'Сделай 10 000 отжиманий',target:10000},
+
+  {id:'squat10',group:'squats',icon:'🥉',title:'Первые приседания',description:'Сделай 10 приседаний',target:10},
+  {id:'squat100',group:'squats',icon:'🥈',title:'Сотня приседаний',description:'Сделай 100 приседаний',target:100},
+  {id:'squat1000',group:'squats',icon:'🥇',title:'Мастер приседаний',description:'Сделай 1 000 приседаний',target:1000},
+  {id:'squat10000',group:'squats',icon:'👑',title:'Король приседаний',description:'Сделай 10 000 приседаний',target:10000},
+
+  {id:'firstWorkout',group:'general',icon:'🟢',title:'Первая тренировка',description:'Проведи свою первую тренировку',target:1},
+  {id:'workout10',group:'general',icon:'🔥',title:'Вошёл во вкус',description:'Проведи 10 тренировок',target:10},
+  {id:'total1000',group:'general',icon:'⚡️',title:'Тысяча повторений',description:'Сделай 1 000 повторений суммарно',target:1000},
+  {id:'total10000',group:'general',icon:'💎',title:'Легенда',description:'Сделай 10 000 повторений суммарно',target:10000}
+];
+
 function saveData(){
-  localStorage.setItem(KEY,JSON.stringify(data));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
 }
 
 function todayKey(date=new Date()){
-  return date.toISOString().slice(0,10);
+  const y=date.getFullYear();
+  const m=String(date.getMonth()+1).padStart(2,'0');
+  const d=String(date.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
 }
 
 function exerciseName(type){
@@ -163,14 +388,16 @@ function exerciseName(type){
 }
 
 function getTotal(type){
-  return data.filter(x=>x.type===type)
-    .reduce((s,x)=>s+x.total,0);
+  return data.filter(x=>x.type===type).reduce((s,x)=>s+x.total,0);
 }
 
 function getToday(type){
   const t=todayKey();
-  return data.filter(x=>x.type===type && x.day===t)
-    .reduce((s,x)=>s+x.total,0);
+  return data.filter(x=>x.type===type&&x.day===t).reduce((s,x)=>s+x.total,0);
+}
+
+function allReps(){
+  return data.reduce((s,x)=>s+x.total,0);
 }
 
 function updateHome(){
@@ -180,21 +407,36 @@ function updateHome(){
   homeSquatToday.textContent=getToday('squats');
 }
 
-function showHome(){
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  home.classList.add('active');
+function resetTabs(){
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+}
+
+function resetPages(){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+}
+
+function showHome(){
+  resetPages();
+  resetTabs();
+  home.classList.add('active');
   tabHome.classList.add('active');
+  headerTitle.textContent='FitCounter';
+  headerSubtitle.textContent='Твой прогресс каждый день 💪';
   updateHome();
 }
 
 function openExercise(type){
   current=type;
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  resetPages();
+  resetTabs();
+
   exercise.classList.add('active');
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   (type==='pushups'?tabPush:tabSquat).classList.add('active');
+
+  headerTitle.textContent=exerciseName(type);
+  headerSubtitle.textContent='Добавляй подходы и следи за прогрессом';
   exerciseTitle.textContent=exerciseName(type);
+
   setCount=3;
   renderSets();
   refreshExercise();
@@ -206,8 +448,7 @@ function renderSets(){
     sets.insertAdjacentHTML('beforeend',`
       <div class="setrow">
         <span>Подход ${i}</span>
-        <input type="number" inputmode="numeric" min="0"
-          class="setInput" placeholder="0" oninput="sumCurrent()">
+        <input type="number" inputmode="numeric" min="0" class="setInput" placeholder="0" oninput="sumCurrent()">
       </div>
     `);
   }
@@ -216,29 +457,28 @@ function renderSets(){
 
 function addSet(){
   setCount++;
-  const div=document.createElement('div');
-  div.className='setrow';
-  div.innerHTML=`
-    <span>Подход ${setCount}</span>
-    <input type="number" inputmode="numeric" min="0"
-      class="setInput" placeholder="0" oninput="sumCurrent()">
-  `;
-  sets.appendChild(div);
+  sets.insertAdjacentHTML('beforeend',`
+    <div class="setrow">
+      <span>Подход ${setCount}</span>
+      <input type="number" inputmode="numeric" min="0" class="setInput" placeholder="0" oninput="sumCurrent()">
+    </div>
+  `);
 }
 
-function values(){
+function currentValues(){
   return [...document.querySelectorAll('.setInput')]
     .map(x=>parseInt(x.value)||0)
     .filter(x=>x>0);
 }
 
 function sumCurrent(){
-  currentTotal.textContent=values().reduce((a,b)=>a+b,0);
+  currentTotal.textContent=currentValues().reduce((a,b)=>a+b,0);
 }
 
 function saveWorkout(){
-  const v=values();
-  const total=v.reduce((a,b)=>a+b,0);
+  const values=currentValues();
+  const total=values.reduce((a,b)=>a+b,0);
+
   if(!total){
     alert('Введи количество повторений');
     return;
@@ -249,7 +489,7 @@ function saveWorkout(){
     type:current,
     day:todayKey(),
     time:new Date().toLocaleString('ru-RU'),
-    sets:v,
+    sets:values,
     total
   });
 
@@ -257,11 +497,12 @@ function saveWorkout(){
   renderSets();
   refreshExercise();
   updateHome();
-  alert(`Сохранено: ${total}`);
+  checkNewAchievements();
 }
 
 function deleteWorkout(id){
-  if(!confirm('Удалить эту запись?'))return;
+  if(!confirm('Удалить эту запись?')) return;
+
   data=data.filter(x=>x.id!==id);
   saveData();
   refreshExercise();
@@ -273,13 +514,14 @@ function refreshExercise(){
   allCount.textContent=getTotal(current);
 
   const items=data.filter(x=>x.type===current);
+
   if(!items.length){
     history.innerHTML='<div class="empty">Тренировок пока нет</div>';
     return;
   }
 
   history.innerHTML=items.map(x=>`
-    <div class="history">
+    <div class="history-row">
       <div>
         <b>${x.total} повторений</b>
         <div class="muted">${x.time}</div>
@@ -290,7 +532,116 @@ function refreshExercise(){
   `).join('');
 }
 
+function achievementValue(a){
+  if(a.group==='pushups') return getTotal('pushups');
+  if(a.group==='squats') return getTotal('squats');
+  if(a.id==='firstWorkout'||a.id==='workout10') return data.length;
+  if(a.id==='total1000'||a.id==='total10000') return allReps();
+  return 0;
+}
+
+function unlockedAchievements(){
+  return achievementsList.filter(a=>achievementValue(a)>=a.target);
+}
+
+function checkNewAchievements(){
+  const unlocked=unlockedAchievements();
+  const fresh=unlocked.filter(a=>!knownUnlocks.includes(a.id));
+
+  if(!fresh.length) return;
+
+  fresh.forEach(a=>knownUnlocks.push(a.id));
+  localStorage.setItem(UNLOCK_KEY,JSON.stringify(knownUnlocks));
+
+  showAchievementPopup(fresh[0]);
+}
+
+function showAchievementPopup(a){
+  popupTitle.textContent=a.title;
+  popupText.textContent=a.description;
+  achievementPopup.classList.add('show');
+}
+
+function closeAchievementPopup(){
+  achievementPopup.classList.remove('show');
+}
+
+function achievementCard(a){
+  const value=achievementValue(a);
+  const unlocked=value>=a.target;
+  const percent=Math.min(100,Math.round(value/a.target*100));
+
+  let statusClass='locked';
+  let side='<div class="lock">🔒<br>Ещё не открыто</div>';
+
+  if(unlocked){
+    statusClass='unlocked';
+    side='<div class="done">✓ Получено</div>';
+  }else if(value>0){
+    statusClass='progress';
+    side=`
+      <div><b>${value} / ${a.target}</b></div>
+      <div class="bar"><span style="width:${percent}%"></span></div>
+    `;
+  }
+
+  return `
+    <div class="achievement ${statusClass}">
+      <div class="badge">${unlocked||value>0?a.icon:'🔒'}</div>
+      <div class="achievement-body">
+        <h3>${a.title}</h3>
+        <div class="muted">${a.description}</div>
+      </div>
+      <div class="achievement-side">${side}</div>
+    </div>
+  `;
+}
+
+function achievementSection(title,icon,group){
+  const list=achievementsList.filter(a=>a.group===group);
+  const unlocked=list.filter(a=>achievementValue(a)>=a.target).length;
+
+  return `
+    <div class="section-title">
+      <h2>${icon} ${title}</h2>
+      <div class="section-count">${unlocked} из ${list.length}</div>
+    </div>
+    ${list.map(achievementCard).join('')}
+  `;
+}
+
+function showAchievements(){
+  resetPages();
+  resetTabs();
+
+  achievements.classList.add('active');
+  tabAchievements.classList.add('active');
+
+  headerTitle.textContent='Достижения 🏆';
+  headerSubtitle.textContent='Продолжай тренироваться и открывай новые награды';
+
+  renderAchievements();
+}
+
+function renderAchievements(){
+  const total=achievementsList.length;
+  const unlocked=unlockedAchievements().length;
+  const percent=Math.round(unlocked/total*100);
+
+  achievementUnlocked.textContent=unlocked;
+  achievementTotal.textContent=total;
+  achievementBar.style.width=percent+'%';
+  achievementCircle.style.setProperty('--p',percent);
+
+  achievementsContent.innerHTML=
+    achievementSection('Отжимания','💪','pushups')+
+    achievementSection('Приседания','🏋️','squats')+
+    achievementSection('Общие достижения','⭐️','general');
+}
+
+saveData();
 updateHome();
 </script>
+
 </body>
 </html>
