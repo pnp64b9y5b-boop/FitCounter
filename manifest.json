@@ -1,0 +1,10 @@
+{
+  "name": "FitCounter",
+  "short_name": "FitCounter",
+  "description": "Твой прогресс каждый день",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#090c11",
+  "theme_color": "#090c11"
+}
