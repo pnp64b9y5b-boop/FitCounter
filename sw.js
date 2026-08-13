@@ -1,4 +1,4 @@
-const CACHE = 'fitcounter-offline-v1';
+const CACHE = 'fitcounter-offline-v2';
 
 const FILES = [
   './',
