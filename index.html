@@ -3,4969 +3,3444 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#090c11">
-
 <title>FitCounter</title>
 
 <style>
-
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 :root{
---bg:#090c11;
---card:#171b23;
---card2:#202630;
---line:#2c333f;
---muted:#9099a8;
---blue:#2483ff;
---gold:#ffbd2e;
---green:#45d274;
+  --bg:#090c11;
+  --card:#171b23;
+  --card2:#202630;
+  --line:#2c333f;
+  --muted:#9099a8;
+  --blue:#2483ff;
+  --gold:#ffbd2e;
 }
 
 body{
-margin:0;
-background:var(--bg);
-color:#fff;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-padding-bottom:110px;
+  margin:0;
+  background:var(--bg);
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  padding-bottom:95px;
 }
 
 header{
-padding:52px 18px 18px;
+  padding:52px 18px 18px;
 }
 
 h1{
-margin:0;
-font-size:35px;
+  margin:0;
+  font-size:35px;
 }
 
-.subtitle,
-.muted{
-color:var(--muted);
+.muted,.subtitle{
+  color:var(--muted);
 }
 
 .subtitle{
-margin-top:7px;
+  margin-top:7px;
 }
 
 .page{
-display:none;
-padding:0 15px 25px;
+  display:none;
+  padding:0 15px 25px;
 }
 
 .page.active{
-display:block;
+  display:block;
 }
 
 .card{
-background:var(--card);
-border:1px solid var(--line);
-border-radius:20px;
-padding:17px;
-margin-bottom:13px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:17px;
+  margin-bottom:13px;
 }
 
-.exercise{
-display:flex;
-align-items:center;
-gap:14px;
-cursor:pointer;
+.exercise,.cat{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
 }
 
 .icon{
-font-size:34px;
-width:48px;
-text-align:center;
+  font-size:34px;
+  width:48px;
+  text-align:center;
 }
 
 .flex{
-flex:1;
+  flex:1;
 }
 
-.big{
-font-size:28px;
-font-weight:800;
+.chev{
+  font-size:28px;
+  color:#6f7886;
 }
 
-.right{
-text-align:right;
+.catname{
+  font-size:20px;
+  font-weight:800;
 }
 
 .stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:8px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
 }
 
 .stat{
-background:var(--card2);
-border-radius:15px;
-padding:12px 4px;
-text-align:center;
+  background:var(--card2);
+  border-radius:15px;
+  padding:12px 4px;
+  text-align:center;
 }
 
 .stat b{
-display:block;
-font-size:19px;
-margin-top:5px;
+  display:block;
+  font-size:19px;
+  margin-top:5px;
 }
 
 button{
-border:0;
-border-radius:14px;
-padding:13px;
-font-size:15px;
-font-weight:700;
+  border:0;
+  border-radius:14px;
+  padding:13px;
+  font-size:15px;
+  font-weight:700;
 }
 
 .primary{
-width:100%;
-margin-top:10px;
-background:var(--blue);
-color:#fff;
+  width:100%;
+  margin-top:10px;
+  background:var(--blue);
+  color:#fff;
 }
 
 .secondary{
-width:100%;
-margin-top:9px;
-background:#272e38;
-color:#fff;
+  width:100%;
+  margin-top:9px;
+  background:#272e38;
+  color:#fff;
 }
 
 .danger{
-background:#47262b;
-color:#ff8990;
-padding:8px 10px;
-font-size:13px;
-}
-
-.empty{
-text-align:center;
-color:var(--muted);
-padding:18px;
+  background:#47262b;
+  color:#ff8990;
+  padding:8px 10px;
+  font-size:13px;
 }
 
 .history{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-padding:11px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:11px 0;
 }
 
 .history+.history{
-border-top:1px solid var(--line);
+  border-top:1px solid var(--line);
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:18px;
 }
 
 input{
-width:100%;
-border:0;
-outline:0;
-border-radius:12px;
-background:#272d37;
-color:#fff;
-padding:10px 6px;
-text-align:center;
-font-size:18px;
+  width:100%;
+  border:0;
+  outline:0;
+  border-radius:12px;
+  background:#272d37;
+  color:#fff;
+  padding:10px 6px;
+  text-align:center;
+  font-size:18px;
 }
 
-/* =========================
-   РАЗМИНКА
-========================= */
+/* РАЗМИНКА */
 
 .warm{
-border-color:#5f4311;
-background:#191812;
+  border-color:#5f4311;
+  background:#191812;
 }
 
 .warmtop{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 .warmtime{
-font-size:34px;
-font-weight:800;
+  font-size:34px;
+  font-weight:800;
 }
 
 .bar{
-height:10px;
-background:#2c333d;
-border-radius:20px;
-overflow:hidden;
-margin:12px 0;
+  height:10px;
+  background:#2c333d;
+  border-radius:20px;
+  overflow:hidden;
+  margin:12px 0;
 }
 
 .bar span{
-display:block;
-height:100%;
-background:var(--blue);
-border-radius:20px;
+  display:block;
+  height:100%;
+  background:var(--blue);
 }
 
 .warm .bar span{
-background:var(--gold);
+  background:var(--gold);
 }
 
-/* =========================
-   ПОДХОДЫ
-========================= */
+/* КАЛЕНДАРЬ */
 
-.set-head{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:12px;
+.calhead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.set-row{
-display:grid;
-grid-template-columns:1fr 90px 44px;
-gap:8px;
-align-items:center;
-margin:10px 0;
+.calhead button{
+  width:40px;
+  height:38px;
+  padding:0;
+  background:#222935;
+  color:#fff;
+  font-size:20px;
 }
 
-.set-row.weighted{
-grid-template-columns:1fr 72px 72px 42px;
+.month{
+  font-size:18px;
+  font-weight:800;
+  text-transform:capitalize;
 }
 
-.field-label{
-text-align:center;
-color:var(--muted);
-font-size:10px;
-margin-bottom:3px;
+.strip{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:15px 6px 28px;
+  scrollbar-width:none;
 }
 
-.set-done{
-padding:10px 0;
-background:#24352c;
-color:#65dd8c;
-font-size:18px;
+.strip::-webkit-scrollbar{
+  display:none;
 }
 
-.set-done.done{
-background:#2e7047;
+.day{
+  flex:0 0 56px;
+  min-height:74px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+
+  position:relative;
+  isolation:isolate;
+
+  cursor:pointer;
 }
 
-/* =========================
-   ТАЙМЕР ОТДЫХА
-========================= */
-
-.rest-card{
-border-color:#30445f;
+.day .w{
+  font-size:11px;
+  color:var(--muted);
 }
 
-.rest-display{
-text-align:center;
-font-size:48px;
-font-weight:300;
-margin:17px 0 10px;
+.day .n{
+  font-size:21px;
+  font-weight:800;
 }
 
-.rest-display.running{
-color:#69adff;
+.day.dim{
+  opacity:.42;
 }
 
-.rest-controls{
-display:grid;
-grid-template-columns:1fr 1.3fr 1fr;
-gap:8px;
+/* мягкая синяя дымка */
+
+.day.sel::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+
+  width:100px;
+  height:125px;
+
+  left:50%;
+  top:43%;
+
+  transform:translate(-50%,-50%);
+
+  background:
+    radial-gradient(
+      ellipse at 50% 38%,
+      rgba(67,151,255,.55) 0%,
+      rgba(52,132,245,.36) 22%,
+      rgba(42,110,220,.22) 42%,
+      rgba(30,78,170,.11) 61%,
+      rgba(9,12,17,0) 82%
+    );
+
+  filter:blur(13px);
 }
 
-.rest-controls button{
-background:#272e38;
-color:#fff;
+.day.sel .n{
+  color:#f2f7ff;
+  text-shadow:
+    0 0 10px rgba(80,160,255,.25),
+    0 0 20px rgba(60,130,255,.18);
 }
 
-.rest-controls .main{
-background:var(--blue);
+.day.sel .w{
+  color:#a9ceff;
 }
 
-.auto-row{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:15px;
-color:var(--muted);
+.summary{
+  font-size:13px;
+  color:var(--muted);
+  min-height:18px;
+}
+
+/* ПОДХОДЫ */
+
+.sethead{
+  display:flex;
+  justify-content:space-between;
+}
+
+.setrow{
+  display:grid;
+  grid-template-columns:1fr 90px 44px;
+  gap:8px;
+  align-items:center;
+  margin:10px 0;
+}
+
+.setrow.weight{
+  grid-template-columns:1fr 72px 72px 42px;
+}
+
+.field{
+  font-size:10px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.done{
+  padding:10px 0;
+  background:#24352c;
+  color:#65dd8c;
+}
+
+.done.ok{
+  background:#2e7047;
+}
+
+/* ОТДЫХ */
+
+.rest{
+  border-color:#30445f;
+}
+
+.resttime{
+  text-align:center;
+  font-size:48px;
+  font-weight:300;
+  margin:17px 0 10px;
+}
+
+.restctl{
+  display:grid;
+  grid-template-columns:1fr 1.3fr 1fr;
+  gap:8px;
+}
+
+.restctl button{
+  background:#272e38;
+  color:#fff;
+}
+
+.restctl .main{
+  background:var(--blue);
+}
+
+.autoline{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:15px;
+  color:var(--muted);
 }
 
 .switch{
-width:48px;
-height:29px;
-padding:3px;
-border-radius:20px;
-background:#343b46;
+  width:48px;
+  height:29px;
+  padding:3px;
+  border-radius:20px;
+  background:#343b46;
 }
 
 .switch span{
-display:block;
-width:23px;
-height:23px;
-border-radius:50%;
-background:#fff;
-transition:.2s;
+  display:block;
+  width:23px;
+  height:23px;
+  border-radius:50%;
+  background:white;
+  transition:.2s;
 }
 
 .switch.on{
-background:var(--blue);
+  background:var(--blue);
 }
 
 .switch.on span{
-transform:translateX(19px);
+  transform:translateX(19px);
 }
 
-/* =========================
-   ПЛАНКА
-========================= */
+/* ПЛАНКА */
 
 .timer{
-text-align:center;
-padding:20px 0;
+  text-align:center;
+  padding:20px 0;
 }
 
 .circle{
-width:235px;
-height:235px;
-max-width:75vw;
-max-height:75vw;
-border-radius:50%;
-border:8px solid #232a34;
-margin:0 auto 20px;
-display:flex;
-justify-content:center;
-align-items:center;
+  width:235px;
+  height:235px;
+  max-width:75vw;
+  max-height:75vw;
+
+  border-radius:50%;
+  border:8px solid #232a34;
+
+  margin:0 auto 20px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.circle.running{
-border-color:var(--blue);
+.circle.run{
+  border-color:var(--blue);
 }
 
 .time{
-font-size:54px;
-font-weight:300;
+  font-size:54px;
+  font-weight:300;
 }
 
-/* =========================
-   КАЛЕНДАРЬ
-========================= */
-
-.calendar-head{
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:12px;
-}
-
-.calendar-head button{
-width:46px;
-height:42px;
-padding:0;
-background:#222935;
-color:#fff;
-font-size:22px;
-}
-
-.month-title{
-font-size:20px;
-font-weight:800;
-text-transform:capitalize;
-}
-
-.month-strip{
-display:flex;
-gap:9px;
-overflow-x:auto;
-padding:16px 8px 28px;
-margin:0 -4px;
-scrollbar-width:none;
-}
-
-.month-strip::-webkit-scrollbar{
-display:none;
-}
-
-.day-chip{
-flex:0 0 58px;
-min-height:78px;
-border-radius:17px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-gap:4px;
-position:relative;
-isolation:isolate;
-cursor:pointer;
-color:#fff;
-}
-
-.day-chip .weekday{
-font-size:11px;
-color:var(--muted);
-}
-
-.day-chip .num{
-font-size:22px;
-font-weight:800;
-}
-
-.day-chip.no-activity{
-opacity:.45;
-}
-
-/* мягкая дымка без рамки */
-
-.day-chip.selected::before{
-content:"";
-position:absolute;
-z-index:-1;
-inset:-34px -30px -48px;
-background:
-radial-gradient(
-ellipse at 50% 34%,
-rgba(52,145,255,.52) 0%,
-rgba(42,125,245,.30) 26%,
-rgba(35,102,210,.17) 45%,
-rgba(29,78,160,.08) 62%,
-rgba(20,50,95,.03) 73%,
-rgba(9,12,17,0) 84%
-);
-filter:blur(13px);
-pointer-events:none;
-}
-
-.day-chip.selected .num{
-color:#edf6ff;
-text-shadow:0 0 14px rgba(80,160,255,.38);
-}
-
-.day-chip.selected .weekday{
-color:#9ec8ff;
-}
-
-.day-chip.today .num::after{
-content:"";
-display:block;
-width:4px;
-height:4px;
-border-radius:50%;
-background:var(--gold);
-margin:4px auto 0;
-}
-
-.calendar-date{
-font-size:21px;
-font-weight:800;
-}
-
-.calendar-day-sub{
-margin-top:4px;
-margin-bottom:8px;
-}
-
-.calendar-row{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:12px;
-padding:13px 0;
-}
-
-.calendar-row+.calendar-row{
-border-top:1px solid var(--line);
-}
-
-.calendar-row-left{
-display:flex;
-align-items:center;
-gap:10px;
-min-width:0;
-}
-
-.calendar-row-icon{
-width:34px;
-text-align:center;
-font-size:24px;
-}
-
-.calendar-row-name{
-font-weight:700;
-}
-
-.calendar-row-detail{
-color:var(--muted);
-font-size:12px;
-margin-top:3px;
-}
-
-.calendar-value{
-font-weight:800;
-text-align:right;
-white-space:nowrap;
-}
-
-/* =========================
-   ДОСТИЖЕНИЯ
-========================= */
-
-.ach-tabs{
-display:flex;
-gap:7px;
-overflow-x:auto;
-padding-bottom:10px;
-}
-
-.ach-tabs button{
-flex:none;
-background:#242a34;
-color:#c7ccd4;
-padding:9px 13px;
-font-size:13px;
-}
-
-.ach-tabs button.active{
-background:var(--blue);
-color:#fff;
-}
-
-.hero{
-text-align:center;
-}
-
-.hero-icon{
-font-size:54px;
-}
-
-.hero-name{
-font-size:29px;
-font-weight:800;
-margin:5px;
-}
-
-.rank{
-display:flex;
-align-items:center;
-gap:12px;
-padding:14px;
-margin-bottom:9px;
-border:1px solid var(--line);
-border-radius:16px;
-background:var(--card);
-}
-
-.rank.done{
-border-color:#2f7549;
-}
-
-.rank.current{
-border-color:var(--blue);
-}
-
-.rank.locked{
-opacity:.55;
-}
-
-.rank.secret-rank{
-border-color:#593e82;
-background:linear-gradient(135deg,#181923,#21172e);
-}
-
-.rank-icon{
-width:36px;
-text-align:center;
-font-size:25px;
-}
-
-.rank-name{
-flex:1;
-font-weight:700;
-}
-
-.secret{
-border:1px dashed #555e6c;
-border-radius:18px;
-padding:20px;
-text-align:center;
-color:#b1b7c1;
-}
-
-/* =========================
-   POPUP
-========================= */
-
-.overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.78);
-display:none;
-align-items:center;
-justify-content:center;
-padding:24px;
-z-index:999;
-}
-
-.overlay.show{
-display:flex;
-}
-
-.popup{
-width:100%;
-max-width:355px;
-background:#181e27;
-border:1px solid var(--line);
-border-radius:25px;
-padding:24px;
-text-align:center;
-}
-
-.popup-icon{
-font-size:62px;
-}
-
-/* =========================
-   НИЖНЕЕ МЕНЮ
-========================= */
+/* НИЖНЕЕ МЕНЮ */
 
 .tabs{
-position:fixed;
-left:0;
-right:0;
-bottom:0;
-display:flex;
-overflow-x:auto;
-background:#171b23;
-border-top:1px solid var(--line);
-padding:8px 0 calc(18px + env(safe-area-inset-bottom));
-z-index:100;
-scrollbar-width:none;
-}
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
 
-.tabs::-webkit-scrollbar{
-display:none;
+  display:flex;
+
+  background:#171b23;
+  border-top:1px solid var(--line);
+
+  padding:8px 0 calc(18px + env(safe-area-inset-bottom));
+
+  z-index:100;
 }
 
 .tab{
-flex:0 0 74px;
-text-align:center;
-color:#848c9a;
-font-size:8px;
-padding:4px 1px;
+  flex:1;
+  text-align:center;
+  color:#848c9a;
+  font-size:10px;
 }
 
 .tab.active{
-color:var(--blue);
+  color:var(--blue);
 }
 
 .tab span{
-display:block;
-font-size:20px;
-margin-bottom:3px;
+  display:block;
+  font-size:21px;
 }
 
+/* POPUP */
+
+.overlay{
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,.78);
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:24px;
+
+  z-index:999;
+}
+
+.overlay.show{
+  display:flex;
+}
+
+.popup{
+  width:100%;
+  max-width:355px;
+
+  background:#181e27;
+  border:1px solid var(--line);
+
+  border-radius:25px;
+
+  padding:24px;
+
+  text-align:center;
+}
+
+.popicon{
+  font-size:62px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-
-<h1 id="title">
-FitCounter
-</h1>
-
-<div id="subtitle" class="subtitle">
-Твой прогресс каждый день 💪
-</div>
-
+  <h1 id="title">FitCounter</h1>
+  <div id="sub" class="subtitle">
+    Твой прогресс каждый день 💪
+  </div>
 </header>
 
-<!-- =========================
-     ГЛАВНАЯ
-========================= -->
 
-<section id="homePage" class="page active">
+<!-- ГЛАВНАЯ -->
 
-<div class="card warm">
+<section id="home" class="page active">
 
-<div class="warmtop">
+  <div class="card warm">
 
-<div>
-<b>🔥 Разминка</b>
+    <div class="warmtop">
 
-<div class="muted">
-5 минут перед тренировкой
-</div>
-</div>
+      <div>
+        <b>🔥 Разминка</b>
+        <div class="muted">
+          5 минут перед тренировкой
+        </div>
+      </div>
 
-<div id="warmDisplay" class="warmtime">
-05:00
-</div>
+      <div id="warmDisplay" class="warmtime">
+        05:00
+      </div>
 
-</div>
+    </div>
 
-<div class="bar">
-<span id="warmBar" style="width:100%"></span>
-</div>
+    <div class="bar">
+      <span id="warmBar" style="width:100%"></span>
+    </div>
 
-<button id="warmBtn" class="primary">
-▶ Начать разминку
-</button>
+    <button id="warmBtn" class="primary">
+      ▶ Начать разминку
+    </button>
 
-<button id="warmReset" class="secondary" style="display:none">
-↻ Сбросить
-</button>
+    <button
+      id="warmReset"
+      class="secondary"
+      style="display:none">
+      ↻ Сбросить
+    </button>
 
-</div>
+  </div>
 
-<div id="homeExercises"></div>
 
-</section>
+  <!-- КАЛЕНДАРЬ -->
 
-<!-- =========================
-     УПРАЖНЕНИЕ
-========================= -->
+  <div class="card">
 
-<section id="exercisePage" class="page">
+    <div class="calhead">
 
-<div class="card">
+      <button id="prev">‹</button>
 
-<h2 id="exerciseTitle"></h2>
+      <div id="month" class="month">
+        август 2026
+      </div>
 
-<div class="stats">
+      <button id="next">›</button>
 
-<div class="stat">
-<span class="muted">Сегодня</span>
-<b id="exToday">0</b>
-</div>
+    </div>
 
-<div class="stat">
-<span id="totalLabel" class="muted">Всего</span>
-<b id="exTotal">0</b>
-</div>
+    <div id="strip" class="strip">
 
-<div class="stat">
-<span id="bestLabel" class="muted">Лучший день</span>
-<b id="exBest">0</b>
-</div>
+      <div class="day">
+        <div class="n">12</div>
+        <div class="w">Ср</div>
+      </div>
 
-</div>
+      <div class="day">
+        <div class="n">13</div>
+        <div class="w">Чт</div>
+      </div>
 
-</div>
+      <div class="day">
+        <div class="n">14</div>
+        <div class="w">Пт</div>
+      </div>
 
-<div class="card rest-card">
+      <div class="day">
+        <div class="n">15</div>
+        <div class="w">Сб</div>
+      </div>
 
-<b>
-⏱ Отдых между подходами
-</b>
+      <div class="day sel">
+        <div class="n">16</div>
+        <div class="w">Вс</div>
+      </div>
 
-<div id="restDisplay" class="rest-display">
-01:30
-</div>
+      <div class="day">
+        <div class="n">17</div>
+        <div class="w">Пн</div>
+      </div>
 
-<div class="rest-controls">
+      <div class="day">
+        <div class="n">18</div>
+        <div class="w">Вт</div>
+      </div>
 
-<button id="minusRest">
-−15 сек
-</button>
+      <div class="day">
+        <div class="n">19</div>
+        <div class="w">Ср</div>
+      </div>
 
-<button id="restBtn" class="main">
-▶ Старт
-</button>
+    </div>
 
-<button id="plusRest">
-+15 сек
-</button>
+    <div id="summary" class="summary">
+      Сегодняшняя тренировка появится здесь после сохранения результата
+    </div>
 
-</div>
+  </div>
 
-<button id="resetRest" class="secondary">
-↻ Сбросить
-</button>
 
-<div class="auto-row">
+  <!-- СОБСТВЕННЫЙ ВЕС -->
 
-<span>
-Автостарт после подхода
-</span>
+  <div class="card cat" id="bodyCard">
 
-<div id="autoSwitch" class="switch">
-<span></span>
-</div>
+    <div class="icon">💪</div>
 
-</div>
+    <div class="flex">
 
-</div>
+      <div class="catname">
+        Собственный вес
+      </div>
 
-<div class="card">
+      <div class="muted">
+        Отжимания • Подтягивания • Брусья • Приседания • Планка
+      </div>
 
-<div class="set-head">
+    </div>
 
-<b>
-Подходы
-</b>
+    <div class="chev">›</div>
 
-<b>
-<span id="liveLabel">Сейчас</span>:
-<span id="liveTotal">0</span>
-</b>
+  </div>
 
-</div>
 
-<div id="sets"></div>
+  <!-- ЖЕЛЕЗО -->
 
-<button id="addSet" class="secondary">
-＋ Добавить подход
-</button>
+  <div class="card cat" id="ironCard">
 
-<button id="saveWorkout" class="primary">
-Сохранить тренировку
-</button>
+    <div class="icon">🏋️</div>
 
-</div>
+    <div class="flex">
 
-<div class="card">
+      <div class="catname">
+        Железо
+      </div>
 
-<h3>
-История
-</h3>
+      <div class="muted">
+        Гантели • Штанга
+      </div>
 
-<div id="exerciseHistory"></div>
+    </div>
 
-</div>
+    <div class="chev">›</div>
+
+  </div>
 
 </section>
 
-<!-- =========================
-     ПЛАНКА
-========================= -->
 
-<section id="plankPage" class="page">
+<!-- КАТЕГОРИЯ -->
 
-<div class="stats">
+<section id="category" class="page">
+  <div id="catList"></div>
+</section>
 
-<div class="stat">
-<span class="muted">Сегодня</span>
-<b id="plankToday">00:00</b>
-</div>
 
-<div class="stat">
-<span class="muted">Рекорд</span>
-<b id="plankRecord">00:00</b>
-</div>
+<!-- УПРАЖНЕНИЕ -->
 
-<div class="stat">
-<span class="muted">Всего</span>
-<b id="plankTotal">00:00</b>
-</div>
+<section id="exercise" class="page">
 
-</div>
+  <div class="card">
 
-<div class="timer">
+    <h2 id="exTitle"></h2>
 
-<div id="plankCircle" class="circle">
+    <div class="stats">
 
-<div>
+      <div class="stat">
+        <span class="muted">Сегодня</span>
+        <b id="exToday">0</b>
+      </div>
 
-<div id="plankTimer" class="time">
-00:00
-</div>
+      <div class="stat">
+        <span id="totalLabel" class="muted">Всего</span>
+        <b id="exTotal">0</b>
+      </div>
 
-<div class="muted">
-МИН : СЕК
-</div>
+      <div class="stat">
+        <span id="bestLabel" class="muted">
+          Лучший день
+        </span>
+        <b id="exBest">0</b>
+      </div>
 
-</div>
+    </div>
 
-</div>
+  </div>
 
-<button id="plankBtn" class="primary">
-▶ Начать
-</button>
 
-<button id="savePlankBtn" class="secondary" style="display:none">
-Завершить и сохранить
-</button>
+  <!-- ТАЙМЕР ОТДЫХА -->
 
-<button id="resetPlankBtn" class="secondary">
-Сбросить
-</button>
+  <div class="card rest">
 
-</div>
+    <b>⏱ Отдых между подходами</b>
 
-<div class="card">
+    <div id="restTime" class="resttime">
+      01:30
+    </div>
 
-<h3>
-История
-</h3>
+    <div class="restctl">
 
-<div id="plankHistory"></div>
+      <button id="minus">
+        −15 сек
+      </button>
 
-</div>
+      <button id="restBtn" class="main">
+        ▶ Старт
+      </button>
+
+      <button id="plus">
+        +15 сек
+      </button>
+
+    </div>
+
+    <button id="restReset" class="secondary">
+      ↻ Сбросить
+    </button>
+
+    <div class="autoline">
+
+      <span>
+        Автостарт после подхода
+      </span>
+
+      <div id="auto" class="switch">
+        <span></span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ПОДХОДЫ -->
+
+  <div class="card">
+
+    <div class="sethead">
+
+      <b>Подходы</b>
+
+      <b>
+        <span id="liveLabel">Сейчас</span>:
+        <span id="live">0</span>
+      </b>
+
+    </div>
+
+    <div id="sets"></div>
+
+    <button id="addSet" class="secondary">
+      ＋ Добавить подход
+    </button>
+
+    <button id="saveWorkout" class="primary">
+      Сохранить тренировку
+    </button>
+
+  </div>
+
+
+  <div class="card">
+
+    <h3>История</h3>
+
+    <div id="history"></div>
+
+  </div>
 
 </section>
 
-<!-- =========================
-     КАЛЕНДАРЬ
-========================= -->
 
-<section id="calendarPage" class="page">
+<!-- ПЛАНКА -->
 
-<div class="card">
+<section id="plank" class="page">
 
-<div class="calendar-head">
+  <div class="stats">
 
-<button id="calendarPrev">
-‹
-</button>
+    <div class="stat">
+      <span class="muted">Сегодня</span>
+      <b id="plToday">00:00</b>
+    </div>
 
-<div id="calendarMonthTitle" class="month-title">
-</div>
+    <div class="stat">
+      <span class="muted">Рекорд</span>
+      <b id="plRec">00:00</b>
+    </div>
 
-<button id="calendarNext">
-›
-</button>
+    <div class="stat">
+      <span class="muted">Всего</span>
+      <b id="plTotal">00:00</b>
+    </div>
 
-</div>
+  </div>
 
-<div id="monthStrip" class="month-strip"></div>
+  <div class="timer">
 
-</div>
+    <div id="circle" class="circle">
 
-<div class="card">
+      <div>
 
-<div id="calendarDateTitle" class="calendar-date"></div>
+        <div id="timer" class="time">
+          00:00
+        </div>
 
-<div
-id="calendarDateSubtitle"
-class="muted calendar-day-sub">
-</div>
+        <div class="muted">
+          МИН : СЕК
+        </div>
 
-<div id="calendarDayDetails"></div>
+      </div>
 
-</div>
+    </div>
 
-</section>
+    <button id="timerBtn" class="primary">
+      ▶ Начать
+    </button>
 
-<!-- =========================
-     ДОСТИЖЕНИЯ
-========================= -->
+    <button
+      id="savePlank"
+      class="secondary"
+      style="display:none">
+      Завершить и сохранить
+    </button>
 
-<section id="achievementsPage" class="page">
+    <button id="resetPlank" class="secondary">
+      Сбросить
+    </button>
 
-<div id="achievementTabs" class="ach-tabs"></div>
+  </div>
 
-<div class="card hero">
+  <div class="card">
 
-<div class="muted">
-Текущий ранг
-</div>
+    <h3>История</h3>
 
-<div id="heroIcon" class="hero-icon">
-🌱
-</div>
+    <div id="plHistory"></div>
 
-<div id="heroName" class="hero-name">
-Начало пути
-</div>
-
-<div id="heroText">
-0
-</div>
-
-<div class="bar">
-<span id="heroBar" style="width:0%"></span>
-</div>
-
-<div id="heroNext" class="muted"></div>
-
-</div>
-
-<div id="rankList"></div>
+  </div>
 
 </section>
 
-<!-- =========================
-     НИЖНЕЕ МЕНЮ
-========================= -->
 
-<nav id="bottomTabs" class="tabs"></nav>
+<!-- ДОСТИЖЕНИЯ -->
 
-<!-- =========================
-     POPUP
-========================= -->
+<section id="ach" class="page">
 
-<div id="warmPopup" class="overlay">
+  <div class="card">
 
-<div class="popup">
+    <h2>🏆 Достижения</h2>
 
-<div class="popup-icon">
-🔥
-</div>
+    <p class="muted">
+      Здесь сохраняется твой общий прогресс по упражнениям.
+    </p>
 
-<h2>
-Разминка завершена!
-</h2>
+    <div id="achievementsList"></div>
 
-<p class="muted">
-Можно начинать тренировку 💪
-</p>
+  </div>
 
-<button id="warmPopupClose" class="primary">
-Начать тренировку
-</button>
+</section>
 
-</div>
 
-</div>
+<!-- НИЖНЕЕ МЕНЮ -->
 
-<div id="restPopup" class="overlay">
+<nav class="tabs">
 
-<div class="popup">
+  <div class="tab active" data-tab="home">
+    <span>🏠</span>
+    Главная
+  </div>
 
-<div class="popup-icon">
-⏱️
-</div>
+  <div class="tab" data-tab="body">
+    <span>💪</span>
+    Свой вес
+  </div>
 
-<h2>
-Отдых закончен!
-</h2>
+  <div class="tab" data-tab="iron">
+    <span>🏋️</span>
+    Железо
+  </div>
 
-<p class="muted">
-Следующий подход 💪
-</p>
+  <div class="tab" data-tab="ach">
+    <span>🏆</span>
+    Достижения
+  </div>
 
-<button id="restPopupClose" class="primary">
-Готов
-</button>
+</nav>
 
-</div>
 
-</div>
+<!-- POPUP РАЗМИНКИ -->
 
-<div id="rankPopup" class="overlay">
+<div id="warmPop" class="overlay">
 
-<div class="popup">
+  <div class="popup">
 
-<div id="rankPopupIcon" class="popup-icon">
-🏆
-</div>
+    <div class="popicon">🔥</div>
 
-<h2>
-Новый ранг!
-</h2>
+    <h2>
+      Разминка завершена!
+    </h2>
 
-<h2 id="rankPopupName"></h2>
+    <button id="warmClose" class="primary">
+      Начать тренировку
+    </button>
 
-<p id="rankPopupText" class="muted"></p>
-
-<button id="rankPopupClose" class="primary">
-Продолжить
-</button>
+  </div>
 
 </div>
 
-</div>
 
-<div id="secretPopup" class="overlay">
+<!-- POPUP ОТДЫХА -->
 
-<div class="popup">
+<div id="restPop" class="overlay">
 
-<div class="popup-icon">
-🌌
-</div>
+  <div class="popup">
 
-<h2>
-Ты думал, что это конец?
-</h2>
+    <div class="popicon">⏱️</div>
 
-<h2 id="secretTitle">
-Секретный путь открыт
-</h2>
+    <h2>
+      Отдых закончен!
+    </h2>
 
-<p class="muted">
-Открыты скрытые достижения.
-</p>
+    <button id="restClose" class="primary">
+      Готов
+    </button>
 
-<button id="secretPopupClose" class="primary">
-Открыть
-</button>
+  </div>
 
 </div>
 
-</div>
 
 <script>
 
-const $=
-id=>
-document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-/* =========================
-   УПРАЖНЕНИЯ
-========================= */
 
-const EXERCISES={
+const EX = {
 
-pushups:{
-name:'Отжимания',
-icon:'💪',
-kind:'reps',
-rest:90
-},
+  pushups:{
+    n:'Отжимания',
+    i:'💪',
+    k:'r',
+    rest:90,
+    g:'body'
+  },
 
-squats:{
-name:'Приседания',
-icon:'🏋️',
-kind:'reps',
-rest:90
-},
+  squats:{
+    n:'Приседания',
+    i:'🏋️',
+    k:'r',
+    rest:90,
+    g:'body'
+  },
 
-pullups:{
-name:'Подтягивания',
-icon:'🧗',
-kind:'reps',
-rest:120
-},
+  pullups:{
+    n:'Подтягивания',
+    i:'🧗',
+    k:'r',
+    rest:120,
+    g:'body'
+  },
 
-dips:{
-name:'Брусья',
-icon:'🤸',
-kind:'reps',
-rest:120
-},
+  dips:{
+    n:'Брусья',
+    i:'🤸',
+    k:'r',
+    rest:120,
+    g:'body'
+  },
 
-dumbbells:{
-name:'Гантели',
-icon:'🏋️',
-kind:'weight',
-rest:120,
-multiplier:2
-},
+  dumbbells:{
+    n:'Гантели',
+    i:'🏋️',
+    k:'w',
+    rest:120,
+    m:2,
+    g:'iron'
+  },
 
-barbell:{
-name:'Штанга',
-icon:'🏋️‍♂️',
-kind:'weight',
-rest:180,
-multiplier:1
-},
+  barbell:{
+    n:'Штанга',
+    i:'🏋️‍♂️',
+    k:'w',
+    rest:180,
+    m:1,
+    g:'iron'
+  },
 
-plank:{
-name:'Планка',
-icon:'⏱️',
-kind:'time'
-}
+  plank:{
+    n:'Планка',
+    i:'⏱️',
+    k:'t',
+    g:'body'
+  }
 
 };
 
-const ORDER=[
-'pushups',
-'squats',
-'pullups',
-'dips',
-'dumbbells',
-'barbell',
-'plank'
-];
 
-/* =========================
-   ХРАНЕНИЕ
-========================= */
+const GROUPS = {
 
-const DATA_KEY=
-'fitcounter_v11';
+  body:[
+    'pushups',
+    'pullups',
+    'dips',
+    'squats',
+    'plank'
+  ],
 
-const PLANK_KEY=
-'fitcounter_plank_v8';
+  iron:[
+    'dumbbells',
+    'barbell'
+  ]
 
-const REST_KEY=
-'fitcounter_rest_v2';
+};
 
-const SECRET_KEY=
-'fitcounter_secrets_v4';
 
-const RANK_KEY=
-'fitcounter_ranks_v4';
+const DATA_KEY = 'fitcounter_v11';
+const PLANK_KEY = 'fitcounter_plank_v8';
+const REST_KEY = 'fitcounter_rest_v2';
 
-let data=JSON.parse(
 
-localStorage.getItem(DATA_KEY) ||
+/*
+  Читаем и новые, и старые сохранения,
+  чтобы прежний прогресс не пропал.
+*/
 
-localStorage.getItem('fitcounter_v10') ||
+let data = JSON.parse(
 
-localStorage.getItem('fitcounter_v9') ||
+  localStorage.getItem(DATA_KEY) ||
 
-localStorage.getItem('fitcounter_v8') ||
+  localStorage.getItem('fitcounter_v10') ||
+  localStorage.getItem('fitcounter_v9') ||
+  localStorage.getItem('fitcounter_v8') ||
+  localStorage.getItem('fitcounter_v7') ||
+  localStorage.getItem('fitcounter_v6') ||
+  localStorage.getItem('fitcounter_v5') ||
 
-localStorage.getItem('fitcounter_v7') ||
-
-localStorage.getItem('fitcounter_v6') ||
-
-localStorage.getItem('fitcounter_v5') ||
-
-localStorage.getItem('fitcounter_v4') ||
-
-localStorage.getItem('fitcounter_v3') ||
-
-localStorage.getItem('fitcounter_v2') ||
-
-localStorage.getItem('fitcounter_v1') ||
-
-'[]'
+  '[]'
 
 );
 
-let plankData=JSON.parse(
 
-localStorage.getItem(PLANK_KEY) ||
+let pData = JSON.parse(
 
-localStorage.getItem('fitcounter_plank_v7') ||
+  localStorage.getItem(PLANK_KEY) ||
 
-localStorage.getItem('fitcounter_plank_v6') ||
+  localStorage.getItem('fitcounter_plank_v7') ||
+  localStorage.getItem('fitcounter_plank_v6') ||
+  localStorage.getItem('fitcounter_plank_v5') ||
 
-localStorage.getItem('fitcounter_plank_v5') ||
-
-localStorage.getItem('fitcounter_plank_v4') ||
-
-localStorage.getItem('fitcounter_plank_v3') ||
-
-localStorage.getItem('fitcounter_plank_v2') ||
-
-localStorage.getItem('fitcounter_plank_v1') ||
-
-'[]'
+  '[]'
 
 );
 
-let restSettings=
-JSON.parse(
-localStorage.getItem(REST_KEY) ||
-'{}'
+
+let restSettings = JSON.parse(
+  localStorage.getItem(REST_KEY) || '{}'
 );
 
-let secrets=
-JSON.parse(
-
-localStorage.getItem(SECRET_KEY) ||
-
-localStorage.getItem(
-'fitcounter_secret_branches_v3'
-) ||
-
-localStorage.getItem(
-'fitcounter_secret_branches_v2'
-) ||
-
-'{}'
-
-);
-
-let unlockedRanks=
-JSON.parse(
-
-localStorage.getItem(RANK_KEY) ||
-
-localStorage.getItem(
-'fitcounter_unlocked_ranks_v3'
-) ||
-
-localStorage.getItem(
-'fitcounter_unlocked_ranks_v2'
-) ||
-
-localStorage.getItem(
-'fitcounter_unlocked_ranks_v1'
-) ||
-
-'[]'
-
-);
 
 function saveAll(){
 
-localStorage.setItem(
-DATA_KEY,
-JSON.stringify(data)
-);
+  localStorage.setItem(
+    DATA_KEY,
+    JSON.stringify(data)
+  );
 
-localStorage.setItem(
-PLANK_KEY,
-JSON.stringify(plankData)
-);
+  localStorage.setItem(
+    PLANK_KEY,
+    JSON.stringify(pData)
+  );
 
-localStorage.setItem(
-REST_KEY,
-JSON.stringify(restSettings)
-);
-
-localStorage.setItem(
-SECRET_KEY,
-JSON.stringify(secrets)
-);
-
-localStorage.setItem(
-RANK_KEY,
-JSON.stringify(unlockedRanks)
-);
+  localStorage.setItem(
+    REST_KEY,
+    JSON.stringify(restSettings)
+  );
 
 }
 
-saveAll();
 
-/* =========================
-   ОБЩИЕ ФУНКЦИИ
-========================= */
+function dateKey(d = new Date()){
 
-function dateKey(
-d=new Date()
-){
-
-return (
-
-d.getFullYear()+
-'-'+
-String(
-d.getMonth()+1
-).padStart(2,'0')+
-'-'+
-String(
-d.getDate()
-).padStart(2,'0')
-
-);
+  return (
+    d.getFullYear() +
+    '-' +
+    String(d.getMonth()+1).padStart(2,'0') +
+    '-' +
+    String(d.getDate()).padStart(2,'0')
+  );
 
 }
 
-function parseDateKey(
-key
-){
 
-const [
-year,
-month,
-day
-]=
-key
-.split('-')
-.map(Number);
+function fmt(seconds){
 
-return new Date(
-year,
-month-1,
-day
-);
+  seconds = Math.max(
+    0,
+    Math.floor(seconds)
+  );
 
-}
+  const h = Math.floor(seconds/3600);
 
-function fmt(
-seconds
-){
+  const m = Math.floor(
+    (seconds%3600)/60
+  );
 
-seconds=
-Math.max(
-0,
-Math.floor(seconds)
-);
+  const s = seconds%60;
 
-const h=
-Math.floor(
-seconds/3600
-);
+  if(h){
 
-const m=
-Math.floor(
-(seconds%3600)/60
-);
+    return (
+      h +
+      ':' +
+      String(m).padStart(2,'0') +
+      ':' +
+      String(s).padStart(2,'0')
+    );
 
-const s=
-seconds%60;
+  }
 
-if(h){
-
-return (
-h+
-':'+
-String(m).padStart(2,'0')+
-':'+
-String(s).padStart(2,'0')
-);
+  return (
+    String(m).padStart(2,'0') +
+    ':' +
+    String(s).padStart(2,'0')
+  );
 
 }
 
-return (
-String(m).padStart(2,'0')+
-':'+
-String(s).padStart(2,'0')
-);
+
+function kg(n){
+
+  return (
+    Math.round(n)
+      .toLocaleString('ru-RU') +
+    ' кг'
+  );
 
 }
 
-function kg(
-value
-){
 
-return (
-
-Math.round(value)
-.toLocaleString('ru-RU')+
-' кг'
-
-);
-
-}
-
-/* =========================
+/* --------------------
    СТАТИСТИКА
-========================= */
+-------------------- */
 
-function totalReps(
-type
-){
 
-return data
-.filter(
-x=>
-x.type===type
-)
-.reduce(
-(sum,x)=>
-sum+
-Number(x.total||0),
-0
-);
+function totalReps(type){
+
+  return data
+    .filter(x=>x.type===type)
+    .reduce(
+      (sum,x)=>sum+Number(x.total||0),
+      0
+    );
 
 }
 
-function todayReps(
-type
-){
 
-const today=
-dateKey();
+function todayReps(type){
 
-return data
-.filter(
-x=>
-x.type===type &&
-x.day===today
-)
-.reduce(
-(sum,x)=>
-sum+
-Number(x.total||0),
-0
-);
+  const today = dateKey();
+
+  return data
+    .filter(
+      x =>
+        x.type===type &&
+        x.day===today
+    )
+    .reduce(
+      (sum,x)=>sum+Number(x.total||0),
+      0
+    );
 
 }
 
-function bestDay(
-type
-){
 
-const map={};
+function bestDay(type){
 
-data
-.filter(
-x=>
-x.type===type
-)
-.forEach(
-x=>{
+  const days = {};
 
-map[x.day]=
-(map[x.day]||0)+
-Number(x.total||0);
+  data
+    .filter(x=>x.type===type)
+    .forEach(x=>{
 
-}
-);
+      days[x.day] =
+        (days[x.day]||0) +
+        Number(x.total||0);
 
-const values=
-Object.values(map);
+    });
 
-return values.length
-?
-Math.max(...values)
-:
-0;
+  const values =
+    Object.values(days);
+
+  return values.length
+    ? Math.max(...values)
+    : 0;
 
 }
 
-function totalVolume(
-type
-){
 
-return data
-.filter(
-x=>
-x.type===type
-)
-.reduce(
-(sum,x)=>
-sum+
-Number(x.volume||0),
-0
-);
+function totalVolume(type){
+
+  return data
+    .filter(x=>x.type===type)
+    .reduce(
+      (sum,x)=>sum+Number(x.volume||0),
+      0
+    );
 
 }
 
-function todayVolume(
-type
-){
 
-const today=
-dateKey();
+function todayVolume(type){
 
-return data
-.filter(
-x=>
-x.type===type &&
-x.day===today
-)
-.reduce(
-(sum,x)=>
-sum+
-Number(x.volume||0),
-0
-);
+  const today = dateKey();
+
+  return data
+    .filter(
+      x =>
+        x.type===type &&
+        x.day===today
+    )
+    .reduce(
+      (sum,x)=>sum+Number(x.volume||0),
+      0
+    );
 
 }
 
-function bestVolume(
-type
-){
 
-const values=
-data
-.filter(
-x=>
-x.type===type
-)
-.map(
-x=>
-Number(x.volume||0)
-);
+function bestVolume(type){
 
-return values.length
-?
-Math.max(...values)
-:
-0;
+  const values = data
+    .filter(x=>x.type===type)
+    .map(x=>Number(x.volume||0));
+
+  return values.length
+    ? Math.max(...values)
+    : 0;
 
 }
 
-function plankTodayValue(){
 
-const today=
-dateKey();
+function plankTotal(){
 
-return plankData
-.filter(
-x=>
-x.day===today
-)
-.reduce(
-(sum,x)=>
-sum+
-Number(x.seconds||0),
-0
-);
+  return pData.reduce(
+    (sum,x)=>sum+Number(x.seconds||0),
+    0
+  );
 
 }
 
-function plankTotalValue(){
 
-return plankData
-.reduce(
-(sum,x)=>
-sum+
-Number(x.seconds||0),
-0
-);
+function plankRecord(){
 
-}
-
-function plankRecordValue(){
-
-return plankData.length
-?
-Math.max(
-...plankData
-.map(
-x=>
-Number(x.seconds||0)
-)
-)
-:
-0;
+  return pData.length
+    ? Math.max(
+        ...pData.map(
+          x=>Number(x.seconds||0)
+        )
+      )
+    : 0;
 
 }
 
-/* =========================
+
+function plankToday(){
+
+  const today = dateKey();
+
+  return pData
+    .filter(x=>x.day===today)
+    .reduce(
+      (sum,x)=>sum+Number(x.seconds||0),
+      0
+    );
+
+}
+
+
+/* --------------------
    НАВИГАЦИЯ
-========================= */
+-------------------- */
+
 
 function hidePages(){
 
-document
-.querySelectorAll(
-'.page'
-)
-.forEach(
-x=>
-x.classList.remove(
-'active'
-)
-);
+  document
+    .querySelectorAll('.page')
+    .forEach(
+      page=>page.classList.remove('active')
+    );
 
 }
 
-function activateTab(
-type
-){
 
-document
-.querySelectorAll(
-'.tab'
-)
-.forEach(
-x=>
-x.classList.remove(
-'active'
-)
-);
+function activateTab(name){
 
-const tab=
-document.querySelector(
-`.tab[data-tab="${type}"]`
-);
+  document
+    .querySelectorAll('.tab')
+    .forEach(
+      tab=>tab.classList.remove('active')
+    );
 
-if(tab){
+  const current =
+    document.querySelector(
+      `[data-tab="${name}"]`
+    );
 
-tab.classList.add(
-'active'
-);
+  if(current){
+    current.classList.add('active');
+  }
 
 }
 
+
+function setHeader(title,subtitle){
+
+  $('title').textContent = title;
+  $('sub').textContent = subtitle;
+
 }
+
 
 function showHome(){
 
-stopRest();
+  stopRest();
 
-hidePages();
+  hidePages();
 
-$('homePage')
-.classList.add(
-'active'
-);
+  $('home')
+    .classList
+    .add('active');
 
-activateTab(
-'home'
-);
+  activateTab('home');
 
-$('title')
-.textContent=
-'FitCounter';
+  setHeader(
+    'FitCounter',
+    'Твой прогресс каждый день 💪'
+  );
 
-$('subtitle')
-.textContent=
-'Твой прогресс каждый день 💪';
+  renderCalendar();
 
-renderHome();
-
-}
-
-/* =========================
-   НИЖНЕЕ МЕНЮ
-========================= */
-
-function buildBottomTabs(){
-
-const box=
-$('bottomTabs');
-
-box.innerHTML='';
-
-const home=
-document.createElement(
-'div'
-);
-
-home.className=
-'tab';
-
-home.dataset.tab=
-'home';
-
-home.innerHTML=
-'<span>🏠</span>Главная';
-
-home.onclick=
-showHome;
-
-box.appendChild(
-home
-);
-
-ORDER.forEach(
-type=>{
-
-const ex=
-EXERCISES[type];
-
-const item=
-document.createElement(
-'div'
-);
-
-item.className=
-'tab';
-
-item.dataset.tab=
-type;
-
-item.innerHTML=
-`<span>${ex.icon}</span>${ex.name}`;
-
-item.onclick=()=>{
-
-if(
-type==='plank'
-){
-
-showPlank();
-
-}else{
-
-showExercise(
-type
-);
-
-}
-
-};
-
-box.appendChild(
-item
-);
-
-}
-);
-
-const calendar=
-document.createElement(
-'div'
-);
-
-calendar.className=
-'tab';
-
-calendar.dataset.tab=
-'calendar';
-
-calendar.innerHTML=
-'<span>📅</span>Календарь';
-
-calendar.onclick=
-showCalendar;
-
-box.appendChild(
-calendar
-);
-
-const achievements=
-document.createElement(
-'div'
-);
-
-achievements.className=
-'tab';
-
-achievements.dataset.tab=
-'ach';
-
-achievements.innerHTML=
-'<span>🏆</span>Достижения';
-
-achievements.onclick=
-showAchievements;
-
-box.appendChild(
-achievements
-);
-
-}
-
-/* =========================
-   ГЛАВНАЯ
-========================= */
-
-function renderHome(){
-
-const box=
-$('homeExercises');
-
-box.innerHTML='';
-
-ORDER.forEach(
-type=>{
-
-const ex=
-EXERCISES[type];
-
-let todayText='';
-let totalText='';
-let totalLabel='всего';
-
-if(
-type==='plank'
-){
-
-todayText=
-fmt(
-plankTodayValue()
-);
-
-totalText=
-fmt(
-plankRecordValue()
-);
-
-totalLabel=
-'рекорд';
-
-}else if(
-ex.kind==='weight'
-){
-
-todayText=
-kg(
-todayVolume(type)
-);
-
-totalText=
-kg(
-totalVolume(type)
-);
-
-totalLabel=
-'объём';
-
-}else{
-
-todayText=
-todayReps(type);
-
-totalText=
-totalReps(type);
-
-}
-
-const card=
-document.createElement(
-'div'
-);
-
-card.className=
-'card exercise';
-
-card.innerHTML=`
-
-<div class="icon">
-${ex.icon}
-</div>
-
-<div class="flex">
-
-<b>
-${ex.name}
-</b>
-
-<div class="muted">
-Сегодня: ${todayText}
-</div>
-
-</div>
-
-<div class="right">
-
-<div class="big">
-${totalText}
-</div>
-
-<div class="muted">
-${totalLabel}
-</div>
-
-</div>
-
-`;
-
-card.onclick=()=>{
-
-if(
-type==='plank'
-){
-
-showPlank();
-
-}else{
-
-showExercise(
-type
-);
-
-}
-
-};
-
-box.appendChild(
-card
-);
-
-}
-);
-
-}
-
-/* =========================
-   УПРАЖНЕНИЯ
-========================= */
-
-let currentExercise=
-'pushups';
-
-let setCount=
-3;
-
-function showExercise(
-type
-){
-
-stopRest();
-
-currentExercise=
-type;
-
-hidePages();
-
-$('exercisePage')
-.classList.add(
-'active'
-);
-
-activateTab(
-type
-);
-
-const ex=
-EXERCISES[type];
-
-$('title')
-.textContent=
-ex.name;
-
-$('subtitle')
-.textContent=
-ex.kind==='weight'
-?
-'Вес, подходы и общий объём'
-:
-'Добавляй подходы и следи за прогрессом';
-
-$('exerciseTitle')
-.textContent=
-ex.icon+
-' '+
-ex.name;
-
-setCount=
-3;
-
-renderExerciseStats();
-
-renderSets();
-
-renderExerciseHistory();
-
-loadRest();
-
-}
-
-function renderExerciseStats(){
-
-const ex=
-EXERCISES[
-currentExercise
-];
-
-if(
-ex.kind==='weight'
-){
-
-$('exToday')
-.textContent=
-kg(
-todayVolume(
-currentExercise
-)
-);
-
-$('exTotal')
-.textContent=
-kg(
-totalVolume(
-currentExercise
-)
-);
-
-$('exBest')
-.textContent=
-kg(
-bestVolume(
-currentExercise
-)
-);
-
-$('totalLabel')
-.textContent=
-'Общий объём';
-
-$('bestLabel')
-.textContent=
-'Лучшая тренировка';
-
-$('liveLabel')
-.textContent=
-'Объём';
-
-}else{
-
-$('exToday')
-.textContent=
-todayReps(
-currentExercise
-);
-
-$('exTotal')
-.textContent=
-totalReps(
-currentExercise
-);
-
-$('exBest')
-.textContent=
-bestDay(
-currentExercise
-);
-
-$('totalLabel')
-.textContent=
-'Всего';
-
-$('bestLabel')
-.textContent=
-'Лучший день';
-
-$('liveLabel')
-.textContent=
-'Сейчас';
-
-}
-
-}
-
-function renderSets(
-saved=[]
-){
-
-const ex=
-EXERCISES[
-currentExercise
-];
-
-const box=
-$('sets');
-
-box.innerHTML='';
-
-for(
-let i=0;
-i<setCount;
-i++
-){
-
-const row=
-document.createElement(
-'div'
-);
-
-if(
-ex.kind==='weight'
-){
-
-row.className=
-'set-row weighted';
-
-row.innerHTML=`
-
-<div>
-Подход ${i+1}
-</div>
-
-<div>
-
-<div class="field-label">
-кг
-</div>
-
-<input
-class="weight"
-type="number"
-inputmode="decimal"
-min="0"
-step="0.5"
-value="${saved[i]?.weight||''}"
->
-
-</div>
-
-<div>
-
-<div class="field-label">
-раз
-</div>
-
-<input
-class="reps"
-type="number"
-inputmode="numeric"
-min="0"
-value="${saved[i]?.reps||''}"
->
-
-</div>
-
-<button class="set-done">
-✓
-</button>
-
-`;
-
-}else{
-
-row.className=
-'set-row';
-
-row.innerHTML=`
-
-<div>
-Подход ${i+1}
-</div>
-
-<input
-class="reps"
-type="number"
-inputmode="numeric"
-min="0"
-value="${saved[i]?.reps||''}"
->
-
-<button class="set-done">
-✓
-</button>
-
-`;
-
-}
-
-row
-.querySelectorAll(
-'input'
-)
-.forEach(
-input=>{
-
-input.addEventListener(
-'input',
-updateLiveTotal
-);
-
-}
-);
-
-row
-.querySelector(
-'.set-done'
-)
-.onclick=()=>{
-
-finishSet(
-row
-);
-
-};
-
-box.appendChild(
-row
-);
-
-}
-
-updateLiveTotal();
-
-}
-
-function currentRawSets(){
-
-return [
-
-...document
-.querySelectorAll(
-'#sets .set-row'
-)
-
-]
-.map(
-row=>({
-
-weight:
-row
-.querySelector(
-'.weight'
-)
-?.value
-||
-'',
-
-reps:
-row
-.querySelector(
-'.reps'
-)
-?.value
-||
-''
-
-})
-);
-
-}
-
-function addSet(){
-
-const current=
-currentRawSets();
-
-setCount++;
-
-renderSets(
-current
-);
-
-}
-
-function validSets(){
-
-const ex=
-EXERCISES[
-currentExercise
-];
-
-return [
-
-...document
-.querySelectorAll(
-'#sets .set-row'
-)
-
-]
-.map(
-row=>{
-
-const reps=
-parseInt(
-row
-.querySelector(
-'.reps'
-)
-?.value
-)
-||
-0;
-
-const weight=
-parseFloat(
-row
-.querySelector(
-'.weight'
-)
-?.value
-)
-||
-0;
-
-if(
-reps<=0
-){
-
-return null;
-
-}
-
-if(
-ex.kind==='weight' &&
-weight<=0
-){
-
-return null;
-
-}
-
-return {
-reps,
-weight
-};
-
-}
-)
-.filter(
-Boolean
-);
-
-}
-
-function updateLiveTotal(){
-
-const ex=
-EXERCISES[
-currentExercise
-];
-
-const sets=
-validSets();
-
-if(
-ex.kind==='weight'
-){
-
-const volume=
-sets.reduce(
-(sum,set)=>
-sum+
-set.weight*
-set.reps*
-(ex.multiplier||1),
-0
-);
-
-$('liveTotal')
-.textContent=
-kg(volume);
-
-}else{
-
-$('liveTotal')
-.textContent=
-sets.reduce(
-(sum,set)=>
-sum+
-set.reps,
-0
-);
-
-}
-
-}
-
-function finishSet(
-row
-){
-
-const reps=
-parseInt(
-row
-.querySelector(
-'.reps'
-)
-?.value
-)
-||
-0;
-
-if(
-reps<=0
-){
-
-alert(
-'Введи количество повторений'
-);
-
-return;
-
-}
-
-if(
-EXERCISES[
-currentExercise
-].kind==='weight'
-){
-
-const weight=
-parseFloat(
-row
-.querySelector(
-'.weight'
-)
-?.value
-)
-||
-0;
-
-if(
-weight<=0
-){
-
-alert(
-'Введи вес'
-);
-
-return;
-
-}
-
-}
-
-row
-.querySelector(
-'.set-done'
-)
-.classList.add(
-'done'
-);
-
-if(
-getRestSetting()
-.auto
-){
-
-startRestFromBeginning();
-
-}
-
-}
-
-function saveWorkout(){
-
-const ex=
-EXERCISES[
-currentExercise
-];
-
-const sets=
-validSets();
-
-if(
-!sets.length
-){
-
-alert(
-'Заполни хотя бы один подход'
-);
-
-return;
-
-}
-
-const total=
-sets.reduce(
-(sum,set)=>
-sum+
-set.reps,
-0
-);
-
-const record={
-
-id:
-Date.now(),
-
-type:
-currentExercise,
-
-day:
-dateKey(),
-
-time:
-new Date()
-.toLocaleString(
-'ru-RU'
-),
-
-total
-
-};
-
-if(
-ex.kind==='weight'
-){
-
-record.sets=
-sets;
-
-record.volume=
-sets.reduce(
-(sum,set)=>
-sum+
-set.weight*
-set.reps*
-(ex.multiplier||1),
-0
-);
-
-}else{
-
-record.sets=
-sets.map(
-set=>
-set.reps
-);
-
-}
-
-data.unshift(
-record
-);
-
-saveAll();
-
-renderSets();
-
-renderExerciseStats();
-
-renderExerciseHistory();
-
-renderHome();
-
-checkProgress(
-currentExercise
-);
-
-}
-
-function renderExerciseHistory(){
-
-const ex=
-EXERCISES[
-currentExercise
-];
-
-const list=
-data.filter(
-x=>
-x.type===
-currentExercise
-);
-
-const box=
-$('exerciseHistory');
-
-box.innerHTML='';
-
-if(
-!list.length
-){
-
-box.innerHTML=
-'<div class="empty">Записей пока нет</div>';
-
-return;
-
-}
-
-list.forEach(
-item=>{
-
-const row=
-document.createElement(
-'div'
-);
-
-row.className=
-'history';
-
-let content='';
-
-if(
-ex.kind==='weight'
-){
-
-const detail=
-(item.sets||[])
-.map(
-set=>
-`${set.weight} кг × ${set.reps}`
-)
-.join(
-' • '
-);
-
-content=`
-
-<div>
-
-<b>
-${kg(item.volume||0)}
-</b>
-
-<div class="muted">
-${item.total||0} повторений
-</div>
-
-<div class="muted">
-${detail}
-</div>
-
-<div class="muted">
-${item.time}
-</div>
-
-</div>
-
-`;
-
-}else{
-
-content=`
-
-<div>
-
-<b>
-${item.total} повторений
-</b>
-
-<div class="muted">
-${(item.sets||[]).join(' + ')}
-</div>
-
-<div class="muted">
-${item.time}
-</div>
-
-</div>
-
-`;
-
-}
-
-row.innerHTML=
-content+
-'<button class="danger">Удалить</button>';
-
-row
-.querySelector(
-'button'
-)
-.onclick=()=>{
-
-if(
-confirm(
-'Удалить запись?'
-)
-){
-
-data=
-data.filter(
-x=>
-x.id!==item.id
-);
-
-saveAll();
-
-renderExerciseStats();
-
-renderExerciseHistory();
-
-renderHome();
-
-}
-
-};
-
-box.appendChild(
-row
-);
-
-}
-);
-
-}
-
-$('addSet')
-.onclick=
-addSet;
-
-$('saveWorkout')
-.onclick=
-saveWorkout;
-
-/* =========================
-   ТАЙМЕР ОТДЫХА
-========================= */
-
-let restLeft=
-90;
-
-let restRunning=
-false;
-
-let restInterval=
-null;
-
-let restEnd=
-0;
-
-function getRestSetting(){
-
-if(
-!restSettings[
-currentExercise
-]
-){
-
-restSettings[
-currentExercise
-]={
-
-seconds:
-EXERCISES[
-currentExercise
-].rest
-||
-90,
-
-auto:
-false
-
-};
-
-}
-
-return restSettings[
-currentExercise
-];
-
-}
-
-function loadRest(){
-
-stopRest();
-
-const setting=
-getRestSetting();
-
-restLeft=
-setting.seconds;
-
-$('autoSwitch')
-.classList.toggle(
-'on',
-setting.auto
-);
-
-drawRest();
-
-}
-
-function drawRest(){
-
-$('restDisplay')
-.textContent=
-fmt(
-restLeft
-);
-
-$('restDisplay')
-.classList.toggle(
-'running',
-restRunning
-);
-
-$('restBtn')
-.textContent=
-restRunning
-?
-'⏸ Пауза'
-:
-'▶ Старт';
-
-}
-
-function startRest(){
-
-if(
-restRunning
-){
-
-return;
-
-}
-
-if(
-restLeft<=0
-){
-
-restLeft=
-getRestSetting()
-.seconds;
-
-}
-
-restRunning=
-true;
-
-restEnd=
-Date.now()+
-restLeft*
-1000;
-
-drawRest();
-
-restInterval=
-setInterval(
-()=>{
-
-restLeft=
-Math.max(
-0,
-Math.ceil(
-(
-restEnd-
-Date.now()
-)/
-1000
-)
-);
-
-drawRest();
-
-if(
-restLeft<=0
-){
-
-stopRest();
-
-$('restPopup')
-.classList.add(
-'show'
-);
-
-if(
-navigator.vibrate
-){
-
-navigator.vibrate(
-[
-200,
-100,
-200
-]
-);
-
-}
-
 }
 
-},
-250
-);
 
-}
-
-function pauseRest(){
-
-clearInterval(
-restInterval
-);
-
-restRunning=
-false;
-
-drawRest();
-
-}
-
-function stopRest(){
-
-clearInterval(
-restInterval
-);
-
-restRunning=
-false;
-
-}
-
-function startRestFromBeginning(){
-
-stopRest();
-
-restLeft=
-getRestSetting()
-.seconds;
-
-startRest();
-
-}
-
-function resetRest(){
-
-stopRest();
-
-restLeft=
-getRestSetting()
-.seconds;
-
-drawRest();
-
-}
-
-function changeRest(
-delta
-){
-
-const setting=
-getRestSetting();
-
-setting.seconds=
-Math.max(
-15,
-Math.min(
-900,
-setting.seconds+
-delta
-)
-);
-
-restLeft=
-setting.seconds;
-
-saveAll();
-
-stopRest();
-
-drawRest();
-
-}
-
-$('restBtn')
-.onclick=()=>{
-
-if(
-restRunning
-){
-
-pauseRest();
-
-}else{
-
-startRest();
-
-}
-
-};
-
-$('minusRest')
-.onclick=()=>{
-
-changeRest(
--15
-);
-
-};
-
-$('plusRest')
-.onclick=()=>{
-
-changeRest(
-15
-);
-
-};
-
-$('resetRest')
-.onclick=
-resetRest;
-
-$('autoSwitch')
-.onclick=()=>{
-
-const setting=
-getRestSetting();
-
-setting.auto=
-!setting.auto;
-
-$('autoSwitch')
-.classList.toggle(
-'on',
-setting.auto
-);
-
-saveAll();
+function showCategory(group){
 
-};
+  stopRest();
 
-$('restPopupClose')
-.onclick=()=>{
+  hidePages();
 
-$('restPopup')
-.classList.remove(
-'show'
-);
+  $('category')
+    .classList
+    .add('active');
 
-resetRest();
+  activateTab(group);
 
-};
+  setHeader(
+    group==='body'
+      ? 'Собственный вес'
+      : 'Железо',
 
-/* =========================
-   ПЛАНКА
-========================= */
+    group==='body'
+      ? 'Упражнения с собственным весом'
+      : 'Силовые упражнения с весом'
+  );
 
-let plankSeconds=
-0;
+  renderCategory(group);
 
-let plankRunning=
-false;
-
-let plankInterval=
-null;
-
-let plankStart=
-0;
-
-function showPlank(){
-
-stopRest();
-
-hidePages();
-
-$('plankPage')
-.classList.add(
-'active'
-);
-
-activateTab(
-'plank'
-);
-
-$('title')
-.textContent=
-'Планка';
-
-$('subtitle')
-.textContent=
-'Время, выдержка и прогресс';
-
-renderPlank();
-
-}
-
-function drawPlank(){
-
-$('plankTimer')
-.textContent=
-fmt(
-plankSeconds
-);
-
-}
-
-function togglePlank(){
-
-if(
-plankRunning
-){
-
-plankRunning=
-false;
-
-clearInterval(
-plankInterval
-);
-
-$('plankBtn')
-.textContent=
-'▶ Продолжить';
-
-return;
-
-}
-
-plankRunning=
-true;
-
-$('plankCircle')
-.classList.add(
-'running'
-);
-
-$('plankBtn')
-.textContent=
-'⏸ Пауза';
-
-$('savePlankBtn')
-.style.display=
-'block';
-
-plankStart=
-Date.now()-
-plankSeconds*
-1000;
-
-plankInterval=
-setInterval(
-()=>{
-
-plankSeconds=
-Math.floor(
-(
-Date.now()-
-plankStart
-)/
-1000
-);
-
-drawPlank();
-
-},
-250
-);
-
-}
-
-function resetPlank(){
-
-clearInterval(
-plankInterval
-);
-
-plankRunning=
-false;
-
-plankSeconds=
-0;
-
-$('plankCircle')
-.classList.remove(
-'running'
-);
-
-$('plankBtn')
-.textContent=
-'▶ Начать';
-
-$('savePlankBtn')
-.style.display=
-'none';
-
-drawPlank();
-
 }
 
-function savePlank(){
 
-if(
-plankRunning
-){
+function renderCategory(group){
 
-plankRunning=
-false;
+  const box = $('catList');
 
-clearInterval(
-plankInterval
-);
+  box.innerHTML = '';
 
-}
-
-if(
-plankSeconds<=0
-){
+  GROUPS[group]
+    .forEach(type=>{
 
-return;
+      const ex = EX[type];
 
-}
+      const card =
+        document.createElement('div');
 
-if(
-!confirm(
-`Сохранить результат ${fmt(plankSeconds)}?`
-)
-){
+      card.className =
+        'card exercise';
 
-return;
+      let stat = '';
 
-}
+      if(type==='plank'){
 
-plankData.unshift({
+        stat =
+          'Рекорд: ' +
+          fmt(plankRecord());
 
-id:
-Date.now(),
+      }
 
-seconds:
-plankSeconds,
+      else if(ex.k==='w'){
 
-day:
-dateKey(),
+        stat =
+          'Объём: ' +
+          kg(totalVolume(type));
 
-time:
-new Date()
-.toLocaleString(
-'ru-RU'
-)
+      }
 
-});
+      else{
 
-saveAll();
+        stat =
+          'Всего: ' +
+          totalReps(type);
 
-resetPlank();
+      }
 
-renderPlank();
+      card.innerHTML = `
 
-renderHome();
+        <div class="icon">
+          ${ex.i}
+        </div>
 
-checkProgress(
-'plank'
-);
+        <div class="flex">
 
-}
+          <b>${ex.n}</b>
 
-function renderPlank(){
+          <div class="muted">
+            ${stat}
+          </div>
 
-$('plankToday')
-.textContent=
-fmt(
-plankTodayValue()
-);
+        </div>
 
-$('plankRecord')
-.textContent=
-fmt(
-plankRecordValue()
-);
+        <div class="chev">
+          ›
+        </div>
 
-$('plankTotal')
-.textContent=
-fmt(
-plankTotalValue()
-);
+      `;
 
-const box=
-$('plankHistory');
+      card.onclick = ()=>{
 
-box.innerHTML='';
+        if(type==='plank'){
+          showPlank();
+        }
+        else{
+          showExercise(type);
+        }
 
-if(
-!plankData.length
-){
+      };
 
-box.innerHTML=
-'<div class="empty">Результатов пока нет</div>';
+      box.appendChild(card);
 
-return;
+    });
 
 }
-
-plankData.forEach(
-item=>{
-
-const row=
-document.createElement(
-'div'
-);
-
-row.className=
-'history';
-
-row.innerHTML=`
-
-<div>
-
-<b>
-${fmt(item.seconds)}
-</b>
 
-<div class="muted">
-${item.time}
-</div>
 
-</div>
+$('bodyCard').onclick =
+  ()=>showCategory('body');
 
-<button class="danger">
-Удалить
-</button>
+$('ironCard').onclick =
+  ()=>showCategory('iron');
 
-`;
 
-row
-.querySelector(
-'button'
-)
-.onclick=()=>{
+document
+  .querySelectorAll('.tab')
+  .forEach(tab=>{
 
-if(
-confirm(
-'Удалить результат?'
-)
-){
+    tab.onclick = ()=>{
 
-plankData=
-plankData.filter(
-x=>
-x.id!==item.id
-);
+      const name =
+        tab.dataset.tab;
 
-saveAll();
+      if(name==='home'){
+        showHome();
+      }
 
-renderPlank();
+      else if(name==='body'){
+        showCategory('body');
+      }
 
-renderHome();
+      else if(name==='iron'){
+        showCategory('iron');
+      }
 
-}
-
-};
-
-box.appendChild(
-row
-);
-
-}
-);
-
-}
+      else if(name==='ach'){
+        showAchievements();
+      }
 
-$('plankBtn')
-.onclick=
-togglePlank;
+    };
 
-$('savePlankBtn')
-.onclick=
-savePlank;
+  });
 
-$('resetPlankBtn')
-.onclick=
-resetPlank;
 
-/* =========================
+/* --------------------
    КАЛЕНДАРЬ
-========================= */
+-------------------- */
 
-const MONTHS=[
-'январь',
-'февраль',
-'март',
-'апрель',
-'май',
-'июнь',
-'июль',
-'август',
-'сентябрь',
-'октябрь',
-'ноябрь',
-'декабрь'
+
+const MONTHS = [
+  'январь',
+  'февраль',
+  'март',
+  'апрель',
+  'май',
+  'июнь',
+  'июль',
+  'август',
+  'сентябрь',
+  'октябрь',
+  'ноябрь',
+  'декабрь'
 ];
 
-const WEEKDAYS=[
-'Вс',
-'Пн',
-'Вт',
-'Ср',
-'Чт',
-'Пт',
-'Сб'
+
+const WEEK = [
+  'Вс',
+  'Пн',
+  'Вт',
+  'Ср',
+  'Чт',
+  'Пт',
+  'Сб'
 ];
 
-const WEEKDAYS_FULL=[
-'воскресенье',
-'понедельник',
-'вторник',
-'среда',
-'четверг',
-'пятница',
-'суббота'
-];
 
-let calendarCursor=
-new Date(
-new Date().getFullYear(),
-new Date().getMonth(),
-1
-);
+const now = new Date();
 
-let selectedCalendarDay=
-dateKey();
+let calendarCursor =
+  new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    1
+  );
 
-function hasActivity(
-key
-){
 
-return (
+let selectedDay =
+  dateKey(now);
 
-data.some(
-x=>
-x.day===key
-)
 
-||
+function hasActivity(day){
 
-plankData.some(
-x=>
-x.day===key
-)
-
-);
+  return (
+    data.some(x=>x.day===day) ||
+    pData.some(x=>x.day===day)
+  );
 
 }
 
-function showCalendar(){
-
-stopRest();
-
-hidePages();
-
-$('calendarPage')
-.classList.add(
-'active'
-);
-
-activateTab(
-'calendar'
-);
-
-$('title')
-.textContent=
-'Календарь 📅';
-
-$('subtitle')
-.textContent=
-'История тренировок по дням';
-
-renderCalendar();
-
-}
 
 function renderCalendar(){
 
-const year=
-calendarCursor
-.getFullYear();
+  const year =
+    calendarCursor.getFullYear();
 
-const month=
-calendarCursor
-.getMonth();
+  const month =
+    calendarCursor.getMonth();
 
-$('calendarMonthTitle')
-.textContent=
-MONTHS[month]+
-' '+
-year;
+  $('month').textContent =
+    MONTHS[month] +
+    ' ' +
+    year;
 
-const daysInMonth=
-new Date(
-year,
-month+1,
-0
-)
-.getDate();
 
-const strip=
-$('monthStrip');
+  const strip = $('strip');
 
-strip.innerHTML='';
+  strip.innerHTML = '';
 
-for(
-let day=1;
-day<=daysInMonth;
-day++
-){
 
-const date=
-new Date(
-year,
-month,
-day
-);
+  const days =
+    new Date(
+      year,
+      month+1,
+      0
+    ).getDate();
 
-const key=
-dateKey(
-date
-);
 
-const chip=
-document.createElement(
-'div'
-);
+  for(
+    let day=1;
+    day<=days;
+    day++
+  ){
 
-chip.className=
-'day-chip';
+    const date =
+      new Date(
+        year,
+        month,
+        day
+      );
 
-if(
-!hasActivity(key)
-){
+    const keyValue =
+      dateKey(date);
 
-chip.classList.add(
-'no-activity'
-);
+
+    const item =
+      document.createElement('div');
+
+
+    item.className = 'day';
+
+
+    if(!hasActivity(keyValue)){
+      item.classList.add('dim');
+    }
+
+
+    if(keyValue===selectedDay){
+      item.classList.add('sel');
+    }
+
+
+    item.innerHTML = `
+
+      <div class="n">
+        ${day}
+      </div>
+
+      <div class="w">
+        ${WEEK[date.getDay()]}
+      </div>
+
+    `;
+
+
+    item.onclick = ()=>{
+
+      selectedDay =
+        keyValue;
+
+      renderCalendar();
+
+    };
+
+
+    strip.appendChild(item);
+
+  }
+
+
+  const selected =
+    strip.querySelector('.sel');
+
+
+  if(selected){
+
+    setTimeout(()=>{
+
+      selected.scrollIntoView({
+        behavior:'smooth',
+        block:'nearest',
+        inline:'center'
+      });
+
+    },50);
+
+  }
+
+
+  renderDaySummary();
 
 }
 
-if(
-key===
-selectedCalendarDay
-){
 
-chip.classList.add(
-'selected'
-);
+function renderDaySummary(){
+
+  const reps = data
+
+    .filter(
+      x =>
+        x.day===selectedDay &&
+        EX[x.type] &&
+        EX[x.type].k==='r'
+    )
+
+    .reduce(
+      (sum,x)=>
+        sum+Number(x.total||0),
+      0
+    );
+
+
+  const volume = data
+
+    .filter(
+      x =>
+        x.day===selectedDay &&
+        EX[x.type] &&
+        EX[x.type].k==='w'
+    )
+
+    .reduce(
+      (sum,x)=>
+        sum+Number(x.volume||0),
+      0
+    );
+
+
+  const plank = pData
+
+    .filter(
+      x=>x.day===selectedDay
+    )
+
+    .reduce(
+      (sum,x)=>
+        sum+Number(x.seconds||0),
+      0
+    );
+
+
+  const parts = [];
+
+
+  if(reps){
+    parts.push(
+      reps+' повторений'
+    );
+  }
+
+
+  if(volume){
+    parts.push(
+      kg(volume)
+    );
+  }
+
+
+  if(plank){
+    parts.push(
+      'планка '+fmt(plank)
+    );
+  }
+
+
+  $('summary').textContent =
+    parts.length
+      ? parts.join(' • ')
+      : 'В этот день тренировок нет';
 
 }
 
-if(
-key===
-dateKey()
-){
 
-chip.classList.add(
-'today'
-);
+$('prev').onclick = ()=>{
 
-}
+  calendarCursor =
+    new Date(
+      calendarCursor.getFullYear(),
+      calendarCursor.getMonth()-1,
+      1
+    );
 
-chip.innerHTML=`
+  selectedDay =
+    dateKey(
+      new Date(
+        calendarCursor.getFullYear(),
+        calendarCursor.getMonth(),
+        1
+      )
+    );
 
-<div class="num">
-${day}
-</div>
-
-<div class="weekday">
-${WEEKDAYS[date.getDay()]}
-</div>
-
-`;
-
-chip.onclick=()=>{
-
-selectedCalendarDay=
-key;
-
-renderCalendar();
+  renderCalendar();
 
 };
 
-strip.appendChild(
-chip
-);
 
-}
+$('next').onclick = ()=>{
 
-requestAnimationFrame(
-()=>{
+  calendarCursor =
+    new Date(
+      calendarCursor.getFullYear(),
+      calendarCursor.getMonth()+1,
+      1
+    );
 
-strip
-.querySelector(
-'.day-chip.selected'
-)
-?.scrollIntoView({
+  selectedDay =
+    dateKey(
+      new Date(
+        calendarCursor.getFullYear(),
+        calendarCursor.getMonth(),
+        1
+      )
+    );
 
-behavior:
-'smooth',
-
-block:
-'nearest',
-
-inline:
-'center'
-
-});
-
-}
-);
-
-renderCalendarDay();
-
-}
-
-function renderCalendarDay(){
-
-const date=
-parseDateKey(
-selectedCalendarDay
-);
-
-$('calendarDateTitle')
-.textContent=
-
-date.getDate()+
-' '+
-MONTHS[
-date.getMonth()
-]+
-' '+
-date.getFullYear();
-
-$('calendarDateSubtitle')
-.textContent=
-WEEKDAYS_FULL[
-date.getDay()
-];
-
-const box=
-$('calendarDayDetails');
-
-box.innerHTML='';
-
-const grouped={};
-
-data
-.filter(
-x=>
-x.day===
-selectedCalendarDay
-)
-.forEach(
-item=>{
-
-if(
-!grouped[
-item.type
-]
-){
-
-grouped[
-item.type
-]={
-
-total:0,
-volume:0,
-count:0
+  renderCalendar();
 
 };
 
-}
 
-grouped[
-item.type
-].total+=
-Number(
-item.total||0
-);
+/* --------------------
+   УПРАЖНЕНИЯ
+-------------------- */
 
-grouped[
-item.type
-].volume+=
-Number(
-item.volume||0
-);
 
-grouped[
-item.type
-].count++;
+let currentExercise =
+  'pushups';
 
-}
-);
+let setCount = 3;
 
-ORDER
-.filter(
-type=>
-type!=='plank'
-)
-.forEach(
-type=>{
 
-const info=
-grouped[
-type
-];
+function showExercise(type){
 
-if(
-!info
-){
+  stopRest();
 
-return;
+  currentExercise = type;
 
-}
+  hidePages();
 
-const ex=
-EXERCISES[
-type
-];
+  $('exercise')
+    .classList
+    .add('active');
 
-const row=
-document.createElement(
-'div'
-);
+  activateTab(
+    EX[type].g
+  );
 
-row.className=
-'calendar-row';
 
-const value=
-ex.kind==='weight'
-?
-kg(
-info.volume
-)
-:
-info.total
-.toLocaleString(
-'ru-RU'
-)+
-' повторений';
+  setHeader(
 
-row.innerHTML=`
+    EX[type].n,
 
-<div class="calendar-row-left">
+    EX[type].k==='w'
+      ? 'Вес, подходы и общий объём'
+      : 'Добавляй подходы и следи за прогрессом'
 
-<div class="calendar-row-icon">
-${ex.icon}
-</div>
+  );
 
-<div>
 
-<div class="calendar-row-name">
-${ex.name}
-</div>
+  $('exTitle').textContent =
+    EX[type].i +
+    ' ' +
+    EX[type].n;
 
-<div class="calendar-row-detail">
-${info.count}
-${info.count===1?'тренировка':'тренировки'}
-</div>
 
-</div>
+  setCount = 3;
 
-</div>
-
-<div class="calendar-value">
-${value}
-</div>
-
-`;
-
-box.appendChild(
-row
-);
-
-}
-);
-
-const plankSecondsForDay=
-plankData
-.filter(
-x=>
-x.day===
-selectedCalendarDay
-)
-.reduce(
-(sum,x)=>
-sum+
-Number(
-x.seconds||0
-),
-0
-);
-
-if(
-plankSecondsForDay>0
-){
-
-const row=
-document.createElement(
-'div'
-);
-
-row.className=
-'calendar-row';
-
-row.innerHTML=`
-
-<div class="calendar-row-left">
-
-<div class="calendar-row-icon">
-⏱️
-</div>
-
-<div>
-
-<div class="calendar-row-name">
-Планка
-</div>
-
-<div class="calendar-row-detail">
-Общее время за день
-</div>
-
-</div>
-
-</div>
-
-<div class="calendar-value">
-${fmt(plankSecondsForDay)}
-</div>
-
-`;
-
-box.appendChild(
-row
-);
+  renderExerciseStats();
+  renderSets();
+  renderHistory();
+  loadRest();
 
 }
 
-if(
-!box.children.length
-){
 
-box.innerHTML=
-'<div class="empty">В этот день тренировок нет</div>';
+function renderExerciseStats(){
+
+  const ex =
+    EX[currentExercise];
+
+
+  if(ex.k==='w'){
+
+    $('exToday').textContent =
+      kg(
+        todayVolume(
+          currentExercise
+        )
+      );
+
+    $('exTotal').textContent =
+      kg(
+        totalVolume(
+          currentExercise
+        )
+      );
+
+    $('exBest').textContent =
+      kg(
+        bestVolume(
+          currentExercise
+        )
+      );
+
+    $('totalLabel').textContent =
+      'Общий объём';
+
+    $('bestLabel').textContent =
+      'Лучшая тренировка';
+
+    $('liveLabel').textContent =
+      'Объём';
+
+  }
+
+  else{
+
+    $('exToday').textContent =
+      todayReps(
+        currentExercise
+      );
+
+    $('exTotal').textContent =
+      totalReps(
+        currentExercise
+      );
+
+    $('exBest').textContent =
+      bestDay(
+        currentExercise
+      );
+
+    $('totalLabel').textContent =
+      'Всего';
+
+    $('bestLabel').textContent =
+      'Лучший день';
+
+    $('liveLabel').textContent =
+      'Сейчас';
+
+  }
 
 }
 
+
+function renderSets(saved=[]){
+
+  const ex =
+    EX[currentExercise];
+
+  const box =
+    $('sets');
+
+  box.innerHTML = '';
+
+
+  for(
+    let i=0;
+    i<setCount;
+    i++
+  ){
+
+    const row =
+      document.createElement('div');
+
+
+    if(ex.k==='w'){
+
+      row.className =
+        'setrow weight';
+
+
+      row.innerHTML = `
+
+        <div>
+          Подход ${i+1}
+        </div>
+
+        <div>
+
+          <div class="field">
+            кг
+          </div>
+
+          <input
+            class="weightIn"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="0.5"
+            value="${saved[i]?.weight||''}"
+          >
+
+        </div>
+
+        <div>
+
+          <div class="field">
+            раз
+          </div>
+
+          <input
+            class="repIn"
+            type="number"
+            inputmode="numeric"
+            min="0"
+            value="${saved[i]?.reps||''}"
+          >
+
+        </div>
+
+        <button class="done">
+          ✓
+        </button>
+
+      `;
+
+    }
+
+    else{
+
+      row.className =
+        'setrow';
+
+
+      row.innerHTML = `
+
+        <div>
+          Подход ${i+1}
+        </div>
+
+        <input
+          class="repIn"
+          type="number"
+          inputmode="numeric"
+          min="0"
+          value="${saved[i]?.reps||''}"
+        >
+
+        <button class="done">
+          ✓
+        </button>
+
+      `;
+
+    }
+
+
+    row
+      .querySelectorAll('input')
+      .forEach(input=>{
+
+        input.oninput =
+          updateLive;
+
+      });
+
+
+    row
+      .querySelector('.done')
+      .onclick = ()=>{
+
+        finishSet(row);
+
+      };
+
+
+    box.appendChild(row);
+
+  }
+
+
+  updateLive();
+
 }
 
-$('calendarPrev')
-.onclick=()=>{
 
-calendarCursor=
-new Date(
+function rawSets(){
 
-calendarCursor
-.getFullYear(),
+  return [
+    ...document.querySelectorAll(
+      '#sets .setrow'
+    )
+  ].map(row=>({
 
-calendarCursor
-.getMonth()-1,
+    weight:
+      row.querySelector('.weightIn')
+        ?.value || '',
 
-1
+    reps:
+      row.querySelector('.repIn')
+        ?.value || ''
 
-);
+  }));
 
-selectedCalendarDay=
-dateKey(
+}
 
-new Date(
 
-calendarCursor
-.getFullYear(),
+function validSets(){
 
-calendarCursor
-.getMonth(),
+  const ex =
+    EX[currentExercise];
 
-1
 
-)
+  return [
+    ...document.querySelectorAll(
+      '#sets .setrow'
+    )
+  ]
 
-);
+  .map(row=>{
 
-renderCalendar();
+    const reps =
+      parseInt(
+        row.querySelector('.repIn')
+          ?.value
+      ) || 0;
+
+
+    const weight =
+      parseFloat(
+        row.querySelector('.weightIn')
+          ?.value
+      ) || 0;
+
+
+    if(reps<=0){
+      return null;
+    }
+
+
+    if(
+      ex.k==='w' &&
+      weight<=0
+    ){
+      return null;
+    }
+
+
+    return {
+      reps,
+      weight
+    };
+
+  })
+
+  .filter(Boolean);
+
+}
+
+
+function updateLive(){
+
+  const ex =
+    EX[currentExercise];
+
+  const sets =
+    validSets();
+
+
+  if(ex.k==='w'){
+
+    const volume =
+      sets.reduce(
+        (sum,set)=>
+          sum +
+          set.weight *
+          set.reps *
+          (ex.m||1),
+        0
+      );
+
+
+    $('live').textContent =
+      kg(volume);
+
+  }
+
+  else{
+
+    $('live').textContent =
+      sets.reduce(
+        (sum,set)=>
+          sum+set.reps,
+        0
+      );
+
+  }
+
+}
+
+
+function finishSet(row){
+
+  const reps =
+    parseInt(
+      row.querySelector('.repIn')
+        ?.value
+    ) || 0;
+
+
+  if(reps<=0){
+
+    alert(
+      'Введи количество повторений'
+    );
+
+    return;
+
+  }
+
+
+  if(
+    EX[currentExercise].k==='w'
+  ){
+
+    const weight =
+      parseFloat(
+        row.querySelector('.weightIn')
+          ?.value
+      ) || 0;
+
+
+    if(weight<=0){
+
+      alert(
+        'Введи вес'
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  row
+    .querySelector('.done')
+    .classList
+    .add('ok');
+
+
+  if(
+    getRestSetting().auto
+  ){
+
+    startRest(true);
+
+  }
+
+}
+
+
+function saveWorkout(){
+
+  const ex =
+    EX[currentExercise];
+
+  const sets =
+    validSets();
+
+
+  if(!sets.length){
+
+    alert(
+      'Заполни хотя бы один подход'
+    );
+
+    return;
+
+  }
+
+
+  const total =
+    sets.reduce(
+      (sum,set)=>
+        sum+set.reps,
+      0
+    );
+
+
+  const record = {
+
+    id:Date.now(),
+
+    type:currentExercise,
+
+    day:dateKey(),
+
+    time:
+      new Date()
+        .toLocaleString('ru-RU'),
+
+    total
+
+  };
+
+
+  if(ex.k==='w'){
+
+    record.sets =
+      sets;
+
+
+    record.volume =
+      sets.reduce(
+
+        (sum,set)=>
+
+          sum +
+          set.weight *
+          set.reps *
+          (ex.m||1),
+
+        0
+
+      );
+
+  }
+
+  else{
+
+    record.sets =
+      sets.map(
+        set=>set.reps
+      );
+
+  }
+
+
+  data.unshift(record);
+
+  saveAll();
+
+  renderSets();
+  renderExerciseStats();
+  renderHistory();
+  renderCalendar();
+
+}
+
+
+function renderHistory(){
+
+  const ex =
+    EX[currentExercise];
+
+  const box =
+    $('history');
+
+
+  const list =
+    data.filter(
+      x=>
+        x.type===
+        currentExercise
+    );
+
+
+  box.innerHTML = '';
+
+
+  if(!list.length){
+
+    box.innerHTML =
+      '<div class="empty">Записей пока нет</div>';
+
+    return;
+
+  }
+
+
+  list.forEach(item=>{
+
+    const row =
+      document.createElement('div');
+
+    row.className =
+      'history';
+
+
+    if(ex.k==='w'){
+
+      const detail =
+        (item.sets||[])
+          .map(
+            set=>
+              `${set.weight} кг × ${set.reps}`
+          )
+          .join(' • ');
+
+
+      row.innerHTML = `
+
+        <div>
+
+          <b>
+            ${kg(item.volume||0)}
+          </b>
+
+          <div class="muted">
+            ${item.total||0} повторений
+          </div>
+
+          <div class="muted">
+            ${detail}
+          </div>
+
+          <div class="muted">
+            ${item.time}
+          </div>
+
+        </div>
+
+        <button class="danger">
+          Удалить
+        </button>
+
+      `;
+
+    }
+
+    else{
+
+      row.innerHTML = `
+
+        <div>
+
+          <b>
+            ${item.total} повторений
+          </b>
+
+          <div class="muted">
+            ${(item.sets||[]).join(' + ')}
+          </div>
+
+          <div class="muted">
+            ${item.time}
+          </div>
+
+        </div>
+
+        <button class="danger">
+          Удалить
+        </button>
+
+      `;
+
+    }
+
+
+    row
+      .querySelector('button')
+      .onclick = ()=>{
+
+        if(
+          confirm(
+            'Удалить запись?'
+          )
+        ){
+
+          data =
+            data.filter(
+              x=>x.id!==item.id
+            );
+
+          saveAll();
+
+          renderExerciseStats();
+          renderHistory();
+          renderCalendar();
+
+        }
+
+      };
+
+
+    box.appendChild(row);
+
+  });
+
+}
+
+
+$('addSet').onclick = ()=>{
+
+  const old =
+    rawSets();
+
+  setCount++;
+
+  renderSets(old);
 
 };
 
-$('calendarNext')
-.onclick=()=>{
 
-calendarCursor=
-new Date(
+$('saveWorkout').onclick =
+  saveWorkout;
 
-calendarCursor
-.getFullYear(),
 
-calendarCursor
-.getMonth()+1,
+/* --------------------
+   ТАЙМЕР ОТДЫХА
+-------------------- */
 
-1
 
-);
+let restLeft = 90;
+let restRunning = false;
+let restInterval = null;
+let restEnd = 0;
 
-selectedCalendarDay=
-dateKey(
 
-new Date(
+function getRestSetting(){
 
-calendarCursor
-.getFullYear(),
+  if(
+    !restSettings[
+      currentExercise
+    ]
+  ){
 
-calendarCursor
-.getMonth(),
+    restSettings[
+      currentExercise
+    ] = {
 
-1
+      seconds:
+        EX[currentExercise]
+          .rest || 90,
 
-)
+      auto:false
 
-);
+    };
 
-renderCalendar();
+  }
+
+
+  return restSettings[
+    currentExercise
+  ];
+
+}
+
+
+function loadRest(){
+
+  stopRest();
+
+  const settings =
+    getRestSetting();
+
+
+  restLeft =
+    settings.seconds;
+
+
+  $('auto')
+    .classList
+    .toggle(
+      'on',
+      settings.auto
+    );
+
+
+  drawRest();
+
+}
+
+
+function drawRest(){
+
+  $('restTime').textContent =
+    fmt(restLeft);
+
+
+  $('restBtn').textContent =
+    restRunning
+      ? '⏸ Пауза'
+      : '▶ Старт';
+
+}
+
+
+function startRest(reset=false){
+
+  if(reset){
+
+    restLeft =
+      getRestSetting()
+        .seconds;
+
+  }
+
+
+  if(restRunning){
+    return;
+  }
+
+
+  if(restLeft<=0){
+
+    restLeft =
+      getRestSetting()
+        .seconds;
+
+  }
+
+
+  restRunning = true;
+
+
+  restEnd =
+    Date.now() +
+    restLeft*1000;
+
+
+  drawRest();
+
+
+  restInterval =
+    setInterval(()=>{
+
+      restLeft =
+        Math.max(
+          0,
+          Math.ceil(
+            (restEnd-Date.now())/
+            1000
+          )
+        );
+
+
+      drawRest();
+
+
+      if(restLeft<=0){
+
+        stopRest();
+
+        $('restPop')
+          .classList
+          .add('show');
+
+
+        if(navigator.vibrate){
+
+          navigator.vibrate(
+            [200,100,200]
+          );
+
+        }
+
+      }
+
+    },250);
+
+}
+
+
+function stopRest(){
+
+  clearInterval(
+    restInterval
+  );
+
+  restRunning = false;
+
+}
+
+
+function resetRest(){
+
+  stopRest();
+
+  restLeft =
+    getRestSetting()
+      .seconds;
+
+  drawRest();
+
+}
+
+
+function changeRest(delta){
+
+  const settings =
+    getRestSetting();
+
+
+  settings.seconds =
+    Math.max(
+      15,
+      Math.min(
+        900,
+        settings.seconds+delta
+      )
+    );
+
+
+  restLeft =
+    settings.seconds;
+
+
+  saveAll();
+
+  resetRest();
+
+}
+
+
+$('restBtn').onclick = ()=>{
+
+  if(restRunning){
+
+    stopRest();
+    drawRest();
+
+  }
+
+  else{
+
+    startRest();
+
+  }
 
 };
 
-/* =========================
+
+$('minus').onclick =
+  ()=>changeRest(-15);
+
+
+$('plus').onclick =
+  ()=>changeRest(15);
+
+
+$('restReset').onclick =
+  resetRest;
+
+
+$('auto').onclick = ()=>{
+
+  const settings =
+    getRestSetting();
+
+
+  settings.auto =
+    !settings.auto;
+
+
+  $('auto')
+    .classList
+    .toggle(
+      'on',
+      settings.auto
+    );
+
+
+  saveAll();
+
+};
+
+
+$('restClose').onclick = ()=>{
+
+  $('restPop')
+    .classList
+    .remove('show');
+
+  resetRest();
+
+};
+
+
+/* --------------------
+   ПЛАНКА
+-------------------- */
+
+
+let plankSeconds = 0;
+let plankRunning = false;
+let plankInterval = null;
+let plankStart = 0;
+
+
+function showPlank(){
+
+  stopRest();
+
+  hidePages();
+
+  $('plank')
+    .classList
+    .add('active');
+
+  activateTab('body');
+
+  setHeader(
+    'Планка',
+    'Время, выдержка и прогресс'
+  );
+
+  renderPlank();
+
+}
+
+
+function drawPlank(){
+
+  $('timer').textContent =
+    fmt(plankSeconds);
+
+}
+
+
+function togglePlank(){
+
+  if(plankRunning){
+
+    plankRunning = false;
+
+    clearInterval(
+      plankInterval
+    );
+
+    $('timerBtn').textContent =
+      '▶ Продолжить';
+
+    return;
+
+  }
+
+
+  plankRunning = true;
+
+
+  $('circle')
+    .classList
+    .add('run');
+
+
+  $('timerBtn').textContent =
+    '⏸ Пауза';
+
+
+  $('savePlank')
+    .style.display =
+    'block';
+
+
+  plankStart =
+    Date.now() -
+    plankSeconds*1000;
+
+
+  plankInterval =
+    setInterval(()=>{
+
+      plankSeconds =
+        Math.floor(
+          (
+            Date.now() -
+            plankStart
+          ) / 1000
+        );
+
+      drawPlank();
+
+    },250);
+
+}
+
+
+function resetPlank(){
+
+  clearInterval(
+    plankInterval
+  );
+
+  plankRunning = false;
+  plankSeconds = 0;
+
+
+  $('circle')
+    .classList
+    .remove('run');
+
+
+  $('timerBtn').textContent =
+    '▶ Начать';
+
+
+  $('savePlank')
+    .style.display =
+    'none';
+
+
+  drawPlank();
+
+}
+
+
+function savePlankResult(){
+
+  if(plankRunning){
+
+    plankRunning = false;
+
+    clearInterval(
+      plankInterval
+    );
+
+  }
+
+
+  if(plankSeconds<=0){
+    return;
+  }
+
+
+  if(
+    !confirm(
+      'Сохранить результат ' +
+      fmt(plankSeconds) +
+      '?'
+    )
+  ){
+    return;
+  }
+
+
+  pData.unshift({
+
+    id:Date.now(),
+
+    seconds:
+      plankSeconds,
+
+    day:
+      dateKey(),
+
+    time:
+      new Date()
+        .toLocaleString('ru-RU')
+
+  });
+
+
+  saveAll();
+
+  resetPlank();
+  renderPlank();
+  renderCalendar();
+
+}
+
+
+function renderPlank(){
+
+  $('plToday').textContent =
+    fmt(plankToday());
+
+
+  $('plRec').textContent =
+    fmt(plankRecord());
+
+
+  $('plTotal').textContent =
+    fmt(plankTotal());
+
+
+  const box =
+    $('plHistory');
+
+
+  box.innerHTML = '';
+
+
+  if(!pData.length){
+
+    box.innerHTML =
+      '<div class="empty">Результатов пока нет</div>';
+
+    return;
+
+  }
+
+
+  pData.forEach(item=>{
+
+    const row =
+      document.createElement('div');
+
+
+    row.className =
+      'history';
+
+
+    row.innerHTML = `
+
+      <div>
+
+        <b>
+          ${fmt(item.seconds)}
+        </b>
+
+        <div class="muted">
+          ${item.time}
+        </div>
+
+      </div>
+
+      <button class="danger">
+        Удалить
+      </button>
+
+    `;
+
+
+    row
+      .querySelector('button')
+      .onclick = ()=>{
+
+        if(
+          confirm(
+            'Удалить результат?'
+          )
+        ){
+
+          pData =
+            pData.filter(
+              x=>x.id!==item.id
+            );
+
+
+          saveAll();
+
+          renderPlank();
+          renderCalendar();
+
+        }
+
+      };
+
+
+    box.appendChild(row);
+
+  });
+
+}
+
+
+$('timerBtn').onclick =
+  togglePlank;
+
+
+$('savePlank').onclick =
+  savePlankResult;
+
+
+$('resetPlank').onclick =
+  resetPlank;
+
+
+/* --------------------
    РАЗМИНКА
-========================= */
+-------------------- */
 
-const WARM_TOTAL=
-300;
 
-let warmLeft=
-WARM_TOTAL;
+const WARM_TOTAL = 300;
 
-let warmRunning=
-false;
+let warmLeft =
+  WARM_TOTAL;
 
-let warmInterval=
-null;
+let warmRunning =
+  false;
 
-let warmEnd=
-0;
+let warmInterval =
+  null;
+
+let warmEnd = 0;
+
 
 function drawWarm(){
 
-$('warmDisplay')
-.textContent=
-fmt(
-warmLeft
-);
+  $('warmDisplay').textContent =
+    fmt(warmLeft);
 
-$('warmBar')
-.style.width=
-(
-warmLeft/
-WARM_TOTAL*
-100
-)+
-'%';
+
+  $('warmBar').style.width =
+    (
+      warmLeft /
+      WARM_TOTAL *
+      100
+    ) + '%';
 
 }
+
 
 function toggleWarm(){
 
-if(
-warmRunning
-){
+  if(warmRunning){
 
-warmRunning=
-false;
+    warmRunning = false;
 
-clearInterval(
-warmInterval
-);
+    clearInterval(
+      warmInterval
+    );
 
-$('warmBtn')
-.textContent=
-'▶ Продолжить разминку';
 
-return;
+    $('warmBtn').textContent =
+      '▶ Продолжить разминку';
 
-}
+    return;
 
-if(
-warmLeft<=0
-){
+  }
 
-warmLeft=
-WARM_TOTAL;
 
-}
+  if(warmLeft<=0){
 
-warmRunning=
-true;
+    warmLeft =
+      WARM_TOTAL;
 
-$('warmBtn')
-.textContent=
-'⏸ Пауза';
+  }
 
-$('warmReset')
-.style.display=
-'block';
 
-warmEnd=
-Date.now()+
-warmLeft*
-1000;
+  warmRunning = true;
 
-warmInterval=
-setInterval(
-()=>{
 
-warmLeft=
-Math.max(
-0,
-Math.ceil(
-(
-warmEnd-
-Date.now()
-)/
-1000
-)
-);
+  $('warmBtn').textContent =
+    '⏸ Пауза';
 
-drawWarm();
 
-if(
-warmLeft<=0
-){
+  $('warmReset')
+    .style.display =
+    'block';
 
-clearInterval(
-warmInterval
-);
 
-warmRunning=
-false;
+  warmEnd =
+    Date.now() +
+    warmLeft*1000;
 
-$('warmPopup')
-.classList.add(
-'show'
-);
 
-}
+  warmInterval =
+    setInterval(()=>{
 
-},
-250
-);
+      warmLeft =
+        Math.max(
+          0,
+          Math.ceil(
+            (
+              warmEnd -
+              Date.now()
+            ) / 1000
+          )
+        );
+
+
+      drawWarm();
+
+
+      if(warmLeft<=0){
+
+        clearInterval(
+          warmInterval
+        );
+
+        warmRunning =
+          false;
+
+
+        $('warmPop')
+          .classList
+          .add('show');
+
+      }
+
+    },250);
 
 }
+
 
 function resetWarm(){
 
-clearInterval(
-warmInterval
-);
+  clearInterval(
+    warmInterval
+  );
 
-warmRunning=
-false;
+  warmRunning =
+    false;
 
-warmLeft=
-WARM_TOTAL;
+  warmLeft =
+    WARM_TOTAL;
 
-$('warmBtn')
-.textContent=
-'▶ Начать разминку';
 
-$('warmReset')
-.style.display=
-'none';
+  $('warmBtn').textContent =
+    '▶ Начать разминку';
 
-drawWarm();
+
+  $('warmReset')
+    .style.display =
+    'none';
+
+
+  drawWarm();
 
 }
 
-$('warmBtn')
-.onclick=
-toggleWarm;
 
-$('warmReset')
-.onclick=
-resetWarm;
+$('warmBtn').onclick =
+  toggleWarm;
 
-$('warmPopupClose')
-.onclick=()=>{
 
-$('warmPopup')
-.classList.remove(
-'show'
-);
+$('warmReset').onclick =
+  resetWarm;
 
-resetWarm();
+
+$('warmClose').onclick = ()=>{
+
+  $('warmPop')
+    .classList
+    .remove('show');
+
+  resetWarm();
 
 };
 
-/* =========================
+
+/* --------------------
    ДОСТИЖЕНИЯ
-========================= */
+-------------------- */
 
-const RANKS={
-
-pushups:[
-
-['Сопляк','🌱',300],
-
-['Трухлявый','🪵',500],
-
-['Крепыш','💪',1000],
-
-['Бугай','🦬',2000],
-
-['Воин','⚔️',3500],
-
-['Гладиатор','🛡️',5500],
-
-['Титан','🗿',10000],
-
-['Неудержимый','🔥',15000],
-
-['Халк','💚',20000],
-
-['Абсолютная мощь','⚡',30000],
-
-['Железная воля','⛓️',50000],
-
-['Легенда FitCounter','👑',100000],
-
-['Бессмертный','🌌',250000,1],
-
-['Миф','☄️',500000,1],
-
-['Божество силы','🌠',1000000,1]
-
-],
-
-squats:[
-
-['Новичок','🌱',500],
-
-['Крепкие ноги','🦵',1000],
-
-['Атлет','🏃',2500],
-
-['Тяжеловес','🏋️',5000],
-
-['Бизон','🦬',10000],
-
-['Машина','⚙️',20000],
-
-['Титан ног','🗿',50000],
-
-['Легенда','👑',100000],
-
-['Колосс','🦍',250000,1],
-
-['Разрушитель земли','🌋',500000,1],
-
-['Атлант','🌍',1000000,1]
-
-],
-
-pullups:[
-
-['Новичок','🌱',50],
-
-['Цепкий','✊',100],
-
-['Скалолаз','🧗',250],
-
-['Турникмен','🏋️',500],
-
-['Хищник','🐆',1000],
-
-['Мастер','⚔️',2500],
-
-['Повелитель турника','🐉',5000],
-
-['Легенда','👑',10000],
-
-['Властелин высоты','🦅',25000,1],
-
-['Небесный хищник','🐉',50000,1],
-
-['Бог турника','⚡',100000,1]
-
-],
-
-dips:[
-
-['Начало','🌱',100],
-
-['Уверенный','🤸',300],
-
-['Крепкие трицепсы','💪',750],
-
-['Боец','🥊',1500],
-
-['Мастер брусьев','🏅',3000],
-
-['Железные руки','⛓️',7500],
-
-['Король брусьев','👑',15000],
-
-['Легенда брусьев','🔥',30000],
-
-['Непобедимый','🌌',75000,1],
-
-['Повелитель брусьев','⚡',150000,1],
-
-['Абсолют','♾️',300000,1]
-
-],
-
-dumbbells:[
-
-['Первые килограммы','🌱',1000],
-
-['Любитель железа','🏋️',5000],
-
-['Атлет','💪',20000],
-
-['Силач','🦬',50000],
-
-['Тяжеловес','⚙️',100000],
-
-['Машина','🔥',250000],
-
-['Железный человек','⛓️',500000],
-
-['Легенда железа','👑',1000000],
-
-['Колосс','🌌',2500000,1],
-
-['Мифический силач','☄️',5000000,1],
-
-['Божество железа','🌠',10000000,1]
-
-],
-
-barbell:[
-
-['Новичок','🌱',1000],
-
-['Любитель','🏋️‍♂️',10000],
-
-['Атлет','💪',50000],
-
-['Силач','🦬',100000],
-
-['Титан','🗿',500000],
-
-['Легенда','👑',1000000],
-
-['Стальной гигант','⛓️',2500000],
-
-['Повелитель железа','🔥',5000000],
-
-['Колосс','🌌',10000000,1],
-
-['Разрушитель','☄️',25000000,1],
-
-['Бог силы','🌠',50000000,1]
-
-],
-
-plank:[
-
-['Первые шаги','🌱',300],
-
-['Разогрев','🔥',900],
-
-['Скала','🪨',1800],
-
-['Стальной корпус','🛡️',3600],
-
-['Несгибаемый','⚔️',7200],
-
-['Монолит','🏛️',18000],
-
-['Титан времени','🗿',36000],
-
-['Неудержимый','⚡',72000],
-
-['Железная выдержка','💎',180000],
-
-['Повелитель времени','👑',360000],
-
-['Легенда планки','🌌',900000],
-
-['Вечный','🧊',1800000,1],
-
-['Хранитель времени','🌌',3600000,1],
-
-['Вне времени','♾️',7200000,1]
-
-]
-
-};
-
-const FINAL_NORMAL={
-
-pushups:
-100000,
-
-squats:
-100000,
-
-pullups:
-10000,
-
-dips:
-30000,
-
-dumbbells:
-1000000,
-
-barbell:
-5000000,
-
-plank:
-900000
-
-};
-
-let achievementType=
-'pushups';
-
-function achievementValue(
-type
-){
-
-if(
-type==='plank'
-){
-
-return plankTotalValue();
-
-}
-
-if(
-EXERCISES[
-type
-].kind==='weight'
-){
-
-return totalVolume(
-type
-);
-
-}
-
-return totalReps(
-type
-);
-
-}
-
-function achievementText(
-type,
-value
-){
-
-if(
-type==='plank'
-){
-
-return fmt(
-value
-);
-
-}
-
-if(
-EXERCISES[
-type
-].kind==='weight'
-){
-
-return kg(
-value
-);
-
-}
-
-return Number(
-value
-)
-.toLocaleString(
-'ru-RU'
-);
-
-}
-
-function secretUnlocked(
-type
-){
-
-return !!secrets[
-type
-];
-
-}
-
-function buildAchievementTabs(){
-
-const box=
-$('achievementTabs');
-
-box.innerHTML='';
-
-ORDER.forEach(
-type=>{
-
-const ex=
-EXERCISES[
-type
-];
-
-const button=
-document.createElement(
-'button'
-);
-
-button.textContent=
-ex.icon+
-' '+
-ex.name;
-
-if(
-type===
-achievementType
-){
-
-button
-.classList.add(
-'active'
-);
-
-}
-
-button.onclick=()=>{
-
-achievementType=
-type;
-
-buildAchievementTabs();
-
-renderAchievements();
-
-};
-
-box.appendChild(
-button
-);
-
-}
-);
-
-}
 
 function showAchievements(){
 
-stopRest();
+  stopRest();
 
-hidePages();
+  hidePages();
 
-$('achievementsPage')
-.classList.add(
-'active'
-);
+  $('ach')
+    .classList
+    .add('active');
 
-activateTab(
-'ach'
-);
+  activateTab('ach');
 
-$('title')
-.textContent=
-'Достижения 🏆';
+  setHeader(
+    'Достижения 🏆',
+    'Твой прогресс по упражнениям'
+  );
 
-$('subtitle')
-.textContent=
-'Прокачивай каждый вид упражнений';
-
-buildAchievementTabs();
-
-renderAchievements();
+  renderAchievements();
 
 }
+
 
 function renderAchievements(){
 
-const value=
-achievementValue(
-achievementType
-);
+  const box =
+    $('achievementsList');
 
-const all=
-RANKS[
-achievementType
-];
 
-const list=
-secretUnlocked(
-achievementType
-)
-?
-all
-:
-all.filter(
-rank=>
-!rank[3]
-);
+  const items = [
 
-let currentIndex=
--1;
+    {
+      icon:'💪',
+      name:'Отжимания',
+      value:
+        totalReps('pushups') +
+        ' повторений'
+    },
 
-list.forEach(
-(rank,index)=>{
+    {
+      icon:'🧗',
+      name:'Подтягивания',
+      value:
+        totalReps('pullups') +
+        ' повторений'
+    },
 
-if(
-value>=
-rank[2]
-){
+    {
+      icon:'🤸',
+      name:'Брусья',
+      value:
+        totalReps('dips') +
+        ' повторений'
+    },
 
-currentIndex=
-index;
+    {
+      icon:'🏋️',
+      name:'Приседания',
+      value:
+        totalReps('squats') +
+        ' повторений'
+    },
 
-}
+    {
+      icon:'🏋️',
+      name:'Гантели',
+      value:
+        kg(
+          totalVolume(
+            'dumbbells'
+          )
+        )
+    },
 
-}
-);
+    {
+      icon:'🏋️‍♂️',
+      name:'Штанга',
+      value:
+        kg(
+          totalVolume(
+            'barbell'
+          )
+        )
+    },
 
-const current=
-currentIndex>=0
-?
-list[
-currentIndex
-]
-:
-null;
+    {
+      icon:'⏱️',
+      name:'Планка',
+      value:
+        fmt(
+          plankTotal()
+        )
+    }
 
-const next=
-list[
-currentIndex+1
-]
-||
-null;
+  ];
 
-$('heroIcon')
-.textContent=
-current
-?
-current[1]
-:
-'🌱';
 
-$('heroName')
-.textContent=
-current
-?
-current[0]
-:
-'Начало пути';
+  box.innerHTML = '';
 
-if(
-next
-){
 
-const previous=
-current
-?
-current[2]
-:
-0;
+  items.forEach(item=>{
 
-const percent=
-Math.min(
-100,
-Math.max(
-0,
-Math.round(
-(
-value-
-previous
-)/
-(
-next[2]-
-previous
-)*
-100
-)
-)
-);
+    const row =
+      document.createElement('div');
 
-$('heroBar')
-.style.width=
-percent+
-'%';
 
-$('heroText')
-.textContent=
+    row.className =
+      'history';
 
-achievementText(
-achievementType,
-value
-)+
-' / '+
-achievementText(
-achievementType,
-next[2]
-);
 
-$('heroNext')
-.textContent=
+    row.innerHTML = `
 
-'До «'+
-next[0]+
-'» осталось '+
-achievementText(
+      <div
+        style="
+          display:flex;
+          align-items:center;
+          gap:12px
+        "
+      >
 
-achievementType,
+        <div
+          style="
+            font-size:30px;
+            width:42px;
+            text-align:center
+          "
+        >
+          ${item.icon}
+        </div>
 
-Math.max(
-0,
-next[2]-
-value
-)
+        <div>
 
-);
+          <b>
+            ${item.name}
+          </b>
 
-}else{
+          <div class="muted">
+            ${item.value}
+          </div>
 
-$('heroBar')
-.style.width=
-'100%';
+        </div>
 
-$('heroText')
-.textContent=
-achievementText(
-achievementType,
-value
-);
+      </div>
 
-$('heroNext')
-.textContent=
-'Максимальный открытый ранг';
+    `;
+
+
+    box.appendChild(row);
+
+  });
 
 }
 
-const box=
-$('rankList');
 
-box.innerHTML='';
-
-list.forEach(
-(rank,index)=>{
-
-const done=
-value>=
-rank[2];
-
-const row=
-document.createElement(
-'div'
-);
-
-row.className=
-
-'rank '+
-(done?'done ':'')+
-(
-index===
-currentIndex
-?
-'current '
-:
-''
-)+
-(
-!done
-?
-'locked '
-:
-''
-)+
-(
-rank[3]
-?
-'secret-rank'
-:
-''
-);
-
-row.innerHTML=`
-
-<div class="rank-icon">
-${done?rank[1]:'🔒'}
-</div>
-
-<div class="rank-name">
-
-${rank[0]}
-
-${
-rank[3]
-?
-'<div class="muted" style="font-size:11px;margin-top:3px">Секретный ранг</div>'
-:
-''
-}
-
-</div>
-
-<b>
-${achievementText(
-achievementType,
-rank[2]
-)}
-</b>
-
-`;
-
-box.appendChild(
-row
-);
-
-}
-);
-
-if(
-!secretUnlocked(
-achievementType
-)
-){
-
-const secret=
-document.createElement(
-'div'
-);
-
-secret.className=
-'secret';
-
-secret.innerHTML=`
-
-<div style="font-size:36px">
-🔒
-</div>
-
-<b>
-Скрытые достижения
-</b>
-
-<div
-class="muted"
-style="margin-top:7px"
->
-
-Достигни максимального обычного ранга,
-чтобы открыть продолжение.
-
-</div>
-
-`;
-
-box.appendChild(
-secret
-);
-
-}
-
-}
-
-function checkSecret(
-type
-){
-
-if(
-secretUnlocked(type)
-){
-
-return false;
-
-}
-
-if(
-achievementValue(type)
-<
-FINAL_NORMAL[type]
-){
-
-return false;
-
-}
-
-secrets[type]=
-true;
-
-saveAll();
-
-$('secretTitle')
-.textContent=
-'Секретный путь: '+
-EXERCISES[
-type
-].name;
-
-$('secretPopup')
-.dataset.type=
-type;
-
-$('secretPopup')
-.classList.add(
-'show'
-);
-
-return true;
-
-}
-
-function checkRank(
-type
-){
-
-const value=
-achievementValue(
-type
-);
-
-let newest=
-null;
-
-RANKS[
-type
-]
-.forEach(
-(rank,index)=>{
-
-if(
-rank[3] &&
-!secretUnlocked(type)
-){
-
-return;
-
-}
-
-const id=
-type+
-'_'+
-index;
-
-if(
-value>=rank[2] &&
-!unlockedRanks.includes(id)
-){
-
-unlockedRanks.push(
-id
-);
-
-newest=
-rank;
-
-}
-
-}
-);
-
-saveAll();
-
-if(
-newest
-){
-
-$('rankPopupIcon')
-.textContent=
-newest[1];
-
-$('rankPopupName')
-.textContent=
-newest[0];
-
-$('rankPopupText')
-.textContent=
-'Новый уровень в категории «'+
-EXERCISES[
-type
-].name+
-'».';
-
-$('rankPopup')
-.classList.add(
-'show'
-);
-
-}
-
-}
-
-function checkProgress(
-type
-){
-
-if(
-!checkSecret(type)
-){
-
-checkRank(type);
-
-}
-
-}
-
-$('rankPopupClose')
-.onclick=()=>{
-
-$('rankPopup')
-.classList.remove(
-'show'
-);
-
-};
-
-$('secretPopupClose')
-.onclick=()=>{
-
-const type=
-
-$('secretPopup')
-.dataset.type
-||
-achievementType;
-
-$('secretPopup')
-.classList.remove(
-'show'
-);
-
-achievementType=
-type;
-
-showAchievements();
-
-};
-
-/* =========================
-   СТАРЫЙ ПРОГРЕСС
-========================= */
-
-ORDER.forEach(
-type=>{
-
-if(
-achievementValue(type)
->=
-FINAL_NORMAL[type]
-){
-
-secrets[type]=
-true;
-
-}
-
-}
-);
-
-saveAll();
-
-/* =========================
+/* --------------------
    ЗАПУСК
-========================= */
+-------------------- */
 
-buildBottomTabs();
 
-drawWarm();
+function bootFitCounter(){
 
-drawPlank();
+  try{
 
-showHome();
+    saveAll();
+
+    drawWarm();
+
+    drawPlank();
+
+    showHome();
+
+  }
+
+  catch(error){
+
+    console.error(
+      'FitCounter startup error:',
+      error
+    );
+
+
+    /*
+      Даже если Safari заблокировал JS
+      в предпросмотре файла,
+      календарь выше всё равно останется
+      видимым.
+    */
+
+    if($('summary')){
+
+      $('summary').textContent =
+        'Открой FitCounter через Safari после обновления GitHub Pages';
+
+    }
+
+  }
+
+}
+
+
+if(
+  document.readyState ===
+  'loading'
+){
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    bootFitCounter
+  );
+
+}
+
+else{
+
+  bootFitCounter();
+
+}
 
 </script>
 
