@@ -279,35 +279,39 @@ input{
   opacity:.48;
 }
 
+/* ЯРКАЯ МЯГКАЯ ДЫМКА */
+
 .day-chip.selected::before{
   content:"";
   position:absolute;
   z-index:-1;
   left:50%;
   top:49%;
-  width:128px;
-  height:148px;
+  width:160px;
+  height:185px;
   transform:translate(-50%,-50%);
   background:
     radial-gradient(
-      ellipse at 50% 43%,
-      rgba(68,151,255,.62) 0%,
-      rgba(54,132,248,.40) 18%,
-      rgba(43,109,220,.26) 34%,
-      rgba(34,87,185,.15) 49%,
-      rgba(27,65,135,.08) 61%,
-      rgba(20,45,92,.035) 72%,
-      rgba(9,12,17,0) 88%
+      ellipse at 50% 42%,
+      rgba(78,165,255,.90) 0%,
+      rgba(64,150,255,.72) 14%,
+      rgba(52,132,250,.55) 28%,
+      rgba(42,112,230,.38) 43%,
+      rgba(34,91,195,.24) 57%,
+      rgba(28,71,155,.13) 69%,
+      rgba(20,49,108,.06) 79%,
+      rgba(9,12,17,0) 92%
     );
-  filter:blur(20px);
+  filter:blur(24px);
   pointer-events:none;
 }
 
 .day-chip.selected .num{
-  color:#f5f9ff;
+  color:#ffffff;
   text-shadow:
-    0 0 10px rgba(90,170,255,.35),
-    0 0 24px rgba(60,135,255,.24);
+    0 0 10px rgba(130,200,255,.80),
+    0 0 22px rgba(90,170,255,.60),
+    0 0 38px rgba(55,135,255,.38);
 }
 
 .day-chip.selected .weekday{
@@ -619,7 +623,9 @@ input{
 <section id="homePage" class="page active">
 
   <div class="card warm">
+
     <div class="warmtop">
+
       <div>
         <b>🔥 Разминка</b>
         <div class="muted">
@@ -630,6 +636,7 @@ input{
       <div id="warmDisplay" class="warmtime">
         05:00
       </div>
+
     </div>
 
     <div class="bar">
@@ -646,12 +653,16 @@ input{
       style="display:none">
       ↻ Сбросить
     </button>
+
   </div>
 
   <div class="card">
 
     <div class="calendar-head">
-      <button id="calendarPrev">‹</button>
+
+      <button id="calendarPrev">
+        ‹
+      </button>
 
       <div
         id="calendarMonthTitle"
@@ -659,7 +670,10 @@ input{
         Август 2026
       </div>
 
-      <button id="calendarNext">›</button>
+      <button id="calendarNext">
+        ›
+      </button>
+
     </div>
 
     <div
@@ -683,6 +697,7 @@ input{
     </div>
 
     <div class="flex">
+
       <div class="category-name">
         Собственный вес
       </div>
@@ -690,6 +705,7 @@ input{
       <div class="category-sub">
         Отжимания • Подтягивания • Брусья • Приседания • Планка
       </div>
+
     </div>
 
     <div class="chev">
@@ -707,6 +723,7 @@ input{
     </div>
 
     <div class="flex">
+
       <div class="category-name">
         Железо
       </div>
@@ -714,6 +731,7 @@ input{
       <div class="category-sub">
         Гантели • Штанга
       </div>
+
     </div>
 
     <div class="chev">
@@ -737,9 +755,7 @@ input{
     <div class="stats">
 
       <div class="stat">
-        <span class="muted">
-          Сегодня
-        </span>
+        <span class="muted">Сегодня</span>
         <b id="exToday">0</b>
       </div>
 
@@ -864,30 +880,18 @@ input{
   <div class="stats">
 
     <div class="stat">
-      <span class="muted">
-        Сегодня
-      </span>
-      <b id="plankToday">
-        00:00
-      </b>
+      <span class="muted">Сегодня</span>
+      <b id="plankToday">00:00</b>
     </div>
 
     <div class="stat">
-      <span class="muted">
-        Рекорд
-      </span>
-      <b id="plankRecord">
-        00:00
-      </b>
+      <span class="muted">Рекорд</span>
+      <b id="plankRecord">00:00</b>
     </div>
 
     <div class="stat">
-      <span class="muted">
-        Всего
-      </span>
-      <b id="plankTotal">
-        00:00
-      </b>
+      <span class="muted">Всего</span>
+      <b id="plankTotal">00:00</b>
     </div>
 
   </div>
@@ -899,6 +903,7 @@ input{
       class="circle">
 
       <div>
+
         <div
           id="plankTimer"
           class="time">
@@ -908,6 +913,7 @@ input{
         <div class="muted">
           МИН : СЕК
         </div>
+
       </div>
 
     </div>
@@ -5186,7 +5192,7 @@ showAchievements();
 };
 
 
-/* ЕСЛИ СЕКРЕТНАЯ ВЕТКА УЖЕ БЫЛА ДО ОБНОВЛЕНИЯ */
+/* ЕСЛИ СЕКРЕТНАЯ ВЕТКА УЖЕ БЫЛА */
 
 ORDER.forEach(
   type => {
