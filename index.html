@@ -3,1290 +3,2644 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FitCounter">
+
 <meta name="theme-color" content="#090c11">
+
 <title>FitCounter</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+box-sizing:border-box;
+}
 
 :root{
-  --bg:#090c11;
-  --card:#171b23;
-  --card2:#202630;
-  --line:#303744;
-  --muted:#9099a8;
-  --blue:#2483ff;
-  --gold:#ffbd2e;
-  --green:#45d274;
+--bg:#090c11;
+--card:#171b23;
+--card2:#202630;
+--line:#303744;
+--muted:#9099a8;
+--blue:#2483ff;
+--gold:#ffbd2e;
+--green:#45d274;
 }
 
 body{
-  margin:0;
-  background:var(--bg);
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  padding-bottom:100px;
+margin:0;
+background:var(--bg);
+color:#fff;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+padding-bottom:100px;
 }
 
 header{
-  padding:52px 20px 18px;
+padding:52px 20px 18px;
 }
 
 h1{
-  margin:0;
-  font-size:36px;
-  letter-spacing:-1px;
+margin:0;
+font-size:36px;
+letter-spacing:-1px;
 }
 
-.subtitle,.muted{
-  color:var(--muted);
+.subtitle,
+.muted{
+color:var(--muted);
 }
 
 .subtitle{
-  margin-top:8px;
-  font-size:18px;
+margin-top:8px;
+font-size:18px;
 }
 
 .page{
-  display:none;
-  padding:0 14px 26px;
+display:none;
+padding:0 14px 26px;
 }
 
 .page.active{
-  display:block;
+display:block;
 }
 
 .card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:23px;
-  padding:18px;
-  margin-bottom:14px;
+background:var(--card);
+border:1px solid var(--line);
+border-radius:23px;
+padding:18px;
+margin-bottom:14px;
 }
 
 button{
-  border:0;
-  border-radius:14px;
-  padding:13px;
-  font-size:15px;
-  font-weight:700;
+border:0;
+border-radius:14px;
+padding:13px;
+font-size:15px;
+font-weight:700;
 }
 
 .primary{
-  width:100%;
-  margin-top:10px;
-  background:var(--blue);
-  color:#fff;
+width:100%;
+margin-top:10px;
+background:var(--blue);
+color:#fff;
 }
 
 .secondary{
-  width:100%;
-  margin-top:9px;
-  background:#272e38;
-  color:#fff;
+width:100%;
+margin-top:9px;
+background:#272e38;
+color:#fff;
 }
 
 .danger{
-  background:#47262b;
-  color:#ff8990;
-  padding:8px 10px;
-  font-size:13px;
+background:#47262b;
+color:#ff8990;
+padding:8px 10px;
+font-size:13px;
 }
 
-.flex{flex:1}
+.flex{
+flex:1;
+}
 
 .icon{
-  width:52px;
-  text-align:center;
-  font-size:35px;
+width:52px;
+text-align:center;
+font-size:35px;
 }
 
 .chev{
-  font-size:30px;
-  color:#6f7886;
+font-size:30px;
+color:#6f7886;
 }
 
 .exercise,
 .category-card{
-  display:flex;
-  align-items:center;
-  gap:15px;
-  cursor:pointer;
+display:flex;
+align-items:center;
+gap:15px;
+cursor:pointer;
 }
 
 .category-name{
-  font-size:21px;
-  font-weight:800;
+font-size:21px;
+font-weight:800;
 }
 
 .category-sub{
-  margin-top:4px;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.35;
+margin-top:4px;
+color:var(--muted);
+font-size:14px;
+line-height:1.35;
 }
 
 .empty{
-  text-align:center;
-  color:var(--muted);
-  padding:18px;
+text-align:center;
+color:var(--muted);
+padding:18px;
 }
 
-/* РАЗМИНКА */
+/* =====================
+   РАЗМИНКА
+===================== */
 
 .warm{
-  background:#191812;
-  border-color:#644713;
-  padding:20px;
+background:#191812;
+border-color:#644713;
+padding:20px;
 }
 
 .warmtop{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
 }
 
 .warmtop b{
-  font-size:20px;
+font-size:20px;
 }
 
 .warmtop .muted{
-  font-size:16px;
+font-size:16px;
 }
 
 .warmtime{
-  font-size:35px;
-  font-weight:800;
+font-size:35px;
+font-weight:800;
 }
 
 .bar{
-  height:10px;
-  background:#2c333d;
-  border-radius:20px;
-  overflow:hidden;
-  margin:16px 0;
+height:10px;
+background:#2c333d;
+border-radius:20px;
+overflow:hidden;
+margin:16px 0;
 }
 
 .bar span{
-  display:block;
-  height:100%;
-  background:var(--blue);
-  border-radius:20px;
+display:block;
+height:100%;
+background:var(--blue);
+border-radius:20px;
 }
 
 .warm .bar span{
-  background:var(--gold);
+background:var(--gold);
 }
 
 .warm .primary{
-  min-height:58px;
-  font-size:18px;
-  border-radius:17px;
+min-height:58px;
+font-size:18px;
+border-radius:17px;
 }
 
-/* КАЛЕНДАРЬ */
+/* =====================
+   КАЛЕНДАРЬ
+===================== */
 
 .calendar-card{
-  padding:16px 18px 19px;
-  overflow:hidden;
+padding:16px 18px 19px;
+overflow:hidden;
 }
 
 .calendar-head{
-  display:grid;
-  grid-template-columns:48px 1fr 48px;
-  align-items:center;
-  gap:8px;
-  margin-bottom:15px;
+display:grid;
+grid-template-columns:48px 1fr 48px;
+align-items:center;
+gap:8px;
+margin-bottom:15px;
 }
 
 .calendar-head button{
-  width:46px;
-  height:46px;
-  padding:0;
-  background:#222936;
-  color:#fff;
-  font-size:27px;
-  border-radius:15px;
+width:46px;
+height:46px;
+padding:0;
+background:#222936;
+color:#fff;
+font-size:27px;
+border-radius:15px;
 }
 
 .month-title{
-  text-align:center;
-  font-size:21px;
-  font-weight:800;
-  text-transform:capitalize;
+text-align:center;
+font-size:21px;
+font-weight:800;
+text-transform:capitalize;
 }
 
 .month-strip{
-  display:flex;
-  gap:0;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  padding:8px 0 31px;
-  margin:0 -7px;
-  scrollbar-width:none;
+display:flex;
+gap:0;
+overflow-x:auto;
+scroll-snap-type:x mandatory;
+padding:8px 0 31px;
+margin:0 -7px;
+scrollbar-width:none;
 }
 
 .month-strip::-webkit-scrollbar{
-  display:none;
+display:none;
 }
 
 .day-chip{
-  flex:0 0 calc(100% / 7);
-  min-width:calc(100% / 7);
-  min-height:82px;
-  position:relative;
-  isolation:isolate;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  scroll-snap-align:center;
-  cursor:pointer;
+flex:0 0 calc(100% / 7);
+min-width:calc(100% / 7);
+min-height:82px;
+position:relative;
+isolation:isolate;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:8px;
+
+scroll-snap-align:center;
+
+cursor:pointer;
 }
 
 .day-chip .num{
-  position:relative;
-  z-index:2;
-  font-size:22px;
-  font-weight:800;
-  color:#d9dde4;
+position:relative;
+z-index:2;
+font-size:22px;
+font-weight:800;
+color:#d9dde4;
 }
 
 .day-chip .weekday{
-  position:relative;
-  z-index:2;
-  font-size:12px;
-  color:#7f8794;
+position:relative;
+z-index:2;
+font-size:12px;
+color:#7f8794;
 }
 
 .day-chip.no-activity:not(.selected){
-  opacity:.58;
+opacity:.58;
 }
-
-/* ВЫДЕЛЕНИЕ КАК НА СКРИНЕ */
 
 .day-chip.selected{
-  opacity:1;
+opacity:1;
 }
 
+/* дымка выбранного дня */
+
 .day-chip.selected::before{
-  content:"";
-  position:absolute;
-  z-index:0;
-  left:50%;
-  top:42%;
-  width:88px;
-  height:104px;
-  transform:translate(-50%,-50%);
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(35,130,255,.95) 0%,
-      rgba(35,130,255,.78) 16%,
-      rgba(34,122,245,.54) 31%,
-      rgba(31,101,213,.32) 46%,
-      rgba(26,76,164,.17) 59%,
-      rgba(21,56,120,.08) 70%,
-      rgba(9,12,17,0) 86%
-    );
-  filter:blur(11px);
-  pointer-events:none;
+content:"";
+
+position:absolute;
+z-index:0;
+
+left:50%;
+top:42%;
+
+width:88px;
+height:104px;
+
+transform:translate(-50%,-50%);
+
+background:
+radial-gradient(
+ellipse at center,
+
+rgba(35,130,255,.95) 0%,
+rgba(35,130,255,.78) 16%,
+rgba(34,122,245,.54) 31%,
+rgba(31,101,213,.32) 46%,
+rgba(26,76,164,.17) 59%,
+rgba(21,56,120,.08) 70%,
+rgba(9,12,17,0) 86%
+
+);
+
+filter:blur(11px);
+
+pointer-events:none;
 }
 
 .day-chip.selected::after{
-  content:"";
-  position:absolute;
-  z-index:1;
-  left:50%;
-  top:41%;
-  width:43px;
-  height:55px;
-  transform:translate(-50%,-50%);
-  background:
-    radial-gradient(
-      ellipse,
-      rgba(40,137,255,.72) 0%,
-      rgba(38,128,255,.35) 45%,
-      rgba(38,128,255,0) 78%
-    );
-  filter:blur(8px);
-  pointer-events:none;
+content:"";
+
+position:absolute;
+z-index:1;
+
+left:50%;
+top:41%;
+
+width:43px;
+height:55px;
+
+transform:translate(-50%,-50%);
+
+background:
+radial-gradient(
+ellipse,
+
+rgba(40,137,255,.72) 0%,
+rgba(38,128,255,.35) 45%,
+rgba(38,128,255,0) 78%
+
+);
+
+filter:blur(8px);
+
+pointer-events:none;
 }
 
 .day-chip.selected .num{
-  color:#fff;
-  text-shadow:
-    0 0 7px rgba(175,220,255,.85),
-    0 0 17px rgba(70,155,255,.72),
-    0 0 31px rgba(35,120,255,.48);
+color:#fff;
+
+text-shadow:
+0 0 7px rgba(175,220,255,.85),
+0 0 17px rgba(70,155,255,.72),
+0 0 31px rgba(35,120,255,.48);
 }
 
 .day-chip.selected .weekday{
-  color:#d3e6ff;
-  text-shadow:0 0 10px rgba(60,140,255,.45);
+color:#d3e6ff;
+text-shadow:
+0 0 10px rgba(60,140,255,.45);
 }
 
 .calendar-summary{
-  min-height:22px;
-  color:#a3aab6;
-  font-size:14px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+min-height:22px;
+color:#a3aab6;
+font-size:14px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
-/* СТАТИСТИКА */
+/* =====================
+   СТАТИСТИКА
+===================== */
 
 .stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
 }
 
 .stat{
-  background:var(--card2);
-  border-radius:15px;
-  padding:12px 4px;
-  text-align:center;
+background:var(--card2);
+border-radius:15px;
+padding:12px 4px;
+text-align:center;
 }
 
 .stat b{
-  display:block;
-  margin-top:5px;
-  font-size:19px;
+display:block;
+margin-top:5px;
+font-size:19px;
 }
 
-/* ПОДХОДЫ */
+/* =====================
+   ПОДХОДЫ
+===================== */
 
 input{
-  width:100%;
-  border:0;
-  outline:0;
-  border-radius:12px;
-  background:#272d37;
-  color:#fff;
-  padding:10px 6px;
-  text-align:center;
-  font-size:18px;
+width:100%;
+border:0;
+outline:0;
+
+border-radius:12px;
+
+background:#272d37;
+color:#fff;
+
+padding:10px 6px;
+
+text-align:center;
+font-size:18px;
 }
 
 .set-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px;
 }
 
 .set-row{
-  display:grid;
-  grid-template-columns:1fr 90px 44px;
-  gap:8px;
-  align-items:center;
-  margin:10px 0;
+display:grid;
+grid-template-columns:1fr 90px 44px;
+gap:8px;
+align-items:center;
+margin:10px 0;
 }
 
 .set-row.weighted{
-  grid-template-columns:1fr 72px 72px 42px;
+grid-template-columns:1fr 72px 72px 42px;
 }
 
 .field-label{
-  text-align:center;
-  color:var(--muted);
-  font-size:10px;
-  margin-bottom:3px;
+text-align:center;
+color:var(--muted);
+font-size:10px;
+margin-bottom:3px;
 }
 
 .set-done{
-  padding:10px 0;
-  background:#24352c;
-  color:#65dd8c;
-  font-size:18px;
+padding:10px 0;
+background:#24352c;
+color:#65dd8c;
+font-size:18px;
 }
 
 .set-done.done{
-  background:#2e7047;
+background:#2e7047;
 }
 
-/* ОТДЫХ */
+/* =====================
+   ОТДЫХ
+===================== */
 
 .rest-card{
-  border-color:#30445f;
+border-color:#30445f;
 }
 
 .rest-display{
-  text-align:center;
-  font-size:48px;
-  font-weight:300;
-  margin:17px 0 10px;
+text-align:center;
+font-size:48px;
+font-weight:300;
+margin:17px 0 10px;
 }
 
 .rest-display.running{
-  color:#69adff;
+color:#69adff;
 }
 
 .rest-controls{
-  display:grid;
-  grid-template-columns:1fr 1.3fr 1fr;
-  gap:8px;
+display:grid;
+grid-template-columns:1fr 1.3fr 1fr;
+gap:8px;
 }
 
 .rest-controls button{
-  background:#272e38;
-  color:#fff;
+background:#272e38;
+color:#fff;
 }
 
 .rest-controls .main{
-  background:var(--blue);
+background:var(--blue);
 }
 
 .auto-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:15px;
-  color:var(--muted);
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:15px;
+color:var(--muted);
 }
 
 .switch{
-  width:48px;
-  height:29px;
-  padding:3px;
-  border-radius:20px;
-  background:#343b46;
+width:48px;
+height:29px;
+
+padding:3px;
+
+border-radius:20px;
+
+background:#343b46;
 }
 
 .switch span{
-  display:block;
-  width:23px;
-  height:23px;
-  border-radius:50%;
-  background:#fff;
-  transition:.2s;
+display:block;
+
+width:23px;
+height:23px;
+
+border-radius:50%;
+
+background:#fff;
+
+transition:.2s;
 }
 
 .switch.on{
-  background:var(--blue);
+background:var(--blue);
 }
 
 .switch.on span{
-  transform:translateX(19px);
+transform:translateX(19px);
 }
 
-/* ИСТОРИЯ */
+/* =====================
+   ИСТОРИЯ
+===================== */
 
 .history{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:11px 0;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+gap:10px;
+
+padding:11px 0;
 }
 
 .history+.history{
-  border-top:1px solid var(--line);
+border-top:1px solid var(--line);
 }
 
-/* ПЛАНКА */
+/* =====================
+   ПЛАНКА
+===================== */
 
 .timer{
-  text-align:center;
-  padding:20px 0;
+text-align:center;
+padding:20px 0;
 }
 
 .circle{
-  width:235px;
-  height:235px;
-  max-width:75vw;
-  max-height:75vw;
-  border-radius:50%;
-  border:8px solid #232a34;
-  margin:0 auto 20px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+width:235px;
+height:235px;
+
+max-width:75vw;
+max-height:75vw;
+
+border-radius:50%;
+border:8px solid #232a34;
+
+margin:0 auto 20px;
+
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
 .circle.running{
-  border-color:var(--blue);
+border-color:var(--blue);
 }
 
 .time{
-  font-size:54px;
-  font-weight:300;
+font-size:54px;
+font-weight:300;
 }
 
-/* ДОСТИЖЕНИЯ */
+/* =====================
+   ДОСТИЖЕНИЯ
+===================== */
 
 .ach-tabs{
-  display:flex;
-  gap:7px;
-  overflow-x:auto;
-  padding-bottom:10px;
-  scrollbar-width:none;
+display:flex;
+gap:7px;
+overflow-x:auto;
+padding-bottom:10px;
+scrollbar-width:none;
 }
 
 .ach-tabs::-webkit-scrollbar{
-  display:none;
+display:none;
 }
 
 .ach-tabs button{
-  flex:none;
-  background:#242a34;
-  color:#c7ccd4;
-  padding:9px 13px;
-  font-size:13px;
+flex:none;
+
+background:#242a34;
+color:#c7ccd4;
+
+padding:9px 13px;
+
+font-size:13px;
 }
 
 .ach-tabs button.active{
-  background:var(--blue);
-  color:#fff;
+background:var(--blue);
+color:#fff;
 }
 
 .hero{
-  text-align:center;
+text-align:center;
 }
 
 .hero-icon{
-  font-size:54px;
+font-size:54px;
 }
 
 .hero-name{
-  font-size:29px;
-  font-weight:800;
-  margin:5px;
+font-size:29px;
+font-weight:800;
+margin:5px;
 }
 
 .rank{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:14px;
-  margin-bottom:9px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:var(--card);
+display:flex;
+align-items:center;
+
+gap:12px;
+
+padding:14px;
+
+margin-bottom:9px;
+
+border:1px solid var(--line);
+border-radius:16px;
+
+background:var(--card);
 }
 
 .rank.done{
-  border-color:#2f7549;
+border-color:#2f7549;
 }
 
 .rank.current{
-  border-color:var(--blue);
+border-color:var(--blue);
 }
 
 .rank.locked{
-  opacity:.55;
+opacity:.55;
 }
 
 .rank.secret-rank{
-  border-color:#593e82;
-  background:linear-gradient(135deg,#181923,#21172e);
+border-color:#593e82;
+background:
+linear-gradient(
+135deg,
+#181923,
+#21172e
+);
 }
 
 .rank-icon{
-  width:36px;
-  text-align:center;
-  font-size:25px;
+width:36px;
+text-align:center;
+font-size:25px;
 }
 
 .rank-name{
-  flex:1;
-  font-weight:700;
+flex:1;
+font-weight:700;
 }
 
 .secret{
-  border:1px dashed #555e6c;
-  border-radius:18px;
-  padding:20px;
-  text-align:center;
-  color:#b1b7c1;
+border:1px dashed #555e6c;
+
+border-radius:18px;
+
+padding:20px;
+
+text-align:center;
+
+color:#b1b7c1;
 }
 
-/* POPUP */
+/* =====================
+   POPUPS
+===================== */
 
 .overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.78);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  z-index:999;
+position:fixed;
+inset:0;
+
+background:rgba(0,0,0,.78);
+
+display:none;
+align-items:center;
+justify-content:center;
+
+padding:24px;
+
+z-index:999;
 }
 
 .overlay.show{
-  display:flex;
+display:flex;
 }
 
 .popup{
-  width:100%;
-  max-width:355px;
-  background:#181e27;
-  border:1px solid var(--line);
-  border-radius:25px;
-  padding:24px;
-  text-align:center;
+width:100%;
+max-width:355px;
+
+background:#181e27;
+
+border:1px solid var(--line);
+border-radius:25px;
+
+padding:24px;
+
+text-align:center;
 }
 
 .popup-icon{
-  font-size:62px;
+font-size:62px;
 }
 
-/* НИЖНЕЕ МЕНЮ */
+/* =====================
+   НИЖНЕЕ МЕНЮ
+===================== */
 
 .tabs{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  display:flex;
-  background:#171b23;
-  border-top:1px solid var(--line);
-  padding:8px 0 calc(18px + env(safe-area-inset-bottom));
-  z-index:100;
+position:fixed;
+
+left:0;
+right:0;
+bottom:0;
+
+display:flex;
+
+background:#171b23;
+
+border-top:1px solid var(--line);
+
+padding:
+8px
+0
+calc(18px + env(safe-area-inset-bottom));
+
+z-index:100;
 }
 
 .tab{
-  flex:1;
-  text-align:center;
-  color:#848c9a;
-  font-size:10px;
-  padding:4px 1px;
+flex:1;
+
+text-align:center;
+
+color:#848c9a;
+
+font-size:10px;
+
+padding:4px 1px;
 }
 
 .tab.active{
-  color:var(--blue);
+color:var(--blue);
 }
 
 .tab span{
-  display:block;
-  font-size:21px;
-  margin-bottom:3px;
+display:block;
+font-size:21px;
+margin-bottom:3px;
 }
+
 </style>
 </head>
 
 <body>
 
 <header>
-<h1 id="title">FitCounter</h1>
-<div id="subtitle" class="subtitle">Твой прогресс каждый день 💪</div>
+
+<h1 id="title">
+FitCounter
+</h1>
+
+<div
+id="subtitle"
+class="subtitle">
+Твой прогресс каждый день 💪
+</div>
+
 </header>
 
-<section id="homePage" class="page active">
+
+<!-- =====================
+     ГЛАВНАЯ
+===================== -->
+
+<section
+id="homePage"
+class="page active">
+
 
 <div class="card warm">
-  <div class="warmtop">
-    <div>
-      <b>🔥 Разминка</b>
-      <div class="muted">5 минут перед тренировкой</div>
-    </div>
-    <div id="warmDisplay" class="warmtime">05:00</div>
-  </div>
 
-  <div class="bar">
-    <span id="warmBar" style="width:100%"></span>
-  </div>
+<div class="warmtop">
 
-  <button id="warmBtn" class="primary">▶ Начать разминку</button>
-  <button id="warmReset" class="secondary" style="display:none">↻ Сбросить</button>
+<div>
+
+<b>
+🔥 Разминка
+</b>
+
+<div class="muted">
+5 минут перед тренировкой
 </div>
+
+</div>
+
+
+<div
+id="warmDisplay"
+class="warmtime">
+05:00
+</div>
+
+</div>
+
+
+<div class="bar">
+
+<span
+id="warmBar"
+style="width:100%">
+</span>
+
+</div>
+
+
+<button
+id="warmBtn"
+class="primary">
+▶ Начать разминку
+</button>
+
+
+<button
+id="warmReset"
+class="secondary"
+style="display:none">
+↻ Сбросить
+</button>
+
+</div>
+
+
+<!-- КАЛЕНДАРЬ -->
 
 <div class="card calendar-card">
 
-  <div class="calendar-head">
-    <button id="calendarPrev">‹</button>
-    <div id="calendarMonthTitle" class="month-title"></div>
-    <button id="calendarNext">›</button>
-  </div>
+<div class="calendar-head">
 
-  <div id="monthStrip" class="month-strip"></div>
+<button id="calendarPrev">
+‹
+</button>
 
-  <div id="calendarSummary" class="calendar-summary"></div>
+<div
+id="calendarMonthTitle"
+class="month-title">
+</div>
+
+<button id="calendarNext">
+›
+</button>
 
 </div>
 
-<div class="card category-card" id="bodyweightCard">
-  <div class="icon">💪</div>
 
-  <div class="flex">
-    <div class="category-name">Собственный вес</div>
-    <div class="category-sub">
-      Отжимания • Подтягивания • Брусья • Приседания • Планка
-    </div>
-  </div>
-
-  <div class="chev">›</div>
+<div
+id="monthStrip"
+class="month-strip">
 </div>
 
-<div class="card category-card" id="ironCard">
-  <div class="icon">🏋️</div>
 
-  <div class="flex">
-    <div class="category-name">Железо</div>
-    <div class="category-sub">
-      Гантели • Штанга
-    </div>
-  </div>
-
-  <div class="chev">›</div>
+<div
+id="calendarSummary"
+class="calendar-summary">
 </div>
-
-</section>
-
-<section id="categoryPage" class="page">
-<div id="categoryList"></div>
-</section>
-
-<section id="exercisePage" class="page">
-
-<div class="card">
-  <h2 id="exerciseTitle"></h2>
-
-  <div class="stats">
-    <div class="stat">
-      <span class="muted">Сегодня</span>
-      <b id="exToday">0</b>
-    </div>
-
-    <div class="stat">
-      <span id="totalLabel" class="muted">Всего</span>
-      <b id="exTotal">0</b>
-    </div>
-
-    <div class="stat">
-      <span id="bestLabel" class="muted">Лучший день</span>
-      <b id="exBest">0</b>
-    </div>
-  </div>
-</div>
-
-<div class="card rest-card">
-
-  <b>⏱ Отдых между подходами</b>
-
-  <div id="restDisplay" class="rest-display">01:30</div>
-
-  <div class="rest-controls">
-    <button id="minusRest">−15 сек</button>
-    <button id="restBtn" class="main">▶ Старт</button>
-    <button id="plusRest">+15 сек</button>
-  </div>
-
-  <button id="resetRest" class="secondary">↻ Сбросить</button>
-
-  <div class="auto-row">
-    <span>Автостарт после подхода</span>
-    <div id="autoSwitch" class="switch"><span></span></div>
-  </div>
 
 </div>
 
-<div class="card">
 
-  <div class="set-head">
-    <b>Подходы</b>
-    <b>
-      <span id="liveLabel">Сейчас</span>:
-      <span id="liveTotal">0</span>
-    </b>
-  </div>
+<!-- СОБСТВЕННЫЙ ВЕС -->
 
-  <div id="sets"></div>
+<div
+class="card category-card"
+id="bodyweightCard">
 
-  <button id="addSet" class="secondary">＋ Добавить подход</button>
-  <button id="saveWorkout" class="primary">Сохранить тренировку</button>
+<div class="icon">
+💪
+</div>
+
+
+<div class="flex">
+
+<div class="category-name">
+Собственный вес
+</div>
+
+<div class="category-sub">
+Отжимания • Подтягивания • Брусья • Приседания • Планка
+</div>
 
 </div>
 
-<div class="card">
-  <h3>История</h3>
-  <div id="exerciseHistory"></div>
+
+<div class="chev">
+›
+</div>
+
+</div>
+
+
+<!-- ЖЕЛЕЗО -->
+
+<div
+class="card category-card"
+id="ironCard">
+
+<div class="icon">
+🏋️
+</div>
+
+
+<div class="flex">
+
+<div class="category-name">
+Железо
+</div>
+
+<div class="category-sub">
+Гантели • Штанга
+</div>
+
+</div>
+
+
+<div class="chev">
+›
+</div>
+
 </div>
 
 </section>
 
-<section id="plankPage" class="page">
+
+<!-- =====================
+     КАТЕГОРИЯ
+===================== -->
+
+<section
+id="categoryPage"
+class="page">
+
+<div id="categoryList">
+</div>
+
+</section>
+
+
+<!-- =====================
+     УПРАЖНЕНИЕ
+===================== -->
+
+<section
+id="exercisePage"
+class="page">
+
+
+<div class="card">
+
+<h2 id="exerciseTitle">
+</h2>
+
 
 <div class="stats">
 
-  <div class="stat">
-    <span class="muted">Сегодня</span>
-    <b id="plankToday">00:00</b>
-  </div>
+<div class="stat">
 
-  <div class="stat">
-    <span class="muted">Рекорд</span>
-    <b id="plankRecord">00:00</b>
-  </div>
+<span class="muted">
+Сегодня
+</span>
 
-  <div class="stat">
-    <span class="muted">Всего</span>
-    <b id="plankTotal">00:00</b>
-  </div>
+<b id="exToday">
+0
+</b>
 
 </div>
+
+
+<div class="stat">
+
+<span
+id="totalLabel"
+class="muted">
+Всего
+</span>
+
+<b id="exTotal">
+0
+</b>
+
+</div>
+
+
+<div class="stat">
+
+<span
+id="bestLabel"
+class="muted">
+Лучший день
+</span>
+
+<b id="exBest">
+0
+</b>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ОТДЫХ -->
+
+<div class="card rest-card">
+
+<b>
+⏱ Отдых между подходами
+</b>
+
+
+<div
+id="restDisplay"
+class="rest-display">
+01:30
+</div>
+
+
+<div class="rest-controls">
+
+<button id="minusRest">
+−15 сек
+</button>
+
+<button
+id="restBtn"
+class="main">
+▶ Старт
+</button>
+
+<button id="plusRest">
++15 сек
+</button>
+
+</div>
+
+
+<button
+id="resetRest"
+class="secondary">
+↻ Сбросить
+</button>
+
+
+<div class="auto-row">
+
+<span>
+Автостарт после подхода
+</span>
+
+
+<div
+id="autoSwitch"
+class="switch">
+
+<span>
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ПОДХОДЫ -->
+
+<div class="card">
+
+<div class="set-head">
+
+<b>
+Подходы
+</b>
+
+<b>
+
+<span id="liveLabel">
+Сейчас
+</span>
+
+:
+
+<span id="liveTotal">
+0
+</span>
+
+</b>
+
+</div>
+
+
+<div id="sets">
+</div>
+
+
+<button
+id="addSet"
+class="secondary">
+＋ Добавить подход
+</button>
+
+
+<button
+id="saveWorkout"
+class="primary">
+Сохранить тренировку
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h3>
+История
+</h3>
+
+<div id="exerciseHistory">
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================
+     ПЛАНКА
+===================== -->
+
+<section
+id="plankPage"
+class="page">
+
+
+<div class="stats">
+
+<div class="stat">
+
+<span class="muted">
+Сегодня
+</span>
+
+<b id="plankToday">
+00:00
+</b>
+
+</div>
+
+
+<div class="stat">
+
+<span class="muted">
+Рекорд
+</span>
+
+<b id="plankRecord">
+00:00
+</b>
+
+</div>
+
+
+<div class="stat">
+
+<span class="muted">
+Всего
+</span>
+
+<b id="plankTotal">
+00:00
+</b>
+
+</div>
+
+</div>
+
 
 <div class="timer">
 
-  <div id="plankCircle" class="circle">
-    <div>
-      <div id="plankTimer" class="time">00:00</div>
-      <div class="muted">МИН : СЕК</div>
-    </div>
-  </div>
+<div
+id="plankCircle"
+class="circle">
 
-  <button id="plankBtn" class="primary">▶ Начать</button>
-  <button id="savePlankBtn" class="secondary" style="display:none">
-    Завершить и сохранить
-  </button>
-  <button id="resetPlankBtn" class="secondary">Сбросить</button>
+<div>
+
+<div
+id="plankTimer"
+class="time">
+00:00
+</div>
+
+<div class="muted">
+МИН : СЕК
+</div>
 
 </div>
 
+</div>
+
+
+<button
+id="plankBtn"
+class="primary">
+▶ Начать
+</button>
+
+
+<button
+id="savePlankBtn"
+class="secondary"
+style="display:none">
+Завершить и сохранить
+</button>
+
+
+<button
+id="resetPlankBtn"
+class="secondary">
+Сбросить
+</button>
+
+</div>
+
+
 <div class="card">
-  <h3>История</h3>
-  <div id="plankHistory"></div>
+
+<h3>
+История
+</h3>
+
+<div id="plankHistory">
+</div>
+
 </div>
 
 </section>
 
-<section id="achievementsPage" class="page">
 
-<div id="achievementTabs" class="ach-tabs"></div>
+<!-- =====================
+     ДОСТИЖЕНИЯ
+===================== -->
+
+<section
+id="achievementsPage"
+class="page">
+
+
+<div
+id="achievementTabs"
+class="ach-tabs">
+</div>
+
 
 <div class="card hero">
 
-  <div class="muted">Текущий ранг</div>
+<div class="muted">
+Текущий ранг
+</div>
 
-  <div id="heroIcon" class="hero-icon">🌱</div>
 
-  <div id="heroName" class="hero-name">
-    Начало пути
-  </div>
+<div
+id="heroIcon"
+class="hero-icon">
+🌱
+</div>
 
-  <div id="heroText">0</div>
 
-  <div class="bar">
-    <span id="heroBar" style="width:0%"></span>
-  </div>
+<div
+id="heroName"
+class="hero-name">
+Начало пути
+</div>
 
-  <div id="heroNext" class="muted"></div>
+
+<div id="heroText">
+0
+</div>
+
+
+<div class="bar">
+
+<span
+id="heroBar"
+style="width:0%">
+</span>
 
 </div>
 
-<div id="rankList"></div>
+
+<div
+id="heroNext"
+class="muted">
+</div>
+
+</div>
+
+
+<div id="rankList">
+</div>
 
 </section>
 
+
+<!-- =====================
+     НИЖНЕЕ МЕНЮ
+===================== -->
+
 <nav class="tabs">
 
-<div class="tab active" data-tab="home">
-  <span>🏠</span>
-  Главная
+
+<div
+class="tab active"
+data-tab="home">
+
+<span>
+🏠
+</span>
+
+Главная
+
 </div>
 
-<div class="tab" data-tab="body">
-  <span>💪</span>
-  Свой вес
+
+<div
+class="tab"
+data-tab="body">
+
+<span>
+💪
+</span>
+
+Свой вес
+
 </div>
 
-<div class="tab" data-tab="iron">
-  <span>🏋️</span>
-  Железо
+
+<div
+class="tab"
+data-tab="iron">
+
+<span>
+🏋️
+</span>
+
+Железо
+
 </div>
 
-<div class="tab" data-tab="ach">
-  <span>🏆</span>
-  Достижения
+
+<div
+class="tab"
+data-tab="ach">
+
+<span>
+🏆
+</span>
+
+Достижения
+
 </div>
 
 </nav>
 
-<div id="warmPopup" class="overlay">
+
+<!-- =====================
+     POPUPS
+===================== -->
+
+<div
+id="warmPopup"
+class="overlay">
+
 <div class="popup">
-  <div class="popup-icon">🔥</div>
-  <h2>Разминка завершена!</h2>
-  <p class="muted">Можно начинать тренировку 💪</p>
-  <button id="warmPopupClose" class="primary">Начать тренировку</button>
-</div>
+
+<div class="popup-icon">
+🔥
 </div>
 
-<div id="restPopup" class="overlay">
-<div class="popup">
-  <div class="popup-icon">⏱️</div>
-  <h2>Отдых закончен!</h2>
-  <p class="muted">Следующий подход 💪</p>
-  <button id="restPopupClose" class="primary">Готов</button>
-</div>
+<h2>
+Разминка завершена!
+</h2>
+
+<p class="muted">
+Можно начинать тренировку 💪
+</p>
+
+<button
+id="warmPopupClose"
+class="primary">
+Начать тренировку
+</button>
+
 </div>
 
-<div id="rankPopup" class="overlay">
-<div class="popup">
-  <div id="rankPopupIcon" class="popup-icon">🏆</div>
-  <h2>Новый ранг!</h2>
-  <h2 id="rankPopupName"></h2>
-  <p id="rankPopupText" class="muted"></p>
-  <button id="rankPopupClose" class="primary">Продолжить</button>
-</div>
 </div>
 
-<div id="secretPopup" class="overlay">
+
+<div
+id="restPopup"
+class="overlay">
+
 <div class="popup">
-  <div class="popup-icon">🌌</div>
-  <h2>Ты думал, что это конец?</h2>
-  <h2 id="secretTitle">Секретный путь открыт</h2>
-  <p class="muted">Открыты скрытые достижения.</p>
-  <button id="secretPopupClose" class="primary">Открыть</button>
+
+<div class="popup-icon">
+⏱️
 </div>
+
+<h2>
+Отдых закончен!
+</h2>
+
+<p class="muted">
+Следующий подход 💪
+</p>
+
+<button
+id="restPopupClose"
+class="primary">
+Готов
+</button>
+
 </div>
+
+</div>
+
+
+<div
+id="rankPopup"
+class="overlay">
+
+<div class="popup">
+
+<div
+id="rankPopupIcon"
+class="popup-icon">
+🏆
+</div>
+
+<h2>
+Новый ранг!
+</h2>
+
+<h2 id="rankPopupName">
+</h2>
+
+<p
+id="rankPopupText"
+class="muted">
+</p>
+
+<button
+id="rankPopupClose"
+class="primary">
+Продолжить
+</button>
+
+</div>
+
+</div>
+
+
+<div
+id="secretPopup"
+class="overlay">
+
+<div class="popup">
+
+<div class="popup-icon">
+🌌
+</div>
+
+<h2>
+Ты думал, что это конец?
+</h2>
+
+<h2 id="secretTitle">
+Секретный путь открыт
+</h2>
+
+<p class="muted">
+Открыты скрытые достижения.
+</p>
+
+<button
+id="secretPopupClose"
+class="primary">
+Открыть
+</button>
+
+</div>
+
+</div>
+
 
 <script>
 
-const $=id=>document.getElementById(id);
+/* =====================
+   ОСНОВА
+===================== */
 
-const EXERCISES={
-  pushups:{name:'Отжимания',icon:'💪',kind:'reps',rest:90,group:'body'},
-  squats:{name:'Приседания',icon:'🏋️',kind:'reps',rest:90,group:'body'},
-  pullups:{name:'Подтягивания',icon:'🧗',kind:'reps',rest:120,group:'body'},
-  dips:{name:'Брусья',icon:'🤸',kind:'reps',rest:120,group:'body'},
-  dumbbells:{name:'Гантели',icon:'🏋️',kind:'weight',rest:120,multiplier:2,group:'iron'},
-  barbell:{name:'Штанга',icon:'🏋️‍♂️',kind:'weight',rest:180,multiplier:1,group:'iron'},
-  plank:{name:'Планка',icon:'⏱️',kind:'time',group:'body'}
+const $ =
+id =>
+document.getElementById(id);
+
+
+const EXERCISES = {
+
+pushups:{
+name:'Отжимания',
+icon:'💪',
+kind:'reps',
+rest:90,
+group:'body'
+},
+
+squats:{
+name:'Приседания',
+icon:'🏋️',
+kind:'reps',
+rest:90,
+group:'body'
+},
+
+pullups:{
+name:'Подтягивания',
+icon:'🧗',
+kind:'reps',
+rest:120,
+group:'body'
+},
+
+dips:{
+name:'Брусья',
+icon:'🤸',
+kind:'reps',
+rest:120,
+group:'body'
+},
+
+dumbbells:{
+name:'Гантели',
+icon:'🏋️',
+kind:'weight',
+rest:120,
+multiplier:2,
+group:'iron'
+},
+
+barbell:{
+name:'Штанга',
+icon:'🏋️‍♂️',
+kind:'weight',
+rest:180,
+multiplier:1,
+group:'iron'
+},
+
+plank:{
+name:'Планка',
+icon:'⏱️',
+kind:'time',
+group:'body'
+}
+
 };
 
-const ORDER=[
-  'pushups',
-  'squats',
-  'pullups',
-  'dips',
-  'dumbbells',
-  'barbell',
-  'plank'
+
+const ORDER = [
+
+'pushups',
+'squats',
+'pullups',
+'dips',
+'dumbbells',
+'barbell',
+'plank'
+
 ];
 
-const GROUPS={
-  body:[
-    'pushups',
-    'pullups',
-    'dips',
-    'squats',
-    'plank'
-  ],
-  iron:[
-    'dumbbells',
-    'barbell'
-  ]
+
+const GROUPS = {
+
+body:[
+
+'pushups',
+'pullups',
+'dips',
+'squats',
+'plank'
+
+],
+
+iron:[
+
+'dumbbells',
+'barbell'
+
+]
+
 };
 
-const DATA_KEY='fitcounter_v11';
-const PLANK_KEY='fitcounter_plank_v8';
-const REST_KEY='fitcounter_rest_v2';
-const SECRET_KEY='fitcounter_secrets_v4';
-const RANK_KEY='fitcounter_ranks_v4';
 
-let data=JSON.parse(
-  localStorage.getItem(DATA_KEY)||
-  localStorage.getItem('fitcounter_v10')||
-  localStorage.getItem('fitcounter_v9')||
-  localStorage.getItem('fitcounter_v8')||
-  localStorage.getItem('fitcounter_v7')||
-  localStorage.getItem('fitcounter_v6')||
-  localStorage.getItem('fitcounter_v5')||
-  localStorage.getItem('fitcounter_v4')||
-  localStorage.getItem('fitcounter_v3')||
-  localStorage.getItem('fitcounter_v2')||
-  localStorage.getItem('fitcounter_v1')||
-  '[]'
-);
+/* =====================
+   ХРАНЕНИЕ
+===================== */
 
-let plankData=JSON.parse(
-  localStorage.getItem(PLANK_KEY)||
-  localStorage.getItem('fitcounter_plank_v7')||
-  localStorage.getItem('fitcounter_plank_v6')||
-  localStorage.getItem('fitcounter_plank_v5')||
-  localStorage.getItem('fitcounter_plank_v4')||
-  localStorage.getItem('fitcounter_plank_v3')||
-  localStorage.getItem('fitcounter_plank_v2')||
-  localStorage.getItem('fitcounter_plank_v1')||
-  '[]'
-);
+const DATA_KEY =
+'fitcounter_v11';
 
-let restSettings=
+
+const PLANK_KEY =
+'fitcounter_plank_v8';
+
+
+const REST_KEY =
+'fitcounter_rest_v2';
+
+
+const SECRET_KEY =
+'fitcounter_secrets_v4';
+
+
+const RANK_KEY =
+'fitcounter_ranks_v4';
+
+
+let data =
 JSON.parse(
-  localStorage.getItem(REST_KEY)||
-  '{}'
+
+localStorage.getItem(DATA_KEY)
+
+||
+
+localStorage.getItem(
+'fitcounter_v10'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_v9'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_v8'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_v7'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_v6'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_v5'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_v4'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_v3'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_v2'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_v1'
+)
+
+||
+
+'[]'
+
 );
 
-let secrets=
+
+let plankData =
 JSON.parse(
-  localStorage.getItem(SECRET_KEY)||
-  localStorage.getItem('fitcounter_secret_branches_v3')||
-  localStorage.getItem('fitcounter_secret_branches_v2')||
-  '{}'
+
+localStorage.getItem(
+PLANK_KEY
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_plank_v7'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_plank_v6'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_plank_v5'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_plank_v4'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_plank_v3'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_plank_v2'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_plank_v1'
+)
+
+||
+
+'[]'
+
 );
 
-let unlockedRanks=
+
+let restSettings =
 JSON.parse(
-  localStorage.getItem(RANK_KEY)||
-  localStorage.getItem('fitcounter_unlocked_ranks_v3')||
-  localStorage.getItem('fitcounter_unlocked_ranks_v2')||
-  localStorage.getItem('fitcounter_unlocked_ranks_v1')||
-  '[]'
+
+localStorage.getItem(
+REST_KEY
+)
+
+||
+
+'{}'
+
 );
+
+
+let secrets =
+JSON.parse(
+
+localStorage.getItem(
+SECRET_KEY
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_secret_branches_v3'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_secret_branches_v2'
+)
+
+||
+
+'{}'
+
+);
+
+
+let unlockedRanks =
+JSON.parse(
+
+localStorage.getItem(
+RANK_KEY
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_unlocked_ranks_v3'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_unlocked_ranks_v2'
+)
+
+||
+
+localStorage.getItem(
+'fitcounter_unlocked_ranks_v1'
+)
+
+||
+
+'[]'
+
+);
+
 
 function saveAll(){
-  localStorage.setItem(DATA_KEY,JSON.stringify(data));
-  localStorage.setItem(PLANK_KEY,JSON.stringify(plankData));
-  localStorage.setItem(REST_KEY,JSON.stringify(restSettings));
-  localStorage.setItem(SECRET_KEY,JSON.stringify(secrets));
-  localStorage.setItem(RANK_KEY,JSON.stringify(unlockedRanks));
+
+localStorage.setItem(
+DATA_KEY,
+JSON.stringify(data)
+);
+
+localStorage.setItem(
+PLANK_KEY,
+JSON.stringify(plankData)
+);
+
+localStorage.setItem(
+REST_KEY,
+JSON.stringify(restSettings)
+);
+
+localStorage.setItem(
+SECRET_KEY,
+JSON.stringify(secrets)
+);
+
+localStorage.setItem(
+RANK_KEY,
+JSON.stringify(unlockedRanks)
+);
+
 }
 
-function dateKey(d=new Date()){
-  return d.getFullYear()+'-'+
-  String(d.getMonth()+1).padStart(2,'0')+'-'+
-  String(d.getDate()).padStart(2,'0');
+
+/* =====================
+   ОБЩИЕ ФУНКЦИИ
+===================== */
+
+function dateKey(
+d = new Date()
+){
+
+return (
+
+d.getFullYear()
+
++
+
+'-'
+
++
+
+String(
+d.getMonth()+1
+)
+.padStart(
+2,
+'0'
+)
+
++
+
+'-'
+
++
+
+String(
+d.getDate()
+)
+.padStart(
+2,
+'0'
+)
+
+);
+
 }
 
-function fmt(sec){
-  sec=Math.max(0,Math.floor(sec));
 
-  const h=Math.floor(sec/3600);
-  const m=Math.floor((sec%3600)/60);
-  const s=sec%60;
+function fmt(
+seconds
+){
 
-  if(h){
-    return h+':'+
-    String(m).padStart(2,'0')+':'+
-    String(s).padStart(2,'0');
-  }
+seconds =
+Math.max(
+0,
+Math.floor(seconds)
+);
 
-  return String(m).padStart(2,'0')+':'+
-  String(s).padStart(2,'0');
+
+const h =
+Math.floor(
+seconds/3600
+);
+
+
+const m =
+Math.floor(
+(seconds%3600)/60
+);
+
+
+const s =
+seconds%60;
+
+
+if(h){
+
+return (
+
+h
+
++
+
+':'
+
++
+
+String(m)
+.padStart(
+2,
+'0'
+)
+
++
+
+':'
+
++
+
+String(s)
+.padStart(
+2,
+'0'
+)
+
+);
+
 }
 
-function kg(n){
-  return Math.round(n).toLocaleString('ru-RU')+' кг';
+
+return (
+
+String(m)
+.padStart(
+2,
+'0'
+)
+
++
+
+':'
+
++
+
+String(s)
+.padStart(
+2,
+'0'
+)
+
+);
+
 }
 
-function totalReps(type){
-  return data
-  .filter(x=>x.type===type)
-  .reduce((sum,x)=>sum+Number(x.total||0),0);
+
+function kg(
+value
+){
+
+return (
+
+Math.round(value)
+.toLocaleString(
+'ru-RU'
+)
+
++
+
+' кг'
+
+);
+
 }
 
-function todayReps(type){
-  const today=dateKey();
 
-  return data
-  .filter(x=>x.type===type&&x.day===today)
-  .reduce((sum,x)=>sum+Number(x.total||0),0);
+/* =====================
+   СТАТИСТИКА
+===================== */
+
+function totalReps(
+type
+){
+
+return data
+
+.filter(
+x =>
+x.type===type
+)
+
+.reduce(
+(sum,x) =>
+sum+
+Number(x.total||0),
+0
+);
+
 }
 
-function bestDay(type){
-  const map={};
 
-  data
-  .filter(x=>x.type===type)
-  .forEach(x=>{
-    map[x.day]=(map[x.day]||0)+Number(x.total||0);
-  });
+function todayReps(
+type
+){
 
-  const values=Object.values(map);
+const today =
+dateKey();
 
-  return values.length?Math.max(...values):0;
+
+return data
+
+.filter(
+x =>
+x.type===type
+&&
+x.day===today
+)
+
+.reduce(
+(sum,x) =>
+sum+
+Number(x.total||0),
+0
+);
+
 }
 
-function totalVolume(type){
-  return data
-  .filter(x=>x.type===type)
-  .reduce((sum,x)=>sum+Number(x.volume||0),0);
+
+function bestDay(
+type
+){
+
+const map = {};
+
+
+data
+
+.filter(
+x =>
+x.type===type
+)
+
+.forEach(
+x => {
+
+map[x.day] =
+(map[x.day]||0)
++
+Number(x.total||0);
+
+}
+);
+
+
+const values =
+Object.values(map);
+
+
+return values.length
+
+?
+
+Math.max(
+...values
+)
+
+:
+
+0;
+
 }
 
-function todayVolume(type){
-  const today=dateKey();
 
-  return data
-  .filter(x=>x.type===type&&x.day===today)
-  .reduce((sum,x)=>sum+Number(x.volume||0),0);
+function totalVolume(
+type
+){
+
+return data
+
+.filter(
+x =>
+x.type===type
+)
+
+.reduce(
+(sum,x) =>
+sum+
+Number(x.volume||0),
+0
+);
+
 }
 
-function bestVolume(type){
-  const values=
-  data
-  .filter(x=>x.type===type)
-  .map(x=>Number(x.volume||0));
 
-  return values.length?Math.max(...values):0;
+function todayVolume(
+type
+){
+
+const today =
+dateKey();
+
+
+return data
+
+.filter(
+x =>
+x.type===type
+&&
+x.day===today
+)
+
+.reduce(
+(sum,x) =>
+sum+
+Number(x.volume||0),
+0
+);
+
 }
+
+
+function bestVolume(
+type
+){
+
+const values =
+data
+
+.filter(
+x =>
+x.type===type
+)
+
+.map(
+x =>
+Number(x.volume||0)
+);
+
+
+return values.length
+
+?
+
+Math.max(
+...values
+)
+
+:
+
+0;
+
+}
+
 
 function plankTodayValue(){
-  const today=dateKey();
 
-  return plankData
-  .filter(x=>x.day===today)
-  .reduce((sum,x)=>sum+Number(x.seconds||0),0);
+const today =
+dateKey();
+
+
+return plankData
+
+.filter(
+x =>
+x.day===today
+)
+
+.reduce(
+(sum,x) =>
+sum+
+Number(x.seconds||0),
+0
+);
+
 }
+
 
 function plankTotalValue(){
-  return plankData
-  .reduce((sum,x)=>sum+Number(x.seconds||0),0);
+
+return plankData
+
+.reduce(
+(sum,x) =>
+sum+
+Number(x.seconds||0),
+0
+);
+
 }
+
 
 function plankRecordValue(){
-  return plankData.length
-  ?Math.max(...plankData.map(x=>Number(x.seconds||0)))
-  :0;
+
+return plankData.length
+
+?
+
+Math.max(
+...plankData.map(
+x =>
+Number(x.seconds||0)
+)
+)
+
+:
+
+0;
+
 }
+
+
+/* =====================
+   НАВИГАЦИЯ
+===================== */
 
 function hidePages(){
-  document
-  .querySelectorAll('.page')
-  .forEach(page=>page.classList.remove('active'));
-}
-
-function activateTab(type){
-  document
-  .querySelectorAll('.tab')
-  .forEach(tab=>tab.classList.remove('active'));
-
-  document
-  .querySelector(`.tab[data-tab="${type}"]`)
-  ?.classList.add('active');
-}
-
-function setHeader(title,subtitle){
-  $('title').textContent=title;
-  $('subtitle').textContent=subtitle;
-}
-
-function showHome(){
-  stopRest();
-  hidePages();
-
-  $('homePage').classList.add('active');
-
-  activateTab('home');
-
-  setHeader(
-    'FitCounter',
-    'Твой прогресс каждый день 💪'
-  );
-
-  renderCalendar();
-}
-
-function showCategory(group){
-  stopRest();
-  hidePages();
-
-  $('categoryPage').classList.add('active');
-
-  activateTab(group);
-
-  setHeader(
-    group==='body'
-    ?'Собственный вес'
-    :'Железо',
-
-    group==='body'
-    ?'Упражнения с собственным весом'
-    :'Силовые упражнения с весом'
-  );
-
-  renderCategory(group);
-}
-
-function renderCategory(group){
-
-  const box=$('categoryList');
-
-  box.innerHTML='';
-
-  GROUPS[group].forEach(type=>{
-
-    const ex=EXERCISES[type];
-
-    const card=document.createElement('div');
-
-    card.className='card exercise';
-
-    let stat='';
-
-    if(type==='plank'){
-      stat='Рекорд: '+fmt(plankRecordValue());
-    }
-    else if(ex.kind==='weight'){
-      stat='Объём: '+kg(totalVolume(type));
-    }
-    else{
-      stat='Всего: '+totalReps(type);
-    }
-
-    card.innerHTML=`
-      <div class="icon">${ex.icon}</div>
-
-      <div class="flex">
-        <b>${ex.name}</b>
-        <div class="muted">${stat}</div>
-      </div>
-
-      <div class="chev">›</div>
-    `;
-
-    card.onclick=()=>{
-      type==='plank'
-      ?showPlank()
-      :showExercise(type);
-    };
-
-    box.appendChild(card);
-
-  });
-
-}
-
-$('bodyweightCard').onclick=
-()=>showCategory('body');
-
-$('ironCard').onclick=
-()=>showCategory('iron');
 
 document
-.querySelectorAll('.tab')
-.forEach(tab=>{
 
-  tab.onclick=()=>{
+.querySelectorAll(
+'.page'
+)
 
-    const name=tab.dataset.tab;
+.forEach(
+page =>
+page.classList.remove(
+'active'
+)
+);
 
-    if(name==='home'){
-      showHome();
-    }
-    else if(name==='body'){
-      showCategory('body');
-    }
-    else if(name==='iron'){
-      showCategory('iron');
-    }
-    else{
-      showAchievements();
-    }
+}
 
-  };
 
-});
+function activateTab(
+type
+){
 
-/* КАЛЕНДАРЬ */
+document
 
-const MONTHS=[
+.querySelectorAll(
+'.tab'
+)
+
+.forEach(
+tab =>
+tab.classList.remove(
+'active'
+)
+);
+
+
+const tab =
+document.querySelector(
+`.tab[data-tab="${type}"]`
+);
+
+
+if(tab){
+
+tab.classList.add(
+'active'
+);
+
+}
+
+}
+
+
+function setHeader(
+title,
+subtitle
+){
+
+$('title')
+.textContent =
+title;
+
+
+$('subtitle')
+.textContent =
+subtitle;
+
+}
+
+
+function showHome(){
+
+stopRest();
+
+hidePages();
+
+
+$('homePage')
+.classList.add(
+'active'
+);
+
+
+activateTab(
+'home'
+);
+
+
+setHeader(
+'FitCounter',
+'Твой прогресс каждый день 💪'
+);
+
+
+renderCalendar();
+
+}
+
+
+function showCategory(
+group
+){
+
+stopRest();
+
+hidePages();
+
+
+$('categoryPage')
+.classList.add(
+'active'
+);
+
+
+activateTab(
+group
+);
+
+
+setHeader(
+
+group==='body'
+
+?
+
+'Собственный вес'
+
+:
+
+'Железо',
+
+
+group==='body'
+
+?
+
+'Упражнения с собственным весом'
+
+:
+
+'Силовые упражнения с весом'
+
+);
+
+
+renderCategory(
+group
+);
+
+}
+
+
+function renderCategory(
+group
+){
+
+const box =
+$('categoryList');
+
+
+box.innerHTML =
+'';
+
+
+GROUPS[group]
+.forEach(
+type => {
+
+const ex =
+EXERCISES[type];
+
+
+const card =
+document.createElement(
+'div'
+);
+
+
+card.className =
+'card exercise';
+
+
+let stat =
+'';
+
+
+if(
+type==='plank'
+){
+
+stat =
+'Рекорд: '
++
+fmt(
+plankRecordValue()
+);
+
+}
+
+else if(
+ex.kind==='weight'
+){
+
+stat =
+'Объём: '
++
+kg(
+totalVolume(type)
+);
+
+}
+
+else{
+
+stat =
+'Всего: '
++
+totalReps(type);
+
+}
+
+
+card.innerHTML = `
+
+<div class="icon">
+${ex.icon}
+</div>
+
+<div class="flex">
+
+<b>
+${ex.name}
+</b>
+
+<div class="muted">
+${stat}
+</div>
+
+</div>
+
+<div class="chev">
+›
+</div>
+
+`;
+
+
+card.onclick =
+() => {
+
+if(
+type==='plank'
+){
+
+showPlank();
+
+}
+
+else{
+
+showExercise(
+type
+);
+
+}
+
+};
+
+
+box.appendChild(
+card
+);
+
+}
+);
+
+}
+
+
+$('bodyweightCard')
+.onclick =
+() =>
+showCategory(
+'body'
+);
+
+
+$('ironCard')
+.onclick =
+() =>
+showCategory(
+'iron'
+);
+
+
+document
+
+.querySelectorAll(
+'.tab'
+)
+
+.forEach(
+tab => {
+
+tab.onclick =
+() => {
+
+const name =
+tab.dataset.tab;
+
+
+if(
+name==='home'
+){
+
+showHome();
+
+}
+
+else if(
+name==='body'
+){
+
+showCategory(
+'body'
+);
+
+}
+
+else if(
+name==='iron'
+){
+
+showCategory(
+'iron'
+);
+
+}
+
+else{
+
+showAchievements();
+
+}
+
+};
+
+}
+);
+
+
+/* =====================
+   КАЛЕНДАРЬ
+===================== */
+
+const MONTHS = [
+
 'январь',
 'февраль',
 'март',
@@ -1299,9 +2653,12 @@ const MONTHS=[
 'октябрь',
 'ноябрь',
 'декабрь'
+
 ];
 
-const WEEKDAYS=[
+
+const WEEKDAYS = [
+
 'Вс',
 'Пн',
 'Вт',
@@ -1309,1845 +2666,3503 @@ const WEEKDAYS=[
 'Чт',
 'Пт',
 'Сб'
+
 ];
 
-const now=new Date();
 
-let calendarCursor=
+const now =
+new Date();
+
+
+let calendarCursor =
 new Date(
-  now.getFullYear(),
-  now.getMonth(),
-  1
+
+now.getFullYear(),
+
+now.getMonth(),
+
+1
+
 );
 
-let selectedCalendarDay=
-dateKey(now);
 
-function hasActivity(key){
-  return (
-    data.some(x=>x.day===key)||
-    plankData.some(x=>x.day===key)
-  );
+let selectedCalendarDay =
+dateKey(
+now
+);
+
+
+function hasActivity(
+key
+){
+
+return (
+
+data.some(
+x =>
+x.day===key
+)
+
+||
+
+plankData.some(
+x =>
+x.day===key
+)
+
+);
+
 }
+
 
 function renderCalendar(){
 
-  const year=calendarCursor.getFullYear();
-  const month=calendarCursor.getMonth();
+const year =
+calendarCursor
+.getFullYear();
 
-  $('calendarMonthTitle').textContent=
-  MONTHS[month]+' '+year;
 
-  const strip=$('monthStrip');
+const month =
+calendarCursor
+.getMonth();
 
-  strip.innerHTML='';
 
-  const daysInMonth=
-  new Date(year,month+1,0).getDate();
+$('calendarMonthTitle')
+.textContent =
+MONTHS[month]
++
+' '
++
+year;
 
-  for(
-    let day=1;
-    day<=daysInMonth;
-    day++
-  ){
 
-    const date=
-    new Date(year,month,day);
+const strip =
+$('monthStrip');
 
-    const key=
-    dateKey(date);
 
-    const chip=
-    document.createElement('div');
+strip.innerHTML =
+'';
 
-    chip.className='day-chip';
 
-    if(!hasActivity(key)){
-      chip.classList.add('no-activity');
-    }
+const daysInMonth =
+new Date(
+year,
+month+1,
+0
+)
+.getDate();
 
-    if(key===selectedCalendarDay){
-      chip.classList.add('selected');
-    }
 
-    chip.innerHTML=`
-      <div class="num">${day}</div>
-      <div class="weekday">
-        ${WEEKDAYS[date.getDay()]}
-      </div>
-    `;
+for(
+let day=1;
+day<=daysInMonth;
+day++
+){
 
-    chip.onclick=()=>{
-      selectedCalendarDay=key;
-      renderCalendar();
-    };
+const date =
+new Date(
+year,
+month,
+day
+);
 
-    strip.appendChild(chip);
 
-  }
+const key =
+dateKey(
+date
+);
 
-  requestAnimationFrame(()=>{
 
-    const selected=
-    strip.querySelector('.selected');
+const chip =
+document.createElement(
+'div'
+);
 
-    if(selected){
 
-      selected.scrollIntoView({
-        behavior:'smooth',
-        block:'nearest',
-        inline:'center'
-      });
+chip.className =
+'day-chip';
 
-    }
 
-  });
+if(
+!hasActivity(key)
+){
 
-  renderCalendarSummary();
+chip.classList.add(
+'no-activity'
+);
 
 }
+
+
+if(
+key===
+selectedCalendarDay
+){
+
+chip.classList.add(
+'selected'
+);
+
+}
+
+
+chip.innerHTML = `
+
+<div class="num">
+${day}
+</div>
+
+<div class="weekday">
+${WEEKDAYS[
+date.getDay()
+]}
+</div>
+
+`;
+
+
+chip.onclick =
+() => {
+
+selectedCalendarDay =
+key;
+
+
+renderCalendar();
+
+};
+
+
+strip.appendChild(
+chip
+);
+
+}
+
+
+requestAnimationFrame(
+() => {
+
+const selected =
+strip.querySelector(
+'.selected'
+);
+
+
+if(selected){
+
+selected.scrollIntoView({
+
+behavior:
+'smooth',
+
+block:
+'nearest',
+
+inline:
+'center'
+
+});
+
+}
+
+}
+);
+
+
+renderCalendarSummary();
+
+}
+
 
 function renderCalendarSummary(){
 
-  const reps=
-  data
-  .filter(
-    x=>
-    x.day===selectedCalendarDay &&
-    EXERCISES[x.type]?.kind==='reps'
-  )
-  .reduce(
-    (sum,x)=>sum+Number(x.total||0),
-    0
-  );
+const reps =
+data
 
-  const volume=
-  data
-  .filter(
-    x=>
-    x.day===selectedCalendarDay &&
-    EXERCISES[x.type]?.kind==='weight'
-  )
-  .reduce(
-    (sum,x)=>sum+Number(x.volume||0),
-    0
-  );
+.filter(
+x =>
+x.day===
+selectedCalendarDay
+&&
+EXERCISES[x.type]
+?.kind===
+'reps'
+)
 
-  const plank=
-  plankData
-  .filter(x=>x.day===selectedCalendarDay)
-  .reduce(
-    (sum,x)=>sum+Number(x.seconds||0),
-    0
-  );
+.reduce(
+(sum,x) =>
+sum+
+Number(x.total||0),
+0
+);
 
-  const exerciseTypes=
-  new Set(
-    data
-    .filter(x=>x.day===selectedCalendarDay)
-    .map(x=>x.type)
-  );
 
-  if(plank>0){
-    exerciseTypes.add('plank');
-  }
+const volume =
+data
 
-  const count=exerciseTypes.size;
+.filter(
+x =>
+x.day===
+selectedCalendarDay
+&&
+EXERCISES[x.type]
+?.kind===
+'weight'
+)
 
-  const selectedIsToday=
-  selectedCalendarDay===dateKey();
+.reduce(
+(sum,x) =>
+sum+
+Number(x.volume||0),
+0
+);
 
-  const prefix=
-  selectedIsToday
-  ?'Сегодня'
-  :'За день';
 
-  $('calendarSummary').textContent=
-  prefix+
-  ': '+
-  count+
-  ' упражнений • '+
-  reps+
-  ' повторений'+
-  (
-    volume
-    ?' • '+kg(volume)
-    :''
-  )+
-  ' • Планка '+
-  fmt(plank);
+const plank =
+plankData
+
+.filter(
+x =>
+x.day===
+selectedCalendarDay
+)
+
+.reduce(
+(sum,x) =>
+sum+
+Number(x.seconds||0),
+0
+);
+
+
+const exerciseTypes =
+new Set(
+
+data
+
+.filter(
+x =>
+x.day===
+selectedCalendarDay
+)
+
+.map(
+x =>
+x.type
+)
+
+);
+
+
+if(
+plank>0
+){
+
+exerciseTypes.add(
+'plank'
+);
+
+}
+
+
+const count =
+exerciseTypes.size;
+
+
+const selectedIsToday =
+selectedCalendarDay===
+dateKey();
+
+
+const prefix =
+selectedIsToday
+
+?
+
+'Сегодня'
+
+:
+
+'За день';
+
+
+$('calendarSummary')
+.textContent =
+
+prefix
+
++
+
+': '
+
++
+
+count
+
++
+
+' упражнений • '
+
++
+
+reps
+
++
+
+' повторений'
+
++
+
+(
+volume
+
+?
+
+' • '
++
+kg(volume)
+
+:
+
+''
+)
+
++
+
+' • Планка '
+
++
+
+fmt(plank);
 
 }
 
-$('calendarPrev').onclick=()=>{
 
-  calendarCursor=
-  new Date(
-    calendarCursor.getFullYear(),
-    calendarCursor.getMonth()-1,
-    1
-  );
+$('calendarPrev')
+.onclick =
+() => {
 
-  selectedCalendarDay=
-  dateKey(
-    new Date(
-      calendarCursor.getFullYear(),
-      calendarCursor.getMonth(),
-      1
-    )
-  );
+calendarCursor =
+new Date(
 
-  renderCalendar();
+calendarCursor
+.getFullYear(),
 
-};
+calendarCursor
+.getMonth()-1,
 
-$('calendarNext').onclick=()=>{
+1
 
-  calendarCursor=
-  new Date(
-    calendarCursor.getFullYear(),
-    calendarCursor.getMonth()+1,
-    1
-  );
+);
 
-  selectedCalendarDay=
-  dateKey(
-    new Date(
-      calendarCursor.getFullYear(),
-      calendarCursor.getMonth(),
-      1
-    )
-  );
 
-  renderCalendar();
+selectedCalendarDay =
+dateKey(
+
+new Date(
+
+calendarCursor
+.getFullYear(),
+
+calendarCursor
+.getMonth(),
+
+1
+
+)
+
+);
+
+
+renderCalendar();
 
 };
 
-/* УПРАЖНЕНИЯ */
 
-let currentExercise='pushups';
-let setCount=3;
+$('calendarNext')
+.onclick =
+() => {
 
-function showExercise(type){
+calendarCursor =
+new Date(
 
-  stopRest();
+calendarCursor
+.getFullYear(),
 
-  currentExercise=type;
+calendarCursor
+.getMonth()+1,
 
-  hidePages();
+1
 
-  $('exercisePage').classList.add('active');
+);
 
-  activateTab(EXERCISES[type].group);
 
-  const ex=EXERCISES[type];
+selectedCalendarDay =
+dateKey(
 
-  setHeader(
-    ex.name,
-    ex.kind==='weight'
-    ?'Вес, подходы и общий объём'
-    :'Добавляй подходы и следи за прогрессом'
-  );
+new Date(
 
-  $('exerciseTitle').textContent=
-  ex.icon+' '+ex.name;
+calendarCursor
+.getFullYear(),
 
-  setCount=3;
+calendarCursor
+.getMonth(),
 
-  renderExerciseStats();
-  renderSets();
-  renderExerciseHistory();
-  loadRest();
+1
+
+)
+
+);
+
+
+renderCalendar();
+
+};
+
+
+/* =====================
+   УПРАЖНЕНИЯ
+===================== */
+
+let currentExercise =
+'pushups';
+
+
+let setCount =
+3;
+
+
+function showExercise(
+type
+){
+
+stopRest();
+
+
+currentExercise =
+type;
+
+
+hidePages();
+
+
+$('exercisePage')
+.classList.add(
+'active'
+);
+
+
+activateTab(
+EXERCISES[type]
+.group
+);
+
+
+const ex =
+EXERCISES[type];
+
+
+setHeader(
+
+ex.name,
+
+ex.kind==='weight'
+
+?
+
+'Вес, подходы и общий объём'
+
+:
+
+'Добавляй подходы и следи за прогрессом'
+
+);
+
+
+$('exerciseTitle')
+.textContent =
+ex.icon
++
+' '
++
+ex.name;
+
+
+setCount =
+3;
+
+
+renderExerciseStats();
+
+renderSets();
+
+renderExerciseHistory();
+
+loadRest();
 
 }
+
 
 function renderExerciseStats(){
 
-  const ex=EXERCISES[currentExercise];
+const ex =
+EXERCISES[
+currentExercise
+];
 
-  if(ex.kind==='weight'){
 
-    $('exToday').textContent=
-    kg(todayVolume(currentExercise));
+if(
+ex.kind==='weight'
+){
 
-    $('exTotal').textContent=
-    kg(totalVolume(currentExercise));
+$('exToday')
+.textContent =
+kg(
+todayVolume(
+currentExercise
+)
+);
 
-    $('exBest').textContent=
-    kg(bestVolume(currentExercise));
 
-    $('totalLabel').textContent=
-    'Общий объём';
+$('exTotal')
+.textContent =
+kg(
+totalVolume(
+currentExercise
+)
+);
 
-    $('bestLabel').textContent=
-    'Лучшая тренировка';
 
-    $('liveLabel').textContent=
-    'Объём';
+$('exBest')
+.textContent =
+kg(
+bestVolume(
+currentExercise
+)
+);
 
-  }
-  else{
 
-    $('exToday').textContent=
-    todayReps(currentExercise);
+$('totalLabel')
+.textContent =
+'Общий объём';
 
-    $('exTotal').textContent=
-    totalReps(currentExercise);
 
-    $('exBest').textContent=
-    bestDay(currentExercise);
+$('bestLabel')
+.textContent =
+'Лучшая тренировка';
 
-    $('totalLabel').textContent=
-    'Всего';
 
-    $('bestLabel').textContent=
-    'Лучший день';
+$('liveLabel')
+.textContent =
+'Объём';
 
-    $('liveLabel').textContent=
-    'Сейчас';
+}
 
-  }
+else{
+
+$('exToday')
+.textContent =
+todayReps(
+currentExercise
+);
+
+
+$('exTotal')
+.textContent =
+totalReps(
+currentExercise
+);
+
+
+$('exBest')
+.textContent =
+bestDay(
+currentExercise
+);
+
+
+$('totalLabel')
+.textContent =
+'Всего';
+
+
+$('bestLabel')
+.textContent =
+'Лучший день';
+
+
+$('liveLabel')
+.textContent =
+'Сейчас';
 
 }
 
-function renderSets(saved=[]){
+}
 
-  const ex=EXERCISES[currentExercise];
 
-  const box=$('sets');
+function renderSets(
+saved=[]
+){
 
-  box.innerHTML='';
+const ex =
+EXERCISES[
+currentExercise
+];
 
-  for(
-    let i=0;
-    i<setCount;
-    i++
-  ){
 
-    const row=
-    document.createElement('div');
+const box =
+$('sets');
 
-    if(ex.kind==='weight'){
 
-      row.className=
-      'set-row weighted';
+box.innerHTML =
+'';
 
-      row.innerHTML=`
-        <div>
-          Подход ${i+1}
-        </div>
 
-        <div>
-          <div class="field-label">кг</div>
-          <input
-            class="weight"
-            type="number"
-            inputmode="decimal"
-            min="0"
-            step="0.5"
-            value="${saved[i]?.weight||''}">
-        </div>
+for(
+let i=0;
+i<setCount;
+i++
+){
 
-        <div>
-          <div class="field-label">раз</div>
-          <input
-            class="reps"
-            type="number"
-            inputmode="numeric"
-            min="0"
-            value="${saved[i]?.reps||''}">
-        </div>
+const row =
+document.createElement(
+'div'
+);
 
-        <button class="set-done">✓</button>
-      `;
 
-    }
-    else{
+if(
+ex.kind==='weight'
+){
 
-      row.className='set-row';
+row.className =
+'set-row weighted';
 
-      row.innerHTML=`
-        <div>
-          Подход ${i+1}
-        </div>
 
-        <input
-          class="reps"
-          type="number"
-          inputmode="numeric"
-          min="0"
-          value="${saved[i]?.reps||''}">
+row.innerHTML = `
 
-        <button class="set-done">✓</button>
-      `;
+<div>
+Подход ${i+1}
+</div>
 
-    }
+<div>
 
-    row
-    .querySelectorAll('input')
-    .forEach(
-      input=>
-      input.addEventListener(
-        'input',
-        updateLiveTotal
-      )
-    );
+<div class="field-label">
+кг
+</div>
 
-    row
-    .querySelector('.set-done')
-    .onclick=
-    ()=>finishSet(row);
+<input
+class="weight"
+type="number"
+inputmode="decimal"
+min="0"
+step="0.5"
+value="${saved[i]?.weight||''}"
+>
 
-    box.appendChild(row);
+</div>
 
-  }
+<div>
 
-  updateLiveTotal();
+<div class="field-label">
+раз
+</div>
+
+<input
+class="reps"
+type="number"
+inputmode="numeric"
+min="0"
+value="${saved[i]?.reps||''}"
+>
+
+</div>
+
+<button class="set-done">
+✓
+</button>
+
+`;
 
 }
+
+else{
+
+row.className =
+'set-row';
+
+
+row.innerHTML = `
+
+<div>
+Подход ${i+1}
+</div>
+
+<input
+class="reps"
+type="number"
+inputmode="numeric"
+min="0"
+value="${saved[i]?.reps||''}"
+>
+
+<button class="set-done">
+✓
+</button>
+
+`;
+
+}
+
+
+row
+
+.querySelectorAll(
+'input'
+)
+
+.forEach(
+input => {
+
+input.addEventListener(
+'input',
+updateLiveTotal
+);
+
+}
+);
+
+
+row
+
+.querySelector(
+'.set-done'
+)
+
+.onclick =
+() => {
+
+finishSet(
+row
+);
+
+};
+
+
+box.appendChild(
+row
+);
+
+}
+
+
+updateLiveTotal();
+
+}
+
 
 function currentRawSets(){
 
-  return [
-    ...document
-    .querySelectorAll('#sets .set-row')
-  ]
-  .map(
-    row=>({
-      weight:
-      row.querySelector('.weight')?.value||'',
+return [
 
-      reps:
-      row.querySelector('.reps')?.value||''
-    })
-  );
+...document
+.querySelectorAll(
+'#sets .set-row'
+)
+
+]
+
+.map(
+row => ({
+
+weight:
+row
+.querySelector(
+'.weight'
+)
+?.value
+||
+'',
+
+reps:
+row
+.querySelector(
+'.reps'
+)
+?.value
+||
+''
+
+})
+);
 
 }
+
 
 function validSets(){
 
-  const ex=
-  EXERCISES[currentExercise];
+const ex =
+EXERCISES[
+currentExercise
+];
 
-  return [
-    ...document
-    .querySelectorAll('#sets .set-row')
-  ]
-  .map(row=>{
 
-    const reps=
-    parseInt(
-      row.querySelector('.reps')?.value
-    )||0;
+return [
 
-    const weight=
-    parseFloat(
-      row.querySelector('.weight')?.value
-    )||0;
+...document
+.querySelectorAll(
+'#sets .set-row'
+)
 
-    if(reps<=0){
-      return null;
-    }
+]
 
-    if(
-      ex.kind==='weight' &&
-      weight<=0
-    ){
-      return null;
-    }
+.map(
+row => {
 
-    return{
-      reps,
-      weight
-    };
+const reps =
+parseInt(
 
-  })
-  .filter(Boolean);
+row
+.querySelector(
+'.reps'
+)
+?.value
+
+)
+
+||
+
+0;
+
+
+const weight =
+parseFloat(
+
+row
+.querySelector(
+'.weight'
+)
+?.value
+
+)
+
+||
+
+0;
+
+
+if(
+reps<=0
+){
+
+return null;
 
 }
+
+
+if(
+ex.kind==='weight'
+&&
+weight<=0
+){
+
+return null;
+
+}
+
+
+return {
+reps,
+weight
+};
+
+}
+)
+
+.filter(
+Boolean
+);
+
+}
+
 
 function updateLiveTotal(){
 
-  const ex=
-  EXERCISES[currentExercise];
+const ex =
+EXERCISES[
+currentExercise
+];
 
-  const sets=
-  validSets();
 
-  if(ex.kind==='weight'){
+const sets =
+validSets();
 
-    const volume=
-    sets.reduce(
-      (sum,set)=>
-      sum+
-      set.weight*
-      set.reps*
-      (ex.multiplier||1),
-      0
-    );
 
-    $('liveTotal').textContent=
-    kg(volume);
+if(
+ex.kind==='weight'
+){
 
-  }
-  else{
+const volume =
+sets.reduce(
 
-    $('liveTotal').textContent=
-    sets.reduce(
-      (sum,set)=>
-      sum+set.reps,
-      0
-    );
+(sum,set) =>
+sum
++
+set.weight
+*
+set.reps
+*
+(ex.multiplier||1),
 
-  }
+0
+
+);
+
+
+$('liveTotal')
+.textContent =
+kg(
+volume
+);
+
+}
+
+else{
+
+$('liveTotal')
+.textContent =
+sets.reduce(
+
+(sum,set) =>
+sum+
+set.reps,
+
+0
+
+);
 
 }
 
-function finishSet(row){
+}
 
-  const reps=
-  parseInt(
-    row.querySelector('.reps')?.value
-  )||0;
 
-  if(reps<=0){
-    alert('Введи количество повторений');
-    return;
-  }
+function finishSet(
+row
+){
 
-  if(
-    EXERCISES[currentExercise].kind==='weight'
-  ){
+const reps =
+parseInt(
 
-    const weight=
-    parseFloat(
-      row.querySelector('.weight')?.value
-    )||0;
+row
+.querySelector(
+'.reps'
+)
+?.value
 
-    if(weight<=0){
-      alert('Введи вес');
-      return;
-    }
+)
 
-  }
+||
 
-  row
-  .querySelector('.set-done')
-  .classList.add('done');
+0;
 
-  if(getRestSetting().auto){
-    startRestFromBeginning();
-  }
+
+if(
+reps<=0
+){
+
+alert(
+'Введи количество повторений'
+);
+
+return;
 
 }
+
+
+if(
+EXERCISES[
+currentExercise
+].kind==='weight'
+){
+
+const weight =
+parseFloat(
+
+row
+.querySelector(
+'.weight'
+)
+?.value
+
+)
+
+||
+
+0;
+
+
+if(
+weight<=0
+){
+
+alert(
+'Введи вес'
+);
+
+return;
+
+}
+
+}
+
+
+row
+.querySelector(
+'.set-done'
+)
+.classList.add(
+'done'
+);
+
+
+if(
+getRestSetting()
+.auto
+){
+
+startRestFromBeginning();
+
+}
+
+}
+
 
 function saveWorkout(){
 
-  const ex=
-  EXERCISES[currentExercise];
+const ex =
+EXERCISES[
+currentExercise
+];
 
-  const sets=
-  validSets();
 
-  if(!sets.length){
-    alert('Заполни хотя бы один подход');
-    return;
-  }
+const sets =
+validSets();
 
-  const total=
-  sets.reduce(
-    (sum,set)=>sum+set.reps,
-    0
-  );
 
-  const record={
-    id:Date.now(),
-    type:currentExercise,
-    day:dateKey(),
-    time:new Date().toLocaleString('ru-RU'),
-    total
-  };
+if(
+!sets.length
+){
 
-  if(ex.kind==='weight'){
+alert(
+'Заполни хотя бы один подход'
+);
 
-    record.sets=sets;
-
-    record.volume=
-    sets.reduce(
-      (sum,set)=>
-      sum+
-      set.weight*
-      set.reps*
-      (ex.multiplier||1),
-      0
-    );
-
-  }
-  else{
-
-    record.sets=
-    sets.map(set=>set.reps);
-
-  }
-
-  data.unshift(record);
-
-  saveAll();
-
-  renderSets();
-  renderExerciseStats();
-  renderExerciseHistory();
-  renderCalendar();
-
-  checkProgress(currentExercise);
+return;
 
 }
+
+
+const total =
+sets.reduce(
+
+(sum,set) =>
+sum+
+set.reps,
+
+0
+
+);
+
+
+const record = {
+
+id:
+Date.now(),
+
+type:
+currentExercise,
+
+day:
+dateKey(),
+
+time:
+new Date()
+.toLocaleString(
+'ru-RU'
+),
+
+total
+
+};
+
+
+if(
+ex.kind==='weight'
+){
+
+record.sets =
+sets;
+
+
+record.volume =
+sets.reduce(
+
+(sum,set) =>
+sum
++
+set.weight
+*
+set.reps
+*
+(ex.multiplier||1),
+
+0
+
+);
+
+}
+
+else{
+
+record.sets =
+sets.map(
+set =>
+set.reps
+);
+
+}
+
+
+data.unshift(
+record
+);
+
+
+saveAll();
+
+
+renderSets();
+
+renderExerciseStats();
+
+renderExerciseHistory();
+
+renderCalendar();
+
+
+checkProgress(
+currentExercise
+);
+
+}
+
 
 function renderExerciseHistory(){
 
-  const ex=
-  EXERCISES[currentExercise];
+const ex =
+EXERCISES[
+currentExercise
+];
 
-  const list=
-  data.filter(
-    x=>x.type===currentExercise
-  );
 
-  const box=
-  $('exerciseHistory');
+const list =
+data.filter(
+x =>
+x.type===
+currentExercise
+);
 
-  box.innerHTML='';
 
-  if(!list.length){
+const box =
+$('exerciseHistory');
 
-    box.innerHTML=
-    '<div class="empty">Записей пока нет</div>';
 
-    return;
+box.innerHTML =
+'';
 
-  }
 
-  list.forEach(item=>{
+if(
+!list.length
+){
 
-    const row=
-    document.createElement('div');
+box.innerHTML =
+'<div class="empty">Записей пока нет</div>';
 
-    row.className='history';
-
-    if(ex.kind==='weight'){
-
-      const detail=
-      (item.sets||[])
-      .map(
-        set=>
-        `${set.weight} кг × ${set.reps}`
-      )
-      .join(' • ');
-
-      row.innerHTML=`
-        <div>
-          <b>${kg(item.volume||0)}</b>
-          <div class="muted">
-            ${item.total||0} повторений
-          </div>
-          <div class="muted">
-            ${detail}
-          </div>
-          <div class="muted">
-            ${item.time}
-          </div>
-        </div>
-
-        <button class="danger">
-          Удалить
-        </button>
-      `;
-
-    }
-    else{
-
-      row.innerHTML=`
-        <div>
-          <b>
-            ${item.total} повторений
-          </b>
-
-          <div class="muted">
-            ${(item.sets||[]).join(' + ')}
-          </div>
-
-          <div class="muted">
-            ${item.time}
-          </div>
-        </div>
-
-        <button class="danger">
-          Удалить
-        </button>
-      `;
-
-    }
-
-    row
-    .querySelector('button')
-    .onclick=()=>{
-
-      if(confirm('Удалить запись?')){
-
-        data=
-        data.filter(
-          x=>x.id!==item.id
-        );
-
-        saveAll();
-
-        renderExerciseStats();
-        renderExerciseHistory();
-        renderCalendar();
-
-      }
-
-    };
-
-    box.appendChild(row);
-
-  });
+return;
 
 }
 
-$('addSet').onclick=()=>{
 
-  const current=
-  currentRawSets();
+list.forEach(
+item => {
 
-  setCount++;
+const row =
+document.createElement(
+'div'
+);
 
-  renderSets(current);
+
+row.className =
+'history';
+
+
+if(
+ex.kind==='weight'
+){
+
+const detail =
+(item.sets||[])
+
+.map(
+set =>
+`${set.weight} кг × ${set.reps}`
+)
+
+.join(
+' • '
+);
+
+
+row.innerHTML = `
+
+<div>
+
+<b>
+${kg(item.volume||0)}
+</b>
+
+<div class="muted">
+${item.total||0} повторений
+</div>
+
+<div class="muted">
+${detail}
+</div>
+
+<div class="muted">
+${item.time}
+</div>
+
+</div>
+
+<button class="danger">
+Удалить
+</button>
+
+`;
+
+}
+
+else{
+
+row.innerHTML = `
+
+<div>
+
+<b>
+${item.total} повторений
+</b>
+
+<div class="muted">
+${(item.sets||[]).join(' + ')}
+</div>
+
+<div class="muted">
+${item.time}
+</div>
+
+</div>
+
+<button class="danger">
+Удалить
+</button>
+
+`;
+
+}
+
+
+row
+.querySelector(
+'button'
+)
+.onclick =
+() => {
+
+if(
+confirm(
+'Удалить запись?'
+)
+){
+
+data =
+data.filter(
+x =>
+x.id!==
+item.id
+);
+
+
+saveAll();
+
+
+renderExerciseStats();
+
+renderExerciseHistory();
+
+renderCalendar();
+
+}
 
 };
 
-$('saveWorkout').onclick=
+
+box.appendChild(
+row
+);
+
+}
+);
+
+}
+
+
+$('addSet')
+.onclick =
+() => {
+
+const current =
+currentRawSets();
+
+
+setCount++;
+
+
+renderSets(
+current
+);
+
+};
+
+
+$('saveWorkout')
+.onclick =
 saveWorkout;
 
-/* ТАЙМЕР ОТДЫХА */
 
-let restLeft=90;
-let restRunning=false;
-let restInterval=null;
-let restEnd=0;
+/* =====================
+   ТАЙМЕР ОТДЫХА
+===================== */
+
+let restLeft =
+90;
+
+
+let restRunning =
+false;
+
+
+let restInterval =
+null;
+
+
+let restEnd =
+0;
+
 
 function getRestSetting(){
 
-  if(!restSettings[currentExercise]){
+if(
+!restSettings[
+currentExercise
+]
+){
 
-    restSettings[currentExercise]={
-      seconds:
-      EXERCISES[currentExercise].rest||90,
+restSettings[
+currentExercise
+] = {
 
-      auto:false
-    };
+seconds:
+EXERCISES[
+currentExercise
+].rest
+||
+90,
 
-  }
+auto:
+false
 
-  return restSettings[currentExercise];
+};
 
 }
+
+
+return restSettings[
+currentExercise
+];
+
+}
+
 
 function loadRest(){
 
-  stopRest();
+stopRest();
 
-  const setting=
-  getRestSetting();
 
-  restLeft=
-  setting.seconds;
+const setting =
+getRestSetting();
 
-  $('autoSwitch')
-  .classList.toggle(
-    'on',
-    setting.auto
-  );
 
-  drawRest();
+restLeft =
+setting.seconds;
+
+
+$('autoSwitch')
+.classList.toggle(
+'on',
+setting.auto
+);
+
+
+drawRest();
 
 }
+
 
 function drawRest(){
 
-  $('restDisplay').textContent=
-  fmt(restLeft);
+$('restDisplay')
+.textContent =
+fmt(
+restLeft
+);
 
-  $('restDisplay')
-  .classList.toggle(
-    'running',
-    restRunning
-  );
 
-  $('restBtn').textContent=
-  restRunning
-  ?'⏸ Пауза'
-  :'▶ Старт';
+$('restDisplay')
+.classList.toggle(
+'running',
+restRunning
+);
+
+
+$('restBtn')
+.textContent =
+restRunning
+
+?
+
+'⏸ Пауза'
+
+:
+
+'▶ Старт';
 
 }
+
 
 function startRest(){
 
-  if(restRunning){
-    return;
-  }
+if(
+restRunning
+){
 
-  if(restLeft<=0){
-    restLeft=
-    getRestSetting().seconds;
-  }
-
-  restRunning=true;
-
-  restEnd=
-  Date.now()+
-  restLeft*1000;
-
-  drawRest();
-
-  restInterval=
-  setInterval(()=>{
-
-    restLeft=
-    Math.max(
-      0,
-      Math.ceil(
-        (restEnd-Date.now())/1000
-      )
-    );
-
-    drawRest();
-
-    if(restLeft<=0){
-
-      stopRest();
-
-      $('restPopup')
-      .classList.add('show');
-
-      if(navigator.vibrate){
-        navigator.vibrate(
-          [200,100,200]
-        );
-      }
-
-    }
-
-  },250);
+return;
 
 }
+
+
+if(
+restLeft<=0
+){
+
+restLeft =
+getRestSetting()
+.seconds;
+
+}
+
+
+restRunning =
+true;
+
+
+restEnd =
+Date.now()
++
+restLeft*
+1000;
+
+
+drawRest();
+
+
+restInterval =
+setInterval(
+() => {
+
+restLeft =
+Math.max(
+0,
+Math.ceil(
+
+(
+restEnd-
+Date.now()
+)
+
+/
+
+1000
+
+)
+);
+
+
+drawRest();
+
+
+if(
+restLeft<=0
+){
+
+stopRest();
+
+
+$('restPopup')
+.classList.add(
+'show'
+);
+
+
+if(
+navigator.vibrate
+){
+
+navigator.vibrate(
+[
+200,
+100,
+200
+]
+);
+
+}
+
+}
+
+},
+250
+);
+
+}
+
 
 function pauseRest(){
 
-  clearInterval(restInterval);
+clearInterval(
+restInterval
+);
 
-  restRunning=false;
 
-  drawRest();
+restRunning =
+false;
+
+
+drawRest();
 
 }
+
 
 function stopRest(){
 
-  clearInterval(restInterval);
+clearInterval(
+restInterval
+);
 
-  restRunning=false;
+
+restRunning =
+false;
 
 }
+
 
 function startRestFromBeginning(){
 
-  stopRest();
+stopRest();
 
-  restLeft=
-  getRestSetting().seconds;
 
-  startRest();
+restLeft =
+getRestSetting()
+.seconds;
+
+
+startRest();
 
 }
+
 
 function resetRest(){
 
-  stopRest();
+stopRest();
 
-  restLeft=
-  getRestSetting().seconds;
 
-  drawRest();
+restLeft =
+getRestSetting()
+.seconds;
 
-}
 
-function changeRest(delta){
-
-  const setting=
-  getRestSetting();
-
-  setting.seconds=
-  Math.max(
-    15,
-    Math.min(
-      900,
-      setting.seconds+delta
-    )
-  );
-
-  restLeft=
-  setting.seconds;
-
-  saveAll();
-
-  stopRest();
-
-  drawRest();
+drawRest();
 
 }
 
-$('restBtn').onclick=()=>{
 
-  restRunning
-  ?pauseRest()
-  :startRest();
+function changeRest(
+delta
+){
+
+const setting =
+getRestSetting();
+
+
+setting.seconds =
+Math.max(
+
+15,
+
+Math.min(
+
+900,
+
+setting.seconds+
+delta
+
+)
+
+);
+
+
+restLeft =
+setting.seconds;
+
+
+saveAll();
+
+stopRest();
+
+drawRest();
+
+}
+
+
+$('restBtn')
+.onclick =
+() => {
+
+if(
+restRunning
+){
+
+pauseRest();
+
+}
+
+else{
+
+startRest();
+
+}
 
 };
 
-$('minusRest').onclick=
-()=>changeRest(-15);
 
-$('plusRest').onclick=
-()=>changeRest(15);
+$('minusRest')
+.onclick =
+() =>
+changeRest(
+-15
+);
 
-$('resetRest').onclick=
+
+$('plusRest')
+.onclick =
+() =>
+changeRest(
+15
+);
+
+
+$('resetRest')
+.onclick =
 resetRest;
 
-$('autoSwitch').onclick=()=>{
 
-  const setting=
-  getRestSetting();
+$('autoSwitch')
+.onclick =
+() => {
 
-  setting.auto=
-  !setting.auto;
+const setting =
+getRestSetting();
 
-  $('autoSwitch')
-  .classList.toggle(
-    'on',
-    setting.auto
-  );
 
-  saveAll();
+setting.auto =
+!setting.auto;
 
-};
 
-$('restPopupClose').onclick=()=>{
+$('autoSwitch')
+.classList.toggle(
+'on',
+setting.auto
+);
 
-  $('restPopup')
-  .classList.remove('show');
 
-  resetRest();
+saveAll();
 
 };
 
-/* ПЛАНКА */
 
-let plankSeconds=0;
-let plankRunning=false;
-let plankInterval=null;
-let plankStart=0;
+$('restPopupClose')
+.onclick =
+() => {
+
+$('restPopup')
+.classList.remove(
+'show'
+);
+
+
+resetRest();
+
+};
+
+
+/* =====================
+   ПЛАНКА
+===================== */
+
+let plankSeconds =
+0;
+
+
+let plankRunning =
+false;
+
+
+let plankInterval =
+null;
+
+
+let plankStart =
+0;
+
 
 function showPlank(){
 
-  stopRest();
+stopRest();
 
-  hidePages();
+hidePages();
 
-  $('plankPage')
-  .classList.add('active');
 
-  activateTab('body');
+$('plankPage')
+.classList.add(
+'active'
+);
 
-  setHeader(
-    'Планка',
-    'Время, выдержка и прогресс'
-  );
 
-  renderPlank();
+activateTab(
+'body'
+);
+
+
+setHeader(
+'Планка',
+'Время, выдержка и прогресс'
+);
+
+
+renderPlank();
 
 }
+
 
 function drawPlank(){
 
-  $('plankTimer').textContent=
-  fmt(plankSeconds);
+$('plankTimer')
+.textContent =
+fmt(
+plankSeconds
+);
 
 }
+
 
 function togglePlank(){
 
-  if(plankRunning){
+if(
+plankRunning
+){
 
-    plankRunning=false;
+plankRunning =
+false;
 
-    clearInterval(plankInterval);
 
-    $('plankBtn').textContent=
-    '▶ Продолжить';
+clearInterval(
+plankInterval
+);
 
-    return;
 
-  }
+$('plankBtn')
+.textContent =
+'▶ Продолжить';
 
-  plankRunning=true;
 
-  $('plankCircle')
-  .classList.add('running');
-
-  $('plankBtn').textContent=
-  '⏸ Пауза';
-
-  $('savePlankBtn')
-  .style.display='block';
-
-  plankStart=
-  Date.now()-
-  plankSeconds*1000;
-
-  plankInterval=
-  setInterval(()=>{
-
-    plankSeconds=
-    Math.floor(
-      (Date.now()-plankStart)/1000
-    );
-
-    drawPlank();
-
-  },250);
+return;
 
 }
+
+
+plankRunning =
+true;
+
+
+$('plankCircle')
+.classList.add(
+'running'
+);
+
+
+$('plankBtn')
+.textContent =
+'⏸ Пауза';
+
+
+$('savePlankBtn')
+.style.display =
+'block';
+
+
+plankStart =
+Date.now()
+-
+plankSeconds*
+1000;
+
+
+plankInterval =
+setInterval(
+() => {
+
+plankSeconds =
+Math.floor(
+
+(
+Date.now()
+-
+plankStart
+)
+
+/
+
+1000
+
+);
+
+
+drawPlank();
+
+},
+250
+);
+
+}
+
 
 function resetPlank(){
 
-  clearInterval(plankInterval);
+clearInterval(
+plankInterval
+);
 
-  plankRunning=false;
-  plankSeconds=0;
 
-  $('plankCircle')
-  .classList.remove('running');
+plankRunning =
+false;
 
-  $('plankBtn').textContent=
-  '▶ Начать';
 
-  $('savePlankBtn')
-  .style.display='none';
+plankSeconds =
+0;
 
-  drawPlank();
+
+$('plankCircle')
+.classList.remove(
+'running'
+);
+
+
+$('plankBtn')
+.textContent =
+'▶ Начать';
+
+
+$('savePlankBtn')
+.style.display =
+'none';
+
+
+drawPlank();
 
 }
+
 
 function savePlank(){
 
-  if(plankRunning){
+if(
+plankRunning
+){
 
-    plankRunning=false;
+plankRunning =
+false;
 
-    clearInterval(plankInterval);
 
-  }
-
-  if(plankSeconds<=0){
-    return;
-  }
-
-  if(
-    !confirm(
-      `Сохранить результат ${fmt(plankSeconds)}?`
-    )
-  ){
-    return;
-  }
-
-  plankData.unshift({
-    id:Date.now(),
-    seconds:plankSeconds,
-    day:dateKey(),
-    time:new Date().toLocaleString('ru-RU')
-  });
-
-  saveAll();
-
-  resetPlank();
-  renderPlank();
-  renderCalendar();
-
-  checkProgress('plank');
+clearInterval(
+plankInterval
+);
 
 }
+
+
+if(
+plankSeconds<=0
+){
+
+return;
+
+}
+
+
+if(
+!confirm(
+`Сохранить результат ${fmt(plankSeconds)}?`
+)
+){
+
+return;
+
+}
+
+
+plankData.unshift({
+
+id:
+Date.now(),
+
+seconds:
+plankSeconds,
+
+day:
+dateKey(),
+
+time:
+new Date()
+.toLocaleString(
+'ru-RU'
+)
+
+});
+
+
+saveAll();
+
+
+resetPlank();
+
+renderPlank();
+
+renderCalendar();
+
+
+checkProgress(
+'plank'
+);
+
+}
+
 
 function renderPlank(){
 
-  $('plankToday').textContent=
-  fmt(plankTodayValue());
+$('plankToday')
+.textContent =
+fmt(
+plankTodayValue()
+);
 
-  $('plankRecord').textContent=
-  fmt(plankRecordValue());
 
-  $('plankTotal').textContent=
-  fmt(plankTotalValue());
+$('plankRecord')
+.textContent =
+fmt(
+plankRecordValue()
+);
 
-  const box=
-  $('plankHistory');
 
-  box.innerHTML='';
+$('plankTotal')
+.textContent =
+fmt(
+plankTotalValue()
+);
 
-  if(!plankData.length){
 
-    box.innerHTML=
-    '<div class="empty">Результатов пока нет</div>';
+const box =
+$('plankHistory');
 
-    return;
 
-  }
+box.innerHTML =
+'';
 
-  plankData.forEach(item=>{
 
-    const row=
-    document.createElement('div');
+if(
+!plankData.length
+){
 
-    row.className='history';
+box.innerHTML =
+'<div class="empty">Результатов пока нет</div>';
 
-    row.innerHTML=`
-      <div>
-        <b>${fmt(item.seconds)}</b>
-        <div class="muted">
-          ${item.time}
-        </div>
-      </div>
-
-      <button class="danger">
-        Удалить
-      </button>
-    `;
-
-    row
-    .querySelector('button')
-    .onclick=()=>{
-
-      if(confirm('Удалить результат?')){
-
-        plankData=
-        plankData.filter(
-          x=>x.id!==item.id
-        );
-
-        saveAll();
-
-        renderPlank();
-        renderCalendar();
-
-      }
-
-    };
-
-    box.appendChild(row);
-
-  });
+return;
 
 }
 
-$('plankBtn').onclick=
-togglePlank;
 
-$('savePlankBtn').onclick=
-savePlank;
+plankData.forEach(
+item => {
 
-$('resetPlankBtn').onclick=
-resetPlank;
+const row =
+document.createElement(
+'div'
+);
 
-/* РАЗМИНКА */
 
-const WARM_TOTAL=300;
+row.className =
+'history';
 
-let warmLeft=WARM_TOTAL;
-let warmRunning=false;
-let warmInterval=null;
-let warmEnd=0;
 
-function drawWarm(){
+row.innerHTML = `
 
-  $('warmDisplay').textContent=
-  fmt(warmLeft);
+<div>
 
-  $('warmBar').style.width=
-  (
-    warmLeft/
-    WARM_TOTAL*
-    100
-  )+'%';
+<b>
+${fmt(item.seconds)}
+</b>
 
-}
+<div class="muted">
+${item.time}
+</div>
 
-function toggleWarm(){
+</div>
 
-  if(warmRunning){
+<button class="danger">
+Удалить
+</button>
 
-    warmRunning=false;
+`;
 
-    clearInterval(warmInterval);
 
-    $('warmBtn').textContent=
-    '▶ Продолжить разминку';
+row
+.querySelector(
+'button'
+)
+.onclick =
+() => {
 
-    return;
+if(
+confirm(
+'Удалить результат?'
+)
+){
 
-  }
+plankData =
+plankData.filter(
+x =>
+x.id!==
+item.id
+);
 
-  if(warmLeft<=0){
-    warmLeft=WARM_TOTAL;
-  }
 
-  warmRunning=true;
+saveAll();
 
-  $('warmBtn').textContent=
-  '⏸ Пауза';
 
-  $('warmReset')
-  .style.display='block';
+renderPlank();
 
-  warmEnd=
-  Date.now()+
-  warmLeft*1000;
-
-  warmInterval=
-  setInterval(()=>{
-
-    warmLeft=
-    Math.max(
-      0,
-      Math.ceil(
-        (warmEnd-Date.now())/1000
-      )
-    );
-
-    drawWarm();
-
-    if(warmLeft<=0){
-
-      clearInterval(warmInterval);
-
-      warmRunning=false;
-
-      $('warmPopup')
-      .classList.add('show');
-
-    }
-
-  },250);
+renderCalendar();
 
 }
-
-function resetWarm(){
-
-  clearInterval(warmInterval);
-
-  warmRunning=false;
-
-  warmLeft=WARM_TOTAL;
-
-  $('warmBtn').textContent=
-  '▶ Начать разминку';
-
-  $('warmReset')
-  .style.display='none';
-
-  drawWarm();
-
-}
-
-$('warmBtn').onclick=
-toggleWarm;
-
-$('warmReset').onclick=
-resetWarm;
-
-$('warmPopupClose').onclick=()=>{
-
-  $('warmPopup')
-  .classList.remove('show');
-
-  resetWarm();
 
 };
 
-/* СТАРЫЕ ДОСТИЖЕНИЯ */
 
-const RANKS={
+box.appendChild(
+row
+);
+
+}
+);
+
+}
+
+
+$('plankBtn')
+.onclick =
+togglePlank;
+
+
+$('savePlankBtn')
+.onclick =
+savePlank;
+
+
+$('resetPlankBtn')
+.onclick =
+resetPlank;
+
+
+/* =====================
+   РАЗМИНКА
+===================== */
+
+const WARM_TOTAL =
+300;
+
+
+let warmLeft =
+WARM_TOTAL;
+
+
+let warmRunning =
+false;
+
+
+let warmInterval =
+null;
+
+
+let warmEnd =
+0;
+
+
+function drawWarm(){
+
+$('warmDisplay')
+.textContent =
+fmt(
+warmLeft
+);
+
+
+$('warmBar')
+.style.width =
+(
+warmLeft
+/
+WARM_TOTAL
+*
+100
+)
++
+'%';
+
+}
+
+
+function toggleWarm(){
+
+if(
+warmRunning
+){
+
+warmRunning =
+false;
+
+
+clearInterval(
+warmInterval
+);
+
+
+$('warmBtn')
+.textContent =
+'▶ Продолжить разминку';
+
+
+return;
+
+}
+
+
+if(
+warmLeft<=0
+){
+
+warmLeft =
+WARM_TOTAL;
+
+}
+
+
+warmRunning =
+true;
+
+
+$('warmBtn')
+.textContent =
+'⏸ Пауза';
+
+
+$('warmReset')
+.style.display =
+'block';
+
+
+warmEnd =
+Date.now()
++
+warmLeft*
+1000;
+
+
+warmInterval =
+setInterval(
+() => {
+
+warmLeft =
+Math.max(
+
+0,
+
+Math.ceil(
+
+(
+warmEnd-
+Date.now()
+)
+
+/
+
+1000
+
+)
+
+);
+
+
+drawWarm();
+
+
+if(
+warmLeft<=0
+){
+
+clearInterval(
+warmInterval
+);
+
+
+warmRunning =
+false;
+
+
+$('warmPopup')
+.classList.add(
+'show'
+);
+
+}
+
+},
+250
+);
+
+}
+
+
+function resetWarm(){
+
+clearInterval(
+warmInterval
+);
+
+
+warmRunning =
+false;
+
+
+warmLeft =
+WARM_TOTAL;
+
+
+$('warmBtn')
+.textContent =
+'▶ Начать разминку';
+
+
+$('warmReset')
+.style.display =
+'none';
+
+
+drawWarm();
+
+}
+
+
+$('warmBtn')
+.onclick =
+toggleWarm;
+
+
+$('warmReset')
+.onclick =
+resetWarm;
+
+
+$('warmPopupClose')
+.onclick =
+() => {
+
+$('warmPopup')
+.classList.remove(
+'show'
+);
+
+
+resetWarm();
+
+};
+
+
+/* =====================
+   ДОСТИЖЕНИЯ
+===================== */
+
+const RANKS = {
+
 
 pushups:[
+
 ['Сопляк','🌱',300],
+
 ['Трухлявый','🪵',500],
+
 ['Крепыш','💪',1000],
+
 ['Бугай','🦬',2000],
+
 ['Воин','⚔️',3500],
+
 ['Гладиатор','🛡️',5500],
+
 ['Титан','🗿',10000],
+
 ['Неудержимый','🔥',15000],
+
 ['Халк','💚',20000],
+
 ['Абсолютная мощь','⚡',30000],
+
 ['Железная воля','⛓️',50000],
+
 ['Легенда FitCounter','👑',100000],
+
 ['Бессмертный','🌌',250000,1],
+
 ['Миф','☄️',500000,1],
+
 ['Божество силы','🌠',1000000,1]
+
 ],
+
 
 squats:[
+
 ['Новичок','🌱',500],
+
 ['Крепкие ноги','🦵',1000],
+
 ['Атлет','🏃',2500],
+
 ['Тяжеловес','🏋️',5000],
+
 ['Бизон','🦬',10000],
+
 ['Машина','⚙️',20000],
+
 ['Титан ног','🗿',50000],
+
 ['Легенда','👑',100000],
+
 ['Колосс','🦍',250000,1],
+
 ['Разрушитель земли','🌋',500000,1],
+
 ['Атлант','🌍',1000000,1]
+
 ],
+
 
 pullups:[
+
 ['Новичок','🌱',50],
+
 ['Цепкий','✊',100],
+
 ['Скалолаз','🧗',250],
+
 ['Турникмен','🏋️',500],
+
 ['Хищник','🐆',1000],
+
 ['Мастер','⚔️',2500],
+
 ['Повелитель турника','🐉',5000],
+
 ['Легенда','👑',10000],
+
 ['Властелин высоты','🦅',25000,1],
+
 ['Небесный хищник','🐉',50000,1],
+
 ['Бог турника','⚡',100000,1]
+
 ],
+
 
 dips:[
+
 ['Начало','🌱',100],
+
 ['Уверенный','🤸',300],
+
 ['Крепкие трицепсы','💪',750],
+
 ['Боец','🥊',1500],
+
 ['Мастер брусьев','🏅',3000],
+
 ['Железные руки','⛓️',7500],
+
 ['Король брусьев','👑',15000],
+
 ['Легенда брусьев','🔥',30000],
+
 ['Непобедимый','🌌',75000,1],
+
 ['Повелитель брусьев','⚡',150000,1],
+
 ['Абсолют','♾️',300000,1]
+
 ],
+
 
 dumbbells:[
+
 ['Первые килограммы','🌱',1000],
+
 ['Любитель железа','🏋️',5000],
+
 ['Атлет','💪',20000],
+
 ['Силач','🦬',50000],
+
 ['Тяжеловес','⚙️',100000],
+
 ['Машина','🔥',250000],
+
 ['Железный человек','⛓️',500000],
+
 ['Легенда железа','👑',1000000],
+
 ['Колосс','🌌',2500000,1],
+
 ['Мифический силач','☄️',5000000,1],
+
 ['Божество железа','🌠',10000000,1]
+
 ],
+
 
 barbell:[
+
 ['Новичок','🌱',1000],
+
 ['Любитель','🏋️‍♂️',10000],
+
 ['Атлет','💪',50000],
+
 ['Силач','🦬',100000],
+
 ['Титан','🗿',500000],
+
 ['Легенда','👑',1000000],
+
 ['Стальной гигант','⛓️',2500000],
+
 ['Повелитель железа','🔥',5000000],
+
 ['Колосс','🌌',10000000,1],
+
 ['Разрушитель','☄️',25000000,1],
+
 ['Бог силы','🌠',50000000,1]
+
 ],
 
+
 plank:[
+
 ['Первые шаги','🌱',300],
+
 ['Разогрев','🔥',900],
+
 ['Скала','🪨',1800],
+
 ['Стальной корпус','🛡️',3600],
+
 ['Несгибаемый','⚔️',7200],
+
 ['Монолит','🏛️',18000],
+
 ['Титан времени','🗿',36000],
+
 ['Неудержимый','⚡',72000],
+
 ['Железная выдержка','💎',180000],
+
 ['Повелитель времени','👑',360000],
+
 ['Легенда планки','🌌',900000],
+
 ['Вечный','🧊',1800000,1],
+
 ['Хранитель времени','🌌',3600000,1],
+
 ['Вне времени','♾️',7200000,1]
+
 ]
 
 };
 
-const FINAL_NORMAL={
-  pushups:100000,
-  squats:100000,
-  pullups:10000,
-  dips:30000,
-  dumbbells:1000000,
-  barbell:5000000,
-  plank:900000
+
+const FINAL_NORMAL = {
+
+pushups:
+100000,
+
+squats:
+100000,
+
+pullups:
+10000,
+
+dips:
+30000,
+
+dumbbells:
+1000000,
+
+barbell:
+5000000,
+
+plank:
+900000
+
 };
 
-let achievementType='pushups';
 
-function achievementValue(type){
+let achievementType =
+'pushups';
 
-  if(type==='plank'){
-    return plankTotalValue();
-  }
 
-  if(EXERCISES[type].kind==='weight'){
-    return totalVolume(type);
-  }
+function achievementValue(
+type
+){
 
-  return totalReps(type);
+if(
+type==='plank'
+){
 
-}
-
-function achievementText(type,value){
-
-  if(type==='plank'){
-    return fmt(value);
-  }
-
-  if(EXERCISES[type].kind==='weight'){
-    return kg(value);
-  }
-
-  return Number(value)
-  .toLocaleString('ru-RU');
+return plankTotalValue();
 
 }
 
-function secretUnlocked(type){
-  return !!secrets[type];
+
+if(
+EXERCISES[type]
+.kind==='weight'
+){
+
+return totalVolume(
+type
+);
+
 }
+
+
+return totalReps(
+type
+);
+
+}
+
+
+function achievementText(
+type,
+value
+){
+
+if(
+type==='plank'
+){
+
+return fmt(
+value
+);
+
+}
+
+
+if(
+EXERCISES[type]
+.kind==='weight'
+){
+
+return kg(
+value
+);
+
+}
+
+
+return Number(value)
+.toLocaleString(
+'ru-RU'
+);
+
+}
+
+
+function secretUnlocked(
+type
+){
+
+return !!secrets[
+type
+];
+
+}
+
 
 function buildAchievementTabs(){
 
-  const box=
-  $('achievementTabs');
+const box =
+$('achievementTabs');
 
-  box.innerHTML='';
 
-  ORDER.forEach(type=>{
+box.innerHTML =
+'';
 
-    const ex=
-    EXERCISES[type];
 
-    const button=
-    document.createElement('button');
+ORDER.forEach(
+type => {
 
-    button.textContent=
-    ex.icon+' '+ex.name;
+const ex =
+EXERCISES[
+type
+];
 
-    if(type===achievementType){
-      button.classList.add('active');
-    }
 
-    button.onclick=()=>{
+const button =
+document.createElement(
+'button'
+);
 
-      achievementType=type;
 
-      buildAchievementTabs();
-      renderAchievements();
+button.textContent =
+ex.icon
++
+' '
++
+ex.name;
 
-    };
 
-    box.appendChild(button);
+if(
+type===
+achievementType
+){
 
-  });
+button.classList.add(
+'active'
+);
 
 }
+
+
+button.onclick =
+() => {
+
+achievementType =
+type;
+
+
+buildAchievementTabs();
+
+
+renderAchievements();
+
+};
+
+
+box.appendChild(
+button
+);
+
+}
+);
+
+}
+
 
 function showAchievements(){
 
-  stopRest();
+stopRest();
 
-  hidePages();
+hidePages();
 
-  $('achievementsPage')
-  .classList.add('active');
 
-  activateTab('ach');
+$('achievementsPage')
+.classList.add(
+'active'
+);
 
-  setHeader(
-    'Достижения 🏆',
-    'Прокачивай каждый вид упражнений'
-  );
 
-  buildAchievementTabs();
-  renderAchievements();
+activateTab(
+'ach'
+);
+
+
+setHeader(
+'Достижения 🏆',
+'Прокачивай каждый вид упражнений'
+);
+
+
+buildAchievementTabs();
+
+renderAchievements();
 
 }
+
 
 function renderAchievements(){
 
-  const value=
-  achievementValue(achievementType);
+const value =
+achievementValue(
+achievementType
+);
 
-  const all=
-  RANKS[achievementType];
 
-  const list=
-  secretUnlocked(achievementType)
-  ?all
-  :all.filter(rank=>!rank[3]);
+const all =
+RANKS[
+achievementType
+];
 
-  let currentIndex=-1;
 
-  list.forEach(
-    (rank,index)=>{
+const list =
+secretUnlocked(
+achievementType
+)
 
-      if(value>=rank[2]){
-        currentIndex=index;
-      }
+?
 
-    }
-  );
+all
 
-  const current=
-  currentIndex>=0
-  ?list[currentIndex]
-  :null;
+:
 
-  const next=
-  list[currentIndex+1]||
-  null;
+all.filter(
+rank =>
+!rank[3]
+);
 
-  $('heroIcon').textContent=
-  current?current[1]:'🌱';
 
-  $('heroName').textContent=
-  current?current[0]:'Начало пути';
+let currentIndex =
+-1;
 
-  if(next){
 
-    const previous=
-    current?current[2]:0;
+list.forEach(
+(rank,index) => {
 
-    const percent=
-    Math.min(
-      100,
-      Math.max(
-        0,
-        Math.round(
-          (value-previous)/
-          (next[2]-previous)*
-          100
-        )
-      )
-    );
+if(
+value>=rank[2]
+){
 
-    $('heroBar').style.width=
-    percent+'%';
-
-    $('heroText').textContent=
-    achievementText(
-      achievementType,
-      value
-    )+
-    ' / '+
-    achievementText(
-      achievementType,
-      next[2]
-    );
-
-    $('heroNext').textContent=
-    'До «'+
-    next[0]+
-    '» осталось '+
-    achievementText(
-      achievementType,
-      Math.max(
-        0,
-        next[2]-value
-      )
-    );
-
-  }
-  else{
-
-    $('heroBar').style.width=
-    '100%';
-
-    $('heroText').textContent=
-    achievementText(
-      achievementType,
-      value
-    );
-
-    $('heroNext').textContent=
-    'Максимальный открытый ранг';
-
-  }
-
-  const box=
-  $('rankList');
-
-  box.innerHTML='';
-
-  list.forEach(
-    (rank,index)=>{
-
-      const done=
-      value>=rank[2];
-
-      const row=
-      document.createElement('div');
-
-      row.className=
-      'rank '+
-      (done?'done ':'')+
-      (
-        index===currentIndex
-        ?'current '
-        :''
-      )+
-      (
-        !done
-        ?'locked '
-        :''
-      )+
-      (
-        rank[3]
-        ?'secret-rank'
-        :''
-      );
-
-      row.innerHTML=`
-        <div class="rank-icon">
-          ${done?rank[1]:'🔒'}
-        </div>
-
-        <div class="rank-name">
-
-          ${rank[0]}
-
-          ${
-            rank[3]
-            ?'<div class="muted" style="font-size:11px;margin-top:3px">Секретный ранг</div>'
-            :''
-          }
-
-        </div>
-
-        <b>
-          ${achievementText(
-            achievementType,
-            rank[2]
-          )}
-        </b>
-      `;
-
-      box.appendChild(row);
-
-    }
-  );
-
-  if(
-    !secretUnlocked(
-      achievementType
-    )
-  ){
-
-    const secret=
-    document.createElement('div');
-
-    secret.className='secret';
-
-    secret.innerHTML=`
-      <div style="font-size:36px">
-        🔒
-      </div>
-
-      <b>
-        Скрытые достижения
-      </b>
-
-      <div
-        class="muted"
-        style="margin-top:7px">
-        Достигни максимального обычного ранга,
-        чтобы открыть продолжение.
-      </div>
-    `;
-
-    box.appendChild(secret);
-
-  }
+currentIndex =
+index;
 
 }
 
-function checkSecret(type){
+}
+);
 
-  if(secretUnlocked(type)){
-    return false;
-  }
 
-  if(
-    achievementValue(type)<
-    FINAL_NORMAL[type]
-  ){
-    return false;
-  }
+const current =
+currentIndex>=0
 
-  secrets[type]=true;
+?
 
-  saveAll();
+list[
+currentIndex
+]
 
-  $('secretTitle').textContent=
-  'Секретный путь: '+
-  EXERCISES[type].name;
+:
 
-  $('secretPopup').dataset.type=
-  type;
+null;
 
-  $('secretPopup')
-  .classList.add('show');
 
-  return true;
+const next =
+list[
+currentIndex+1
+]
+
+||
+
+null;
+
+
+$('heroIcon')
+.textContent =
+current
+
+?
+
+current[1]
+
+:
+
+'🌱';
+
+
+$('heroName')
+.textContent =
+current
+
+?
+
+current[0]
+
+:
+
+'Начало пути';
+
+
+if(
+next
+){
+
+const previous =
+current
+
+?
+
+current[2]
+
+:
+
+0;
+
+
+const percent =
+Math.min(
+
+100,
+
+Math.max(
+
+0,
+
+Math.round(
+
+(
+value-
+previous
+)
+
+/
+
+(
+next[2]-
+previous
+)
+
+*
+
+100
+
+)
+
+)
+
+);
+
+
+$('heroBar')
+.style.width =
+percent+
+'%';
+
+
+$('heroText')
+.textContent =
+
+achievementText(
+achievementType,
+value
+)
+
++
+
+' / '
+
++
+
+achievementText(
+achievementType,
+next[2]
+);
+
+
+$('heroNext')
+.textContent =
+
+'До «'
+
++
+
+next[0]
+
++
+
+'» осталось '
+
++
+
+achievementText(
+
+achievementType,
+
+Math.max(
+
+0,
+
+next[2]-
+value
+
+)
+
+);
 
 }
 
-function checkRank(type){
+else{
 
-  const value=
-  achievementValue(type);
+$('heroBar')
+.style.width =
+'100%';
 
-  let newest=null;
 
-  RANKS[type].forEach(
-    (rank,index)=>{
+$('heroText')
+.textContent =
+achievementText(
+achievementType,
+value
+);
 
-      if(
-        rank[3] &&
-        !secretUnlocked(type)
-      ){
-        return;
-      }
 
-      const id=
-      type+'_'+index;
-
-      if(
-        value>=rank[2] &&
-        !unlockedRanks.includes(id)
-      ){
-
-        unlockedRanks.push(id);
-
-        newest=rank;
-
-      }
-
-    }
-  );
-
-  saveAll();
-
-  if(newest){
-
-    $('rankPopupIcon').textContent=
-    newest[1];
-
-    $('rankPopupName').textContent=
-    newest[0];
-
-    $('rankPopupText').textContent=
-    'Новый уровень в категории «'+
-    EXERCISES[type].name+
-    '».';
-
-    $('rankPopup')
-    .classList.add('show');
-
-  }
+$('heroNext')
+.textContent =
+'Максимальный открытый ранг';
 
 }
 
-function checkProgress(type){
 
-  if(!checkSecret(type)){
-    checkRank(type);
-  }
+const box =
+$('rankList');
+
+
+box.innerHTML =
+'';
+
+
+list.forEach(
+(rank,index) => {
+
+const done =
+value>=rank[2];
+
+
+const row =
+document.createElement(
+'div'
+);
+
+
+row.className =
+
+'rank '
+
++
+
+(
+done
+
+?
+
+'done '
+
+:
+
+''
+)
+
++
+
+(
+index===
+currentIndex
+
+?
+
+'current '
+
+:
+
+''
+)
+
++
+
+(
+!done
+
+?
+
+'locked '
+
+:
+
+''
+)
+
++
+
+(
+rank[3]
+
+?
+
+'secret-rank'
+
+:
+
+''
+);
+
+
+row.innerHTML = `
+
+<div class="rank-icon">
+${done?rank[1]:'🔒'}
+</div>
+
+<div class="rank-name">
+
+${rank[0]}
+
+${
+rank[3]
+
+?
+
+'<div class="muted" style="font-size:11px;margin-top:3px">Секретный ранг</div>'
+
+:
+
+''
+}
+
+</div>
+
+<b>
+${achievementText(
+achievementType,
+rank[2]
+)}
+</b>
+
+`;
+
+
+box.appendChild(
+row
+);
+
+}
+);
+
+
+if(
+!secretUnlocked(
+achievementType
+)
+){
+
+const secret =
+document.createElement(
+'div'
+);
+
+
+secret.className =
+'secret';
+
+
+secret.innerHTML = `
+
+<div style="font-size:36px">
+🔒
+</div>
+
+<b>
+Скрытые достижения
+</b>
+
+<div
+class="muted"
+style="margin-top:7px"
+>
+Достигни максимального обычного ранга,
+чтобы открыть продолжение.
+</div>
+
+`;
+
+
+box.appendChild(
+secret
+);
 
 }
 
-$('rankPopupClose').onclick=()=>{
+}
 
-  $('rankPopup')
-  .classList.remove('show');
+
+function checkSecret(
+type
+){
+
+if(
+secretUnlocked(type)
+){
+
+return false;
+
+}
+
+
+if(
+achievementValue(type)
+<
+FINAL_NORMAL[type]
+){
+
+return false;
+
+}
+
+
+secrets[type] =
+true;
+
+
+saveAll();
+
+
+$('secretTitle')
+.textContent =
+
+'Секретный путь: '
+
++
+
+EXERCISES[type]
+.name;
+
+
+$('secretPopup')
+.dataset.type =
+type;
+
+
+$('secretPopup')
+.classList.add(
+'show'
+);
+
+
+return true;
+
+}
+
+
+function checkRank(
+type
+){
+
+const value =
+achievementValue(
+type
+);
+
+
+let newest =
+null;
+
+
+RANKS[type]
+.forEach(
+(rank,index) => {
+
+if(
+rank[3]
+&&
+!secretUnlocked(type)
+){
+
+return;
+
+}
+
+
+const id =
+type+
+'_'+
+index;
+
+
+if(
+value>=rank[2]
+&&
+!unlockedRanks.includes(id)
+){
+
+unlockedRanks.push(
+id
+);
+
+
+newest =
+rank;
+
+}
+
+}
+);
+
+
+saveAll();
+
+
+if(
+newest
+){
+
+$('rankPopupIcon')
+.textContent =
+newest[1];
+
+
+$('rankPopupName')
+.textContent =
+newest[0];
+
+
+$('rankPopupText')
+.textContent =
+
+'Новый уровень в категории «'
+
++
+
+EXERCISES[type]
+.name
+
++
+
+'».';
+
+
+$('rankPopup')
+.classList.add(
+'show'
+);
+
+}
+
+}
+
+
+function checkProgress(
+type
+){
+
+if(
+!checkSecret(type)
+){
+
+checkRank(
+type
+);
+
+}
+
+}
+
+
+$('rankPopupClose')
+.onclick =
+() => {
+
+$('rankPopup')
+.classList.remove(
+'show'
+);
 
 };
 
-$('secretPopupClose').onclick=()=>{
 
-  const type=
-  $('secretPopup').dataset.type||
-  achievementType;
+$('secretPopupClose')
+.onclick =
+() => {
 
-  $('secretPopup')
-  .classList.remove('show');
+const type =
+$('secretPopup')
+.dataset.type
 
-  achievementType=type;
+||
 
-  showAchievements();
+achievementType;
+
+
+$('secretPopup')
+.classList.remove(
+'show'
+);
+
+
+achievementType =
+type;
+
+
+showAchievements();
 
 };
 
-ORDER.forEach(type=>{
 
-  if(
-    achievementValue(type)>=
-    FINAL_NORMAL[type]
-  ){
-    secrets[type]=true;
-  }
+/* если секретная ветка уже была */
 
-});
+ORDER.forEach(
+type => {
 
-/* ЗАПУСК */
+if(
+achievementValue(type)
+>=
+FINAL_NORMAL[type]
+){
+
+secrets[type] =
+true;
+
+}
+
+}
+);
+
+
+/* =====================
+   ЗАПУСК
+===================== */
 
 function boot(){
 
-  saveAll();
+saveAll();
 
-  drawWarm();
+drawWarm();
 
-  drawPlank();
+drawPlank();
 
-  showHome();
+showHome();
+
+}
+
+
+if(
+document.readyState===
+'loading'
+){
+
+document.addEventListener(
+'DOMContentLoaded',
+boot
+);
 
 }
 
-if(document.readyState==='loading'){
-
-  document.addEventListener(
-    'DOMContentLoaded',
-    boot
-  );
-
-}
 else{
 
-  boot();
+boot();
+
+}
+
+</script>
+
+
+<!-- =====================
+     OFFLINE
+===================== -->
+
+<script>
+
+if(
+'serviceWorker'
+in
+navigator
+){
+
+window.addEventListener(
+'load',
+() => {
+
+navigator
+.serviceWorker
+.register(
+'./sw.js'
+)
+.catch(
+error => {
+
+console.log(
+'Service Worker:',
+error
+);
+
+}
+);
+
+}
+);
 
 }
 
