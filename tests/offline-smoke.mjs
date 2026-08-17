@@ -15,14 +15,32 @@ const manifest = JSON.parse(read('manifest.json'));
 
 assert.match(
   html,
-  /10 минут перед тренировкой/,
-  'warm-up card must describe a 10-minute timer'
+  /id=["']warmMinus["']/,
+  'warm-up card must provide a decrease control'
 );
 
 assert.match(
   html,
-  /const WARM_TOTAL\s*=\s*600;/,
-  'warm-up timer must run for 10 minutes'
+  /id=["']warmPlus["']/,
+  'warm-up card must provide an increase control'
+);
+
+assert.match(
+  html,
+  /const WARM_DEFAULT_MINUTES\s*=\s*10;/,
+  'warm-up timer must default to 10 minutes'
+);
+
+assert.match(
+  html,
+  /const WARM_MAX_MINUTES\s*=\s*60;/,
+  'warm-up timer must cap custom duration at 60 minutes'
+);
+
+assert.match(
+  html,
+  /fitcounter_warm_minutes_v1/,
+  'warm-up duration must be persisted locally'
 );
 
 assert.match(
@@ -191,9 +209,9 @@ handlers.install({
 await installPromise;
 
 assert.equal(skipWaitingCalls, 1, 'new service worker must activate immediately');
-assert.equal(openedCaches[0], 'fitcounter-app-v2');
+assert.equal(openedCaches[0], 'fitcounter-app-v3');
 
-const appCache = cacheBuckets.get('fitcounter-app-v2');
+const appCache = cacheBuckets.get('fitcounter-app-v3');
 
 for(const entry of appCache.precached){
   const localPath = entry === './'
@@ -216,6 +234,7 @@ handlers.activate({
 await activatePromise;
 
 assert.ok(deletedCaches.includes('fitcounter-offline-v1'));
+assert.ok(deletedCaches.includes('fitcounter-runtime-v2'));
 assert.ok(cacheBuckets.has('unrelated-cache'), 'unrelated caches must be preserved');
 assert.equal(claimCalls, 1, 'active service worker must claim open clients');
 
@@ -252,7 +271,7 @@ fetchImplementation = async () => basicResponse('<!doctype html>', {
 const onlineNavigation = await dispatchFetch(navigationRequest);
 assert.equal(onlineNavigation.status, 200);
 assert.ok(
-  cacheBuckets.get('fitcounter-runtime-v2').entries.has(`${origin}/`),
+  cacheBuckets.get('fitcounter-runtime-v3').entries.has(`${origin}/`),
   'online navigation must refresh the runtime cache'
 );
 
