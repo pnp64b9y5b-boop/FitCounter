@@ -1,0 +1,7 @@
+{
+  "name": "fitcounter",
+  "private": true,
+  "scripts": {
+    "test": "node tests/offline-smoke.mjs"
+  }
+}

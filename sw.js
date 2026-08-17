@@ -1,78 +1,116 @@
-const CACHE_NAME = 'fitcounter-offline-v1';
+const CACHE_PREFIX = 'fitcounter-';
+const CACHE_VERSION = 'v2';
+const APP_CACHE = `${CACHE_PREFIX}app-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${CACHE_VERSION}`;
 
-const FILES = [
+const APP_SHELL = [
   './',
-  './index.html'
+  './index.html',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-maskable-512.png',
+  './icons/apple-touch-icon.png'
 ];
 
 self.addEventListener('install', event => {
-
   event.waitUntil(
     caches
-      .open(CACHE_NAME)
-      .then(cache => cache.addAll(FILES))
+      .open(APP_CACHE)
+      .then(cache => cache.addAll(APP_SHELL))
+      .then(() => self.skipWaiting())
   );
-
-  self.skipWaiting();
-
 });
 
-
 self.addEventListener('activate', event => {
-
   event.waitUntil(
     caches
       .keys()
-      .then(keys => {
-        return Promise.all(
-          keys
-            .filter(key => key !== CACHE_NAME)
-            .map(key => caches.delete(key))
-        );
-      })
+      .then(keys => Promise.all(
+        keys
+          .filter(key => (
+            key.startsWith(CACHE_PREFIX)
+            && key !== APP_CACHE
+            && key !== RUNTIME_CACHE
+          ))
+          .map(key => caches.delete(key))
+      ))
+      .then(() => self.clients.claim())
   );
-
-  self.clients.claim();
-
 });
 
+function isCacheable(response){
+  return (
+    response
+    && response.ok
+    && response.type === 'basic'
+  );
+}
+
+async function networkFirstNavigation(request){
+  try{
+    const response = await fetch(request);
+
+    if(isCacheable(response)){
+      const cache = await caches.open(RUNTIME_CACHE);
+      await cache.put(request, response.clone());
+    }
+
+    return response;
+  }
+  catch(error){
+    return (
+      await caches.match(request)
+      || await caches.match('./index.html')
+      || await caches.match('./')
+      || new Response('FitCounter недоступен офлайн', {
+        status: 503,
+        headers: {'Content-Type': 'text/plain; charset=utf-8'}
+      })
+    );
+  }
+}
+
+async function cacheFirstAsset(request){
+  const cached = await caches.match(request);
+
+  if(cached){
+    return cached;
+  }
+
+  try{
+    const response = await fetch(request);
+
+    if(isCacheable(response)){
+      const cache = await caches.open(RUNTIME_CACHE);
+      await cache.put(request, response.clone());
+    }
+
+    return response;
+  }
+  catch(error){
+    return new Response('', {status: 504, statusText: 'Offline'});
+  }
+}
 
 self.addEventListener('fetch', event => {
+  const {request} = event;
 
-  if (event.request.method !== 'GET') {
+  if(request.method !== 'GET'){
     return;
   }
 
-  event.respondWith(
+  const url = new URL(request.url);
 
-    caches
-      .match(event.request)
-      .then(cached => {
+  /* Не кэшируем сторонние запросы и не меняем их поведение. */
+  if(url.origin !== self.location.origin){
+    return;
+  }
 
-        if (cached) {
-          return cached;
-        }
+  if(request.mode === 'navigate'){
+    event.respondWith(networkFirstNavigation(request));
+    return;
+  }
 
-        return fetch(event.request)
-          .then(response => {
-
-            const copy = response.clone();
-
-            caches
-              .open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, copy);
-              });
-
-            return response;
-
-          })
-          .catch(() => {
-            return caches.match('./index.html');
-          });
-
-      })
-
-  );
-
+  event.respondWith(cacheFirstAsset(request));
 });
