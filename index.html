@@ -4,11 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
+<meta name="description" content="Офлайн-дневник тренировок, подходов и достижений">
+<meta name="mobile-web-app-capable" content="yes">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="FitCounter">
 
 <meta name="theme-color" content="#090c11">
+
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
 
 <title>FitCounter</title>
 
@@ -1663,207 +1671,130 @@ const RANK_KEY =
 'fitcounter_ranks_v4';
 
 
+function readStoredJSON(
+keys,
+fallback
+){
+
+for(const key of keys){
+
+try{
+
+const raw =
+localStorage.getItem(key);
+
+if(raw===null){
+continue;
+}
+
+const parsed =
+JSON.parse(raw);
+
+const valid =
+Array.isArray(fallback)
+
+?
+
+Array.isArray(parsed)
+
+:
+
+parsed
+&&
+typeof parsed==='object'
+&&
+!Array.isArray(parsed);
+
+if(valid){
+return parsed;
+}
+
+}
+
+catch(error){
+
+console.warn(
+`Не удалось прочитать ${key}:`,
+error
+);
+
+}
+
+}
+
+return fallback;
+
+}
+
+
 let data =
-JSON.parse(
-
-localStorage.getItem(DATA_KEY)
-
-||
-
-localStorage.getItem(
-'fitcounter_v10'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_v9'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_v8'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_v7'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_v6'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_v5'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_v4'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_v3'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_v2'
-)
-
-||
-
-localStorage.getItem(
+readStoredJSON(
+[
+DATA_KEY,
+'fitcounter_v10',
+'fitcounter_v9',
+'fitcounter_v8',
+'fitcounter_v7',
+'fitcounter_v6',
+'fitcounter_v5',
+'fitcounter_v4',
+'fitcounter_v3',
+'fitcounter_v2',
 'fitcounter_v1'
-)
-
-||
-
-'[]'
-
+],
+[]
 );
 
 
 let plankData =
-JSON.parse(
-
-localStorage.getItem(
-PLANK_KEY
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_plank_v7'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_plank_v6'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_plank_v5'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_plank_v4'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_plank_v3'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_plank_v2'
-)
-
-||
-
-localStorage.getItem(
+readStoredJSON(
+[
+PLANK_KEY,
+'fitcounter_plank_v7',
+'fitcounter_plank_v6',
+'fitcounter_plank_v5',
+'fitcounter_plank_v4',
+'fitcounter_plank_v3',
+'fitcounter_plank_v2',
 'fitcounter_plank_v1'
-)
-
-||
-
-'[]'
-
+],
+[]
 );
 
 
 let restSettings =
-JSON.parse(
-
-localStorage.getItem(
-REST_KEY
-)
-
-||
-
-'{}'
-
+readStoredJSON(
+[REST_KEY],
+{}
 );
 
 
 let secrets =
-JSON.parse(
-
-localStorage.getItem(
-SECRET_KEY
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_secret_branches_v3'
-)
-
-||
-
-localStorage.getItem(
+readStoredJSON(
+[
+SECRET_KEY,
+'fitcounter_secret_branches_v3',
 'fitcounter_secret_branches_v2'
-)
-
-||
-
-'{}'
-
+],
+{}
 );
 
 
 let unlockedRanks =
-JSON.parse(
-
-localStorage.getItem(
-RANK_KEY
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_unlocked_ranks_v3'
-)
-
-||
-
-localStorage.getItem(
-'fitcounter_unlocked_ranks_v2'
-)
-
-||
-
-localStorage.getItem(
+readStoredJSON(
+[
+RANK_KEY,
+'fitcounter_unlocked_ranks_v3',
+'fitcounter_unlocked_ranks_v2',
 'fitcounter_unlocked_ranks_v1'
-)
-
-||
-
-'[]'
-
+],
+[]
 );
 
 
 function saveAll(){
+
+try{
 
 localStorage.setItem(
 DATA_KEY,
@@ -1889,6 +1820,21 @@ localStorage.setItem(
 RANK_KEY,
 JSON.stringify(unlockedRanks)
 );
+
+return true;
+
+}
+
+catch(error){
+
+console.warn(
+'Не удалось сохранить данные FitCounter:',
+error
+);
+
+return false;
+
+}
 
 }
 
@@ -6135,34 +6081,27 @@ boot();
 
 <script>
 
-if(
-'serviceWorker'
-in
-navigator
-){
+if('serviceWorker' in navigator){
 
-window.addEventListener(
-'load',
-() => {
+window.addEventListener('load', async () => {
 
-navigator
-.serviceWorker
-.register(
-'./sw.js'
-)
-.catch(
-error => {
+try{
 
-console.log(
-'Service Worker:',
-error
-);
+const registration =
+await navigator.serviceWorker.register('./sw.js');
+
+/* Проверяем обновления, но не мешаем запуску без сети. */
+registration.update().catch(() => {});
 
 }
-);
+
+catch(error){
+
+console.warn('Service Worker:', error);
 
 }
-);
+
+});
 
 }
 
