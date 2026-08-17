@@ -15,6 +15,12 @@ const manifest = JSON.parse(read('manifest.json'));
 
 assert.match(
   html,
+  /\.warm \.bar span\s*\{[\s\S]*?background:\s*#20e7ff;/,
+  'warm-up progress bar must use the neon blue color'
+);
+
+assert.match(
+  html,
   /id=["']warmMinus["']/,
   'warm-up card must provide a decrease control'
 );
@@ -209,9 +215,9 @@ handlers.install({
 await installPromise;
 
 assert.equal(skipWaitingCalls, 1, 'new service worker must activate immediately');
-assert.equal(openedCaches[0], 'fitcounter-app-v3');
+assert.equal(openedCaches[0], 'fitcounter-app-v4');
 
-const appCache = cacheBuckets.get('fitcounter-app-v3');
+const appCache = cacheBuckets.get('fitcounter-app-v4');
 
 for(const entry of appCache.precached){
   const localPath = entry === './'
@@ -222,7 +228,7 @@ for(const entry of appCache.precached){
 }
 
 cacheBuckets.set('fitcounter-offline-v1', new MockCache());
-cacheBuckets.set('fitcounter-runtime-v2', new MockCache());
+cacheBuckets.set('fitcounter-runtime-v3', new MockCache());
 cacheBuckets.set('unrelated-cache', new MockCache());
 
 let activatePromise;
@@ -234,7 +240,7 @@ handlers.activate({
 await activatePromise;
 
 assert.ok(deletedCaches.includes('fitcounter-offline-v1'));
-assert.ok(deletedCaches.includes('fitcounter-runtime-v2'));
+assert.ok(deletedCaches.includes('fitcounter-runtime-v3'));
 assert.ok(cacheBuckets.has('unrelated-cache'), 'unrelated caches must be preserved');
 assert.equal(claimCalls, 1, 'active service worker must claim open clients');
 
@@ -271,7 +277,7 @@ fetchImplementation = async () => basicResponse('<!doctype html>', {
 const onlineNavigation = await dispatchFetch(navigationRequest);
 assert.equal(onlineNavigation.status, 200);
 assert.ok(
-  cacheBuckets.get('fitcounter-runtime-v3').entries.has(`${origin}/`),
+  cacheBuckets.get('fitcounter-runtime-v4').entries.has(`${origin}/`),
   'online navigation must refresh the runtime cache'
 );
 
