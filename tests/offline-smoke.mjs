@@ -15,6 +15,18 @@ const manifest = JSON.parse(read('manifest.json'));
 
 assert.match(
   html,
+  /10 минут перед тренировкой/,
+  'warm-up card must describe a 10-minute timer'
+);
+
+assert.match(
+  html,
+  /const WARM_TOTAL\s*=\s*600;/,
+  'warm-up timer must run for 10 minutes'
+);
+
+assert.match(
+  html,
   /<link\s+rel=["']manifest["']\s+href=["']\.\/manifest\.json["']>/i,
   'index.html must link the web app manifest'
 );
