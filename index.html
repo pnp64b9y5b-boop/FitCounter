@@ -207,6 +207,37 @@ font-size:18px;
 border-radius:17px;
 }
 
+.warm-settings{
+display:grid;
+grid-template-columns:52px 1fr 52px;
+align-items:center;
+gap:9px;
+margin:0 0 13px;
+}
+
+.warm-settings button{
+min-height:48px;
+padding:8px;
+background:#302b1e;
+color:#fff;
+font-size:25px;
+}
+
+.warm-settings button:disabled{
+opacity:.45;
+}
+
+.warm-minutes{
+text-align:center;
+font-size:18px;
+font-weight:700;
+}
+
+.warm-minutes #warmMinutes{
+font-size:24px;
+color:var(--gold);
+}
+
 /* =====================
    КАЛЕНДАРЬ
 ===================== */
@@ -826,7 +857,7 @@ class="page active">
 </b>
 
 <div class="muted">
-10 минут перед тренировкой
+<span id="warmSummary">10 минут</span> перед тренировкой
 </div>
 
 </div>
@@ -847,6 +878,32 @@ class="warmtime">
 id="warmBar"
 style="width:100%">
 </span>
+
+</div>
+
+
+<div
+id="warmSettings"
+class="warm-settings">
+
+<button
+id="warmMinus"
+type="button"
+aria-label="Уменьшить разминку на одну минуту">
+−
+</button>
+
+<div class="warm-minutes">
+<span id="warmMinutes">10</span>
+<span id="warmMinutesWord">минут</span>
+</div>
+
+<button
+id="warmPlus"
+type="button"
+aria-label="Увеличить разминку на одну минуту">
++
+</button>
 
 </div>
 
@@ -1669,6 +1726,10 @@ const SECRET_KEY =
 
 const RANK_KEY =
 'fitcounter_ranks_v4';
+
+
+const WARM_KEY =
+'fitcounter_warm_minutes_v1';
 
 
 function readStoredJSON(
@@ -4771,12 +4832,68 @@ resetPlank;
    РАЗМИНКА
 ===================== */
 
-const WARM_TOTAL =
-600;
+const WARM_DEFAULT_MINUTES =
+10;
+
+
+const WARM_MIN_MINUTES =
+1;
+
+
+const WARM_MAX_MINUTES =
+60;
+
+
+function readWarmMinutes(){
+
+try{
+
+const stored =
+Number(
+localStorage.getItem(WARM_KEY)
+);
+
+
+if(
+Number.isInteger(stored)
+&&
+stored>=WARM_MIN_MINUTES
+&&
+stored<=WARM_MAX_MINUTES
+){
+
+return stored;
+
+}
+
+}
+
+catch(error){
+
+console.warn(
+'Не удалось прочитать длительность разминки:',
+error
+);
+
+}
+
+
+return WARM_DEFAULT_MINUTES;
+
+}
+
+
+let warmMinutes =
+readWarmMinutes();
+
+
+let warmTotal =
+warmMinutes*
+60;
 
 
 let warmLeft =
-WARM_TOTAL;
+warmTotal;
 
 
 let warmRunning =
@@ -4793,6 +4910,47 @@ let warmEnd =
 
 function drawWarm(){
 
+const lastTwo =
+warmMinutes%
+100;
+
+
+const lastOne =
+warmMinutes%
+10;
+
+
+const minuteWord =
+lastTwo>=11
+&&
+lastTwo<=14
+
+?
+
+'минут'
+
+:
+
+lastOne===1
+
+?
+
+'минута'
+
+:
+
+lastOne>=2
+&&
+lastOne<=4
+
+?
+
+'минуты'
+
+:
+
+'минут';
+
 $('warmDisplay')
 .textContent =
 fmt(
@@ -4805,12 +4963,117 @@ $('warmBar')
 (
 warmLeft
 /
-WARM_TOTAL
+warmTotal
 *
 100
 )
 +
 '%';
+
+
+$('warmMinutes')
+.textContent =
+warmMinutes;
+
+
+$('warmMinutesWord')
+.textContent =
+minuteWord;
+
+
+$('warmSummary')
+.textContent =
+warmMinutes
++
+' '
++
+minuteWord;
+
+
+$('warmMinus')
+.disabled =
+warmRunning
+||
+warmMinutes<=WARM_MIN_MINUTES;
+
+
+$('warmPlus')
+.disabled =
+warmRunning
+||
+warmMinutes>=WARM_MAX_MINUTES;
+
+}
+
+
+function changeWarmMinutes(
+delta
+){
+
+if(warmRunning){
+return;
+}
+
+
+const next =
+Math.max(
+WARM_MIN_MINUTES,
+Math.min(
+WARM_MAX_MINUTES,
+warmMinutes+
+delta
+)
+);
+
+
+if(next===warmMinutes){
+return;
+}
+
+
+warmMinutes =
+next;
+
+
+warmTotal =
+warmMinutes*
+60;
+
+
+warmLeft =
+warmTotal;
+
+
+try{
+
+localStorage.setItem(
+WARM_KEY,
+String(warmMinutes)
+);
+
+}
+
+catch(error){
+
+console.warn(
+'Не удалось сохранить длительность разминки:',
+error
+);
+
+}
+
+
+$('warmBtn')
+.textContent =
+'▶ Начать разминку';
+
+
+$('warmReset')
+.style.display =
+'none';
+
+
+drawWarm();
 
 }
 
@@ -4835,6 +5098,9 @@ $('warmBtn')
 '▶ Продолжить разминку';
 
 
+drawWarm();
+
+
 return;
 
 }
@@ -4845,7 +5111,7 @@ warmLeft<=0
 ){
 
 warmLeft =
-WARM_TOTAL;
+warmTotal;
 
 }
 
@@ -4862,6 +5128,9 @@ $('warmBtn')
 $('warmReset')
 .style.display =
 'block';
+
+
+drawWarm();
 
 
 warmEnd =
@@ -4912,6 +5181,9 @@ warmRunning =
 false;
 
 
+drawWarm();
+
+
 $('warmPopup')
 .classList.add(
 'show'
@@ -4938,7 +5210,7 @@ false;
 
 
 warmLeft =
-WARM_TOTAL;
+warmTotal;
 
 
 $('warmBtn')
@@ -4964,6 +5236,16 @@ toggleWarm;
 $('warmReset')
 .onclick =
 resetWarm;
+
+
+$('warmMinus')
+.onclick =
+() => changeWarmMinutes(-1);
+
+
+$('warmPlus')
+.onclick =
+() => changeWarmMinutes(1);
 
 
 $('warmPopupClose')
@@ -6088,7 +6370,12 @@ window.addEventListener('load', async () => {
 try{
 
 const registration =
-await navigator.serviceWorker.register('./sw.js');
+await navigator.serviceWorker.register(
+'./sw.js',
+{
+updateViaCache:'none'
+}
+);
 
 /* Проверяем обновления, но не мешаем запуску без сети. */
 registration.update().catch(() => {});
