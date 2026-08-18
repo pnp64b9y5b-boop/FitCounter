@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'fitcounter-';
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const APP_CACHE = `${CACHE_PREFIX}app-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${CACHE_VERSION}`;
 
@@ -47,7 +47,7 @@ function isCacheable(response){
   );
 }
 
-async function networkFirstNavigation(request){
+async function fetchAndCacheNavigation(request){
   try{
     const response = await fetch(request);
 
@@ -59,16 +59,31 @@ async function networkFirstNavigation(request){
     return response;
   }
   catch(error){
-    return (
-      await caches.match(request)
-      || await caches.match('./index.html')
-      || await caches.match('./')
-      || new Response('FitCounter недоступен офлайн', {
-        status: 503,
-        headers: {'Content-Type': 'text/plain; charset=utf-8'}
-      })
-    );
+    return null;
   }
+}
+
+async function cacheFirstNavigation(request, event){
+  const runtimeCache = await caches.open(RUNTIME_CACHE);
+  const cached = (
+    await runtimeCache.match(request, {ignoreSearch: true})
+    || await caches.match('./index.html', {ignoreSearch: true})
+    || await caches.match('./', {ignoreSearch: true})
+  );
+
+  if(cached){
+    /* На iPhone сразу показываем сохранённое приложение, не ожидая сеть. */
+    event.waitUntil(fetchAndCacheNavigation(request));
+    return cached;
+  }
+
+  return (
+    await fetchAndCacheNavigation(request)
+    || new Response('FitCounter недоступен офлайн', {
+      status: 503,
+      headers: {'Content-Type': 'text/plain; charset=utf-8'}
+    })
+  );
 }
 
 async function cacheFirstAsset(request){
@@ -108,7 +123,7 @@ self.addEventListener('fetch', event => {
   }
 
   if(request.mode === 'navigate'){
-    event.respondWith(networkFirstNavigation(request));
+    event.respondWith(cacheFirstNavigation(request, event));
     return;
   }
 

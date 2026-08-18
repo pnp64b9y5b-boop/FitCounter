@@ -215,9 +215,9 @@ handlers.install({
 await installPromise;
 
 assert.equal(skipWaitingCalls, 1, 'new service worker must activate immediately');
-assert.equal(openedCaches[0], 'fitcounter-app-v5');
+assert.equal(openedCaches[0], 'fitcounter-app-v6');
 
-const appCache = cacheBuckets.get('fitcounter-app-v5');
+const appCache = cacheBuckets.get('fitcounter-app-v6');
 
 for(const entry of appCache.precached){
   const localPath = entry === './'
@@ -228,7 +228,7 @@ for(const entry of appCache.precached){
 }
 
 cacheBuckets.set('fitcounter-offline-v1', new MockCache());
-cacheBuckets.set('fitcounter-runtime-v4', new MockCache());
+cacheBuckets.set('fitcounter-runtime-v5', new MockCache());
 cacheBuckets.set('unrelated-cache', new MockCache());
 
 let activatePromise;
@@ -240,7 +240,7 @@ handlers.activate({
 await activatePromise;
 
 assert.ok(deletedCaches.includes('fitcounter-offline-v1'));
-assert.ok(deletedCaches.includes('fitcounter-runtime-v4'));
+assert.ok(deletedCaches.includes('fitcounter-runtime-v5'));
 assert.ok(cacheBuckets.has('unrelated-cache'), 'unrelated caches must be preserved');
 assert.equal(claimCalls, 1, 'active service worker must claim open clients');
 
@@ -255,6 +255,7 @@ const dispatchFetch = request => {
 
   handlers.fetch({
     request,
+    waitUntil(){},
     respondWith(promise){
       responsePromise = Promise.resolve(promise);
     }
@@ -277,7 +278,7 @@ fetchImplementation = async () => basicResponse('<!doctype html>', {
 const onlineNavigation = await dispatchFetch(navigationRequest);
 assert.equal(onlineNavigation.status, 200);
 assert.ok(
-  cacheBuckets.get('fitcounter-runtime-v5').entries.has(`${origin}/`),
+  cacheBuckets.get('fitcounter-runtime-v6').entries.has(`${origin}/`),
   'online navigation must refresh the runtime cache'
 );
 
@@ -286,15 +287,18 @@ appCache.entries.set(
   new Response('<!doctype html><title>offline</title>', {status: 200})
 );
 
-fetchImplementation = async () => {
-  throw new Error('network is offline');
-};
+/* Имитируем iPhone: сетевой запрос без интернета может долго не завершаться. */
+fetchImplementation = () => new Promise(() => {});
 
 const offlineNavigation = await dispatchFetch({
   ...navigationRequest,
-  url: `${origin}/unknown-route`
+  url: `${origin}/?launch=home-screen`
 });
-assert.equal(offlineNavigation.status, 200, 'offline navigation must use index.html');
+assert.equal(
+  offlineNavigation.status,
+  200,
+  'offline navigation must use index.html without waiting for the network'
+);
 
 appCache.entries.set(
   `${origin}/icons/icon-192.png`,
