@@ -39,6 +39,36 @@ assert.match(
 
 assert.match(
   html,
+  /const SWIPE_MIN_DISTANCE\s*=\s*56;/,
+  'exercise pages must define a deliberate swipe threshold'
+);
+
+assert.match(
+  html,
+  /addEventListener\(\s*["']touchstart["']/,
+  'exercise pages must listen for the start of a swipe'
+);
+
+assert.match(
+  html,
+  /addEventListener\(\s*["']touchend["']/,
+  'exercise pages must listen for the end of a swipe'
+);
+
+assert.match(
+  html,
+  /function switchExerciseBySwipe\s*\(/,
+  'exercise pages must switch exercises after a valid swipe'
+);
+
+assert.match(
+  html,
+  /function hasUnsavedExerciseState\s*\(/,
+  'exercise swipes must protect unsaved workout values'
+);
+
+assert.match(
+  html,
   /const WARM_DEFAULT_MINUTES\s*=\s*10;/,
   'warm-up timer must default to 10 minutes'
 );
@@ -221,9 +251,9 @@ handlers.install({
 await installPromise;
 
 assert.equal(skipWaitingCalls, 1, 'new service worker must activate immediately');
-assert.equal(openedCaches[0], 'fitcounter-app-v7');
+assert.equal(openedCaches[0], 'fitcounter-app-v8');
 
-const appCache = cacheBuckets.get('fitcounter-app-v7');
+const appCache = cacheBuckets.get('fitcounter-app-v8');
 
 for(const entry of appCache.precached){
   const localPath = entry === './'
@@ -234,7 +264,7 @@ for(const entry of appCache.precached){
 }
 
 cacheBuckets.set('fitcounter-offline-v1', new MockCache());
-cacheBuckets.set('fitcounter-runtime-v6', new MockCache());
+cacheBuckets.set('fitcounter-runtime-v7', new MockCache());
 cacheBuckets.set('unrelated-cache', new MockCache());
 
 let activatePromise;
@@ -246,7 +276,7 @@ handlers.activate({
 await activatePromise;
 
 assert.ok(deletedCaches.includes('fitcounter-offline-v1'));
-assert.ok(deletedCaches.includes('fitcounter-runtime-v6'));
+assert.ok(deletedCaches.includes('fitcounter-runtime-v7'));
 assert.ok(cacheBuckets.has('unrelated-cache'), 'unrelated caches must be preserved');
 assert.equal(claimCalls, 1, 'active service worker must claim open clients');
 
@@ -302,7 +332,7 @@ staleRuntimeCache.entries.set(
   `${origin}/`,
   new Response('<!doctype html><title>stale runtime</title>', {status: 200})
 );
-cacheBuckets.set('fitcounter-runtime-v7', staleRuntimeCache);
+cacheBuckets.set('fitcounter-runtime-v8', staleRuntimeCache);
 
 /* Имитируем iPhone: сетевой запрос без интернета может долго не завершаться. */
 fetchImplementation = () => new Promise(() => {});

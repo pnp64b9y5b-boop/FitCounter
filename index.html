@@ -3214,6 +3214,373 @@ loadRest();
 }
 
 
+const SWIPE_MIN_DISTANCE =
+56;
+
+
+const SWIPE_AXIS_RATIO =
+1.25;
+
+
+const SWIPE_EDGE_GUARD =
+28;
+
+
+let exerciseSwipeStart =
+null;
+
+
+function activeSwipeExercise(){
+
+if(
+$('exercisePage')
+.classList.contains(
+'active'
+)
+){
+
+return currentExercise;
+
+}
+
+
+if(
+$('plankPage')
+.classList.contains(
+'active'
+)
+){
+
+return 'plank';
+
+}
+
+
+return null;
+
+}
+
+
+function hasUnsavedExerciseState(
+type
+){
+
+if(
+type===
+'plank'
+){
+
+return (
+plankRunning
+||
+plankSeconds>
+0
+);
+
+}
+
+
+return currentRawSets()
+.some(
+set => (
+String(set.reps)
+.trim()!==
+''
+||
+String(set.weight)
+.trim()!==
+''
+)
+);
+
+}
+
+
+function openSwipeExercise(
+type
+){
+
+if(
+type===
+'plank'
+){
+
+showPlank();
+return;
+
+}
+
+
+showExercise(
+type
+);
+
+}
+
+
+function switchExerciseBySwipe(
+direction
+){
+
+const type =
+activeSwipeExercise();
+
+
+if(
+!type
+){
+return;
+}
+
+
+if(
+hasUnsavedExerciseState(
+type
+)
+){
+
+alert(
+type===
+'plank'
+
+?
+
+'Сначала завершите или сбросьте таймер планки.'
+
+:
+
+'Сначала сохраните тренировку или очистите введённые значения.'
+);
+
+return;
+
+}
+
+
+const types =
+GROUPS[
+EXERCISES[type]
+.group
+];
+
+
+const index =
+types.indexOf(
+type
+);
+
+
+if(
+index<
+0
+){
+return;
+}
+
+
+const step =
+direction===
+'right'
+
+?
+
+-1
+
+:
+
+1;
+
+
+const nextIndex =
+(
+index
++
+step
++
+types.length
+)
+%
+types.length;
+
+
+openSwipeExercise(
+types[nextIndex]
+);
+
+}
+
+
+function setupExerciseSwipes(){
+
+[
+'exercisePage',
+'plankPage'
+]
+.forEach(
+pageId => {
+
+const page =
+$(pageId);
+
+
+page.addEventListener(
+'touchstart',
+event => {
+
+const touch =
+event.touches[0];
+
+
+if(
+event.touches.length!==
+1
+||
+event.target
+?.closest
+?.(
+'input, button, select, textarea, a, label, [contenteditable="true"]'
+)
+){
+
+exerciseSwipeStart =
+null;
+
+return;
+
+}
+
+
+const width =
+window.innerWidth
+||
+document.documentElement.clientWidth;
+
+
+if(
+touch.clientX<=
+SWIPE_EDGE_GUARD
+||
+touch.clientX>=
+width
+-
+SWIPE_EDGE_GUARD
+){
+
+exerciseSwipeStart =
+null;
+
+return;
+
+}
+
+
+exerciseSwipeStart = {
+x:
+touch.clientX,
+y:
+touch.clientY
+};
+
+},
+{
+passive:
+true
+}
+);
+
+
+page.addEventListener(
+'touchend',
+event => {
+
+const start =
+exerciseSwipeStart;
+
+
+exerciseSwipeStart =
+null;
+
+
+if(
+!start
+||
+event.changedTouches.length!==
+1
+){
+return;
+}
+
+
+const touch =
+event.changedTouches[0];
+
+
+const deltaX =
+touch.clientX
+-
+start.x;
+
+
+const deltaY =
+touch.clientY
+-
+start.y;
+
+
+if(
+Math.abs(deltaX)<
+SWIPE_MIN_DISTANCE
+||
+Math.abs(deltaX)<=
+Math.abs(deltaY)
+*
+SWIPE_AXIS_RATIO
+){
+return;
+}
+
+
+switchExerciseBySwipe(
+deltaX>
+0
+
+?
+
+'right'
+
+:
+
+'left'
+);
+
+},
+{
+passive:
+true
+}
+);
+
+
+page.addEventListener(
+'touchcancel',
+() => {
+
+exerciseSwipeStart =
+null;
+
+},
+{
+passive:
+true
+}
+);
+
+}
+);
+
+}
+
+
 function renderExerciseStats(){
 
 const ex =
@@ -6329,6 +6696,8 @@ true;
 function boot(){
 
 saveAll();
+
+setupExerciseSwipes();
 
 drawWarm();
 
