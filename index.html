@@ -74,6 +74,78 @@ padding:0 14px 26px;
 display:block;
 }
 
+#exercisePage,
+#plankPage{
+position:relative;
+transform-origin:center 42px;
+touch-action:pan-y;
+will-change:transform,opacity;
+}
+
+.exercise-swipe-dragging{
+z-index:2;
+transform:
+translate3d(
+var(--exercise-swipe-x,0px),
+0,
+0
+)
+rotate(
+var(--exercise-swipe-rotate,0deg)
+);
+filter:drop-shadow(0 18px 24px rgba(0,0,0,.42));
+}
+
+.exercise-swipe-returning{
+transition:
+transform 220ms cubic-bezier(.2,.82,.24,1),
+filter 220ms ease;
+}
+
+.exercise-swipe-ghost{
+position:fixed;
+display:block!important;
+margin:0;
+pointer-events:none;
+overflow:hidden;
+z-index:90;
+transform:translate3d(0,0,0);
+filter:drop-shadow(0 24px 32px rgba(0,0,0,.5));
+transition:
+transform 300ms cubic-bezier(.22,.78,.28,1),
+opacity 260ms ease;
+will-change:transform,opacity;
+}
+
+.exercise-swipe-under{
+opacity:.62;
+transform:
+translate3d(
+var(--exercise-swipe-enter-x,0px),
+0,
+0
+)
+scale(.965);
+transition:
+transform 300ms cubic-bezier(.2,.82,.24,1),
+opacity 240ms ease;
+}
+
+.exercise-swipe-under.exercise-swipe-under-active{
+opacity:1;
+transform:translate3d(0,0,0) scale(1);
+}
+
+@media (prefers-reduced-motion:reduce){
+
+.exercise-swipe-returning,
+.exercise-swipe-ghost,
+.exercise-swipe-under{
+transition-duration:1ms;
+}
+
+}
+
 .card{
 background:var(--card);
 border:1px solid var(--line);
@@ -3230,6 +3302,14 @@ let exerciseSwipeStart =
 null;
 
 
+let exerciseSwipeAnimating =
+false;
+
+
+let exerciseSwipeResetTimer =
+null;
+
+
 function activeSwipeExercise(){
 
 if(
@@ -3318,7 +3398,7 @@ type
 }
 
 
-function switchExerciseBySwipe(
+function swipeExerciseTarget(
 direction
 ){
 
@@ -3329,7 +3409,7 @@ activeSwipeExercise();
 if(
 !type
 ){
-return;
+return null;
 }
 
 
@@ -3352,7 +3432,7 @@ type===
 'Сначала сохраните тренировку или очистите введённые значения.'
 );
 
-return;
+return null;
 
 }
 
@@ -3374,7 +3454,7 @@ if(
 index<
 0
 ){
-return;
+return null;
 }
 
 
@@ -3391,7 +3471,7 @@ direction===
 1;
 
 
-const nextIndex =
+return types[
 (
 index
 +
@@ -3400,11 +3480,367 @@ step
 types.length
 )
 %
-types.length;
+types.length
+];
+
+}
+
+
+function switchExerciseBySwipe(
+direction
+){
+
+const target =
+swipeExerciseTarget(
+direction
+);
+
+
+if(
+!target
+){
+return false;
+}
 
 
 openSwipeExercise(
-types[nextIndex]
+target
+);
+
+
+return true;
+
+}
+
+
+function clearExerciseSwipePage(
+page
+){
+
+if(
+!page
+){
+return;
+}
+
+
+page.classList.remove(
+'exercise-swipe-dragging',
+'exercise-swipe-returning'
+);
+
+
+page.style.removeProperty(
+'--exercise-swipe-x'
+);
+
+
+page.style.removeProperty(
+'--exercise-swipe-rotate'
+);
+
+}
+
+
+function returnExerciseSwipePage(
+page
+){
+
+if(
+!page
+){
+return;
+}
+
+
+clearTimeout(
+exerciseSwipeResetTimer
+);
+
+
+page.classList.add(
+'exercise-swipe-returning'
+);
+
+
+page.style.setProperty(
+'--exercise-swipe-x',
+'0px'
+);
+
+
+page.style.setProperty(
+'--exercise-swipe-rotate',
+'0deg'
+);
+
+
+page.classList.remove(
+'exercise-swipe-dragging'
+);
+
+
+exerciseSwipeResetTimer =
+setTimeout(
+() => {
+
+clearExerciseSwipePage(
+page
+);
+
+},
+240
+);
+
+}
+
+
+function createExerciseSwipeGhost(
+page
+){
+
+const rect =
+page.getBoundingClientRect();
+
+
+const ghost =
+page.cloneNode(
+true
+);
+
+
+ghost.removeAttribute(
+'id'
+);
+
+
+ghost
+.querySelectorAll(
+'[id]'
+)
+.forEach(
+element =>
+element.removeAttribute(
+'id'
+)
+);
+
+
+ghost.classList.remove(
+'active',
+'exercise-swipe-dragging',
+'exercise-swipe-returning'
+);
+
+
+ghost.classList.add(
+'exercise-swipe-ghost'
+);
+
+
+ghost.setAttribute(
+'aria-hidden',
+'true'
+);
+
+
+ghost.inert =
+true;
+
+
+ghost.style.left =
+`${rect.left}px`;
+
+
+ghost.style.top =
+`${rect.top}px`;
+
+
+ghost.style.width =
+`${rect.width}px`;
+
+
+ghost.style.height =
+`${rect.height}px`;
+
+
+document.body.appendChild(
+ghost
+);
+
+
+return ghost;
+
+}
+
+
+function animateExerciseSwipe(
+direction,
+page
+){
+
+const target =
+swipeExerciseTarget(
+direction
+);
+
+
+if(
+!target
+){
+
+returnExerciseSwipePage(
+page
+);
+
+return;
+
+}
+
+
+exerciseSwipeAnimating =
+true;
+
+
+const ghost =
+createExerciseSwipeGhost(
+page
+);
+
+
+clearExerciseSwipePage(
+page
+);
+
+
+openSwipeExercise(
+target
+);
+
+
+const nextPage =
+document.querySelector(
+'#exercisePage.active, #plankPage.active'
+);
+
+
+nextPage.style.setProperty(
+'--exercise-swipe-enter-x',
+direction===
+'left'
+
+?
+
+'24px'
+
+:
+
+'-24px'
+);
+
+
+nextPage.classList.add(
+'exercise-swipe-under'
+);
+
+
+let finished =
+false;
+
+
+const finish =
+() => {
+
+if(
+finished
+){
+return;
+}
+
+
+finished =
+true;
+
+
+ghost.remove();
+
+
+nextPage.classList.remove(
+'exercise-swipe-under',
+'exercise-swipe-under-active'
+);
+
+
+nextPage.style.removeProperty(
+'--exercise-swipe-enter-x'
+);
+
+
+exerciseSwipeAnimating =
+false;
+
+};
+
+
+requestAnimationFrame(
+() =>
+requestAnimationFrame(
+() => {
+
+const travel =
+window.innerWidth
+*
+1.18;
+
+
+const sign =
+direction===
+'left'
+
+?
+
+-1
+
+:
+
+1;
+
+
+ghost.style.transform =
+`translate3d(${sign*travel}px,0,0) rotate(${sign*2.2}deg)`;
+
+
+ghost.style.opacity =
+'.12';
+
+
+nextPage.classList.add(
+'exercise-swipe-under-active'
+);
+
+}
+)
+);
+
+
+ghost.addEventListener(
+'transitionend',
+event => {
+
+if(
+event.propertyName===
+'transform'
+){
+finish();
+}
+
+}
+);
+
+
+setTimeout(
+finish,
+360
 );
 
 }
@@ -3432,6 +3868,8 @@ event.touches[0];
 
 
 if(
+exerciseSwipeAnimating
+||
 event.touches.length!==
 1
 ||
@@ -3474,17 +3912,152 @@ return;
 }
 
 
+clearTimeout(
+exerciseSwipeResetTimer
+);
+
+
+clearExerciseSwipePage(
+page
+);
+
+
 exerciseSwipeStart = {
+page,
 x:
 touch.clientX,
 y:
-touch.clientY
+touch.clientY,
+locked:
+null,
+deltaX:
+0
 };
 
 },
 {
 passive:
 true
+}
+);
+
+
+page.addEventListener(
+'touchmove',
+event => {
+
+const start =
+exerciseSwipeStart;
+
+
+if(
+!start
+||
+start.page!==
+page
+||
+event.touches.length!==
+1
+){
+return;
+}
+
+
+const touch =
+event.touches[0];
+
+
+const deltaX =
+touch.clientX
+-
+start.x;
+
+
+const deltaY =
+touch.clientY
+-
+start.y;
+
+
+if(
+!start.locked
+&&
+Math.max(
+Math.abs(deltaX),
+Math.abs(deltaY)
+)
+>=
+10
+){
+
+start.locked =
+Math.abs(deltaX)>
+Math.abs(deltaY)
+*
+1.08
+
+?
+
+'horizontal'
+
+:
+
+'vertical';
+
+}
+
+
+if(
+start.locked!==
+'horizontal'
+){
+return;
+}
+
+
+event.preventDefault();
+
+
+const limit =
+window.innerWidth
+*
+.82;
+
+
+const translated =
+Math.max(
+-limit,
+Math.min(
+limit,
+deltaX
+)
+);
+
+
+start.deltaX =
+translated;
+
+
+page.style.setProperty(
+'--exercise-swipe-x',
+`${translated}px`
+);
+
+
+page.style.setProperty(
+'--exercise-swipe-rotate',
+`${translated/window.innerWidth*1.8}deg`
+);
+
+
+page.classList.add(
+'exercise-swipe-dragging'
+);
+
+},
+{
+passive:
+false
 }
 );
 
@@ -3516,6 +4089,10 @@ event.changedTouches[0];
 
 
 const deltaX =
+start.deltaX
+
+||
+
 touch.clientX
 -
 start.x;
@@ -3528,6 +4105,30 @@ start.y;
 
 
 if(
+!start.locked
+){
+
+start.locked =
+Math.abs(deltaX)>
+Math.abs(deltaY)
+*
+1.08
+
+?
+
+'horizontal'
+
+:
+
+'vertical';
+
+}
+
+
+if(
+start.locked!==
+'horizontal'
+||
 Math.abs(deltaX)<
 SWIPE_MIN_DISTANCE
 ||
@@ -3536,11 +4137,16 @@ Math.abs(deltaY)
 *
 SWIPE_AXIS_RATIO
 ){
+
+returnExerciseSwipePage(
+page
+);
+
 return;
 }
 
 
-switchExerciseBySwipe(
+animateExerciseSwipe(
 deltaX>
 0
 
@@ -3550,7 +4156,8 @@ deltaX>
 
 :
 
-'left'
+'left',
+page
 );
 
 },
@@ -3565,8 +4172,16 @@ page.addEventListener(
 'touchcancel',
 () => {
 
+const start =
+exerciseSwipeStart;
+
 exerciseSwipeStart =
 null;
+
+
+returnExerciseSwipePage(
+start?.page
+);
 
 },
 {
