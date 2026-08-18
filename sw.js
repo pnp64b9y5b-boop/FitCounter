@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'fitcounter-';
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v7';
 const APP_CACHE = `${CACHE_PREFIX}app-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${CACHE_VERSION}`;
 
@@ -12,6 +12,9 @@ const APP_SHELL = [
   './icons/icon-maskable-512.png',
   './icons/apple-touch-icon.png'
 ];
+
+const APP_ROOT_URL = new URL('./', self.location.href).href;
+const INDEX_URL = new URL('./index.html', self.location.href).href;
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -52,8 +55,11 @@ async function fetchAndCacheNavigation(request){
     const response = await fetch(request);
 
     if(isCacheable(response)){
-      const cache = await caches.open(RUNTIME_CACHE);
-      await cache.put(request, response.clone());
+      const cache = await caches.open(APP_CACHE);
+      await Promise.all([
+        cache.put(APP_ROOT_URL, response.clone()),
+        cache.put(INDEX_URL, response.clone())
+      ]);
     }
 
     return response;
@@ -64,15 +70,14 @@ async function fetchAndCacheNavigation(request){
 }
 
 async function cacheFirstNavigation(request, event){
-  const runtimeCache = await caches.open(RUNTIME_CACHE);
+  const appCache = await caches.open(APP_CACHE);
   const cached = (
-    await runtimeCache.match(request, {ignoreSearch: true})
-    || await caches.match('./index.html', {ignoreSearch: true})
-    || await caches.match('./', {ignoreSearch: true})
+    await appCache.match(INDEX_URL)
+    || await appCache.match(APP_ROOT_URL)
   );
 
   if(cached){
-    /* На iPhone сразу показываем сохранённое приложение, не ожидая сеть. */
+    /* Всегда показываем одну каноническую копию и обновляем её в фоне. */
     event.waitUntil(fetchAndCacheNavigation(request));
     return cached;
   }
