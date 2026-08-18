@@ -6368,6 +6368,28 @@ boot();
 
 if('serviceWorker' in navigator){
 
+const hadActiveServiceWorker =
+Boolean(navigator.serviceWorker.controller);
+
+let reloadingForServiceWorker = false;
+
+navigator.serviceWorker.addEventListener(
+'controllerchange',
+() => {
+
+if(
+!hadActiveServiceWorker
+|| reloadingForServiceWorker
+){
+return;
+}
+
+reloadingForServiceWorker = true;
+window.location.reload();
+
+}
+);
+
 window.addEventListener('load', async () => {
 
 try{
