@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'fitcounter-';
-const CACHE_VERSION = 'v8';
+const CACHE_VERSION = 'v9';
 const APP_CACHE = `${CACHE_PREFIX}app-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${CACHE_VERSION}`;
 
