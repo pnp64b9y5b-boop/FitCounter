@@ -114,8 +114,9 @@ const openedCaches = [];
 const deletedCaches = [];
 let skipWaitingCalls = 0;
 let claimCalls = 0;
-let /* Имитируем iPhone: сетевой запрос без интернета может долго не завершаться. */
-fetchImplementation = () => new Promise(() => {});
+let fetchImplementation = async () => {
+  throw new Error('network is offline');
+};
 
 const normalizeRequest = request => new URL(
   typeof request === 'string' ? request : request.url,
@@ -286,9 +287,8 @@ appCache.entries.set(
   new Response('<!doctype html><title>offline</title>', {status: 200})
 );
 
-fetchImplementation = async () => {
-  throw new Error('network is offline');
-};
+/* Имитируем iPhone: сетевой запрос без интернета может долго не завершаться. */
+fetchImplementation = () => new Promise(() => {});
 
 const offlineNavigation = await dispatchFetch({
   ...navigationRequest,
