@@ -57,6 +57,24 @@ assert.match(
 
 assert.match(
   html,
+  /addEventListener\(\s*["']touchmove["']/,
+  'exercise pages must move with the finger during a swipe'
+);
+
+assert.match(
+  html,
+  /function animateExerciseSwipe\s*\(/,
+  'exercise pages must animate the outgoing and incoming cards'
+);
+
+assert.match(
+  html,
+  /exercise-swipe-ghost/,
+  'exercise swipe animation must keep an outgoing card above the next one'
+);
+
+assert.match(
+  html,
   /function switchExerciseBySwipe\s*\(/,
   'exercise pages must switch exercises after a valid swipe'
 );
@@ -251,9 +269,9 @@ handlers.install({
 await installPromise;
 
 assert.equal(skipWaitingCalls, 1, 'new service worker must activate immediately');
-assert.equal(openedCaches[0], 'fitcounter-app-v8');
+assert.equal(openedCaches[0], 'fitcounter-app-v9');
 
-const appCache = cacheBuckets.get('fitcounter-app-v8');
+const appCache = cacheBuckets.get('fitcounter-app-v9');
 
 for(const entry of appCache.precached){
   const localPath = entry === './'
@@ -332,7 +350,7 @@ staleRuntimeCache.entries.set(
   `${origin}/`,
   new Response('<!doctype html><title>stale runtime</title>', {status: 200})
 );
-cacheBuckets.set('fitcounter-runtime-v8', staleRuntimeCache);
+cacheBuckets.set('fitcounter-runtime-v9', staleRuntimeCache);
 
 /* Имитируем iPhone: сетевой запрос без интернета может долго не завершаться. */
 fetchImplementation = () => new Promise(() => {});
