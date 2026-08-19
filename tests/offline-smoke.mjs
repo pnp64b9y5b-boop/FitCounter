@@ -87,6 +87,36 @@ assert.match(
 
 assert.match(
   html,
+  /id=["']calendarPage["']/,
+  'the app must provide a full calendar page'
+);
+
+assert.match(
+  html,
+  /id=["']fullCalendarGrid["']/,
+  'the full calendar must provide a month grid'
+);
+
+assert.match(
+  html,
+  /id=["']calendarDayResults["']/,
+  'the full calendar must provide daily workout results'
+);
+
+assert.match(
+  html,
+  /function renderFullCalendar\s*\(/,
+  'the app must render the full month calendar'
+);
+
+assert.match(
+  html,
+  /function renderCalendarDayDetails\s*\(/,
+  'the app must render saved workout details for a selected date'
+);
+
+assert.match(
+  html,
   /const WARM_DEFAULT_MINUTES\s*=\s*10;/,
   'warm-up timer must default to 10 minutes'
 );
@@ -269,9 +299,9 @@ handlers.install({
 await installPromise;
 
 assert.equal(skipWaitingCalls, 1, 'new service worker must activate immediately');
-assert.equal(openedCaches[0], 'fitcounter-app-v9');
+assert.equal(openedCaches[0], 'fitcounter-app-v10');
 
-const appCache = cacheBuckets.get('fitcounter-app-v9');
+const appCache = cacheBuckets.get('fitcounter-app-v10');
 
 for(const entry of appCache.precached){
   const localPath = entry === './'
@@ -350,7 +380,7 @@ staleRuntimeCache.entries.set(
   `${origin}/`,
   new Response('<!doctype html><title>stale runtime</title>', {status: 200})
 );
-cacheBuckets.set('fitcounter-runtime-v9', staleRuntimeCache);
+cacheBuckets.set('fitcounter-runtime-v10', staleRuntimeCache);
 
 /* Имитируем iPhone: сетевой запрос без интернета может долго не завершаться. */
 fetchImplementation = () => new Promise(() => {});
