@@ -320,6 +320,7 @@ color:var(--gold);
 .calendar-card{
 padding:16px 18px 19px;
 overflow:hidden;
+cursor:pointer;
 }
 
 .calendar-head{
@@ -488,6 +489,221 @@ font-size:14px;
 white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
+}
+
+.calendar-expand-hint{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-top:12px;
+padding-top:12px;
+border-top:1px solid var(--line);
+color:#69adff;
+font-size:13px;
+font-weight:700;
+}
+
+.calendar-expand-hint span:last-child{
+font-size:20px;
+line-height:1;
+}
+
+.full-calendar-toolbar{
+display:flex;
+justify-content:space-between;
+gap:10px;
+margin-bottom:14px;
+}
+
+.full-calendar-toolbar button{
+background:#222936;
+color:#fff;
+padding:11px 14px;
+}
+
+.full-calendar-card{
+padding:17px 12px 15px;
+}
+
+.full-calendar-head{
+display:grid;
+grid-template-columns:48px 1fr 48px;
+align-items:center;
+gap:8px;
+padding:0 4px 14px;
+}
+
+.full-calendar-head button{
+width:46px;
+height:46px;
+padding:0;
+background:#222936;
+color:#fff;
+font-size:27px;
+border-radius:15px;
+}
+
+.full-weekdays,
+.full-calendar-grid{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:5px;
+}
+
+.full-weekdays{
+margin-bottom:7px;
+color:#7f8794;
+font-size:11px;
+font-weight:700;
+text-align:center;
+}
+
+.full-weekdays div{
+padding:5px 0;
+}
+
+.full-calendar-day{
+position:relative;
+min-width:0;
+min-height:49px;
+padding:0;
+border:1px solid transparent;
+border-radius:14px;
+background:#202630;
+color:#cbd1da;
+font-size:16px;
+font-weight:750;
+}
+
+.full-calendar-day.empty{
+visibility:hidden;
+}
+
+.full-calendar-day.today{
+border-color:#526070;
+}
+
+.full-calendar-day.has-activity{
+color:#fff;
+background:#202c3e;
+}
+
+.full-calendar-day.has-activity::after{
+content:"";
+position:absolute;
+left:50%;
+bottom:6px;
+width:5px;
+height:5px;
+border-radius:50%;
+transform:translateX(-50%);
+background:#247bff;
+box-shadow:0 0 8px rgba(36,123,255,.9);
+}
+
+.full-calendar-day.selected{
+border-color:#4d9cff;
+background:#247bff;
+color:#fff;
+box-shadow:
+0 0 0 1px rgba(77,156,255,.25),
+0 0 16px rgba(36,123,255,.38);
+}
+
+.full-calendar-day.selected::after{
+background:#fff;
+box-shadow:none;
+}
+
+.calendar-day-details{
+padding:18px;
+}
+
+.calendar-day-title{
+font-size:21px;
+font-weight:800;
+text-transform:capitalize;
+}
+
+.calendar-day-totals{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:7px;
+margin:15px 0;
+}
+
+.calendar-day-total{
+min-width:0;
+padding:11px 4px;
+border-radius:14px;
+background:var(--card2);
+text-align:center;
+}
+
+.calendar-day-total b{
+display:block;
+font-size:16px;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.calendar-day-total span{
+display:block;
+margin-top:4px;
+color:var(--muted);
+font-size:10px;
+}
+
+.calendar-results{
+display:grid;
+gap:9px;
+}
+
+.calendar-result{
+display:grid;
+grid-template-columns:44px 1fr;
+gap:11px;
+align-items:start;
+padding:13px;
+border-radius:16px;
+background:var(--card2);
+}
+
+.calendar-result-icon{
+font-size:29px;
+line-height:1.1;
+text-align:center;
+}
+
+.calendar-result-title{
+font-weight:800;
+}
+
+.calendar-result-value{
+margin-top:4px;
+color:#d9e9ff;
+font-size:14px;
+}
+
+.calendar-result-detail{
+margin-top:4px;
+color:var(--muted);
+font-size:12px;
+line-height:1.4;
+}
+
+@media (max-width:370px){
+
+.full-calendar-day{
+min-height:44px;
+font-size:15px;
+}
+
+.calendar-day-total b{
+font-size:14px;
+}
+
 }
 
 /* =====================
@@ -1002,7 +1218,12 @@ style="display:none">
 
 <!-- КАЛЕНДАРЬ -->
 
-<div class="card calendar-card">
+<div
+id="calendarCard"
+class="card calendar-card"
+role="button"
+tabindex="0"
+aria-label="Открыть полный календарь тренировок">
 
 <div class="calendar-head">
 
@@ -1031,6 +1252,19 @@ class="month-strip">
 <div
 id="calendarSummary"
 class="calendar-summary">
+</div>
+
+
+<div class="calendar-expand-hint">
+
+<span>
+Открыть весь календарь
+</span>
+
+<span>
+›
+</span>
+
 </div>
 
 </div>
@@ -1093,6 +1327,96 @@ id="ironCard">
 
 <div class="chev">
 ›
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================
+     ПОЛНЫЙ КАЛЕНДАРЬ
+===================== -->
+
+<section
+id="calendarPage"
+class="page">
+
+<div class="full-calendar-toolbar">
+
+<button id="fullCalendarBack">
+‹ Назад
+</button>
+
+<button id="fullCalendarToday">
+Сегодня
+</button>
+
+</div>
+
+
+<div class="card full-calendar-card">
+
+<div class="full-calendar-head">
+
+<button
+id="fullCalendarPrev"
+aria-label="Предыдущий месяц">
+‹
+</button>
+
+<div
+id="fullCalendarMonthTitle"
+class="month-title">
+</div>
+
+<button
+id="fullCalendarNext"
+aria-label="Следующий месяц">
+›
+</button>
+
+</div>
+
+
+<div class="full-weekdays">
+
+<div>Пн</div>
+<div>Вт</div>
+<div>Ср</div>
+<div>Чт</div>
+<div>Пт</div>
+<div>Сб</div>
+<div>Вс</div>
+
+</div>
+
+
+<div
+id="fullCalendarGrid"
+class="full-calendar-grid">
+</div>
+
+</div>
+
+
+<div class="card calendar-day-details">
+
+<div
+id="calendarDayTitle"
+class="calendar-day-title">
+</div>
+
+
+<div
+id="calendarDayTotals"
+class="calendar-day-totals">
+</div>
+
+
+<div
+id="calendarDayResults"
+class="calendar-results">
 </div>
 
 </div>
@@ -2797,409 +3121,349 @@ x.day===key
 }
 
 
+function calendarDayStats(key){
+  const records = data.filter(
+    item => item.day === key && EXERCISES[item.type]
+  );
+  const planks = plankData.filter(item => item.day === key);
+  const reps = records
+    .filter(item => EXERCISES[item.type].kind === 'reps')
+    .reduce((sum,item) => sum + Number(item.total || 0), 0);
+  const volume = records
+    .filter(item => EXERCISES[item.type].kind === 'weight')
+    .reduce((sum,item) => sum + Number(item.volume || 0), 0);
+  const plank = planks.reduce(
+    (sum,item) => sum + Number(item.seconds || 0),
+    0
+  );
+  const exerciseTypes = new Set(records.map(item => item.type));
+
+  if(planks.length){
+    exerciseTypes.add('plank');
+  }
+
+  return {
+    records,
+    planks,
+    reps,
+    volume,
+    plank,
+    count:exerciseTypes.size
+  };
+}
+
+
+function dateFromKey(key){
+  const [year,month,day] = String(key)
+    .split('-')
+    .map(Number);
+
+  return new Date(year, month - 1, day);
+}
+
+
+function calendarDateTitle(key){
+  const value = new Intl.DateTimeFormat('ru-RU', {
+    weekday:'long',
+    day:'numeric',
+    month:'long',
+    year:'numeric'
+  }).format(dateFromKey(key));
+
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+
 function renderCalendar(){
+  const year = calendarCursor.getFullYear();
+  const month = calendarCursor.getMonth();
 
-const year =
-calendarCursor
-.getFullYear();
+  $('calendarMonthTitle').textContent = `${MONTHS[month]} ${year}`;
 
+  const strip = $('monthStrip');
+  strip.innerHTML = '';
 
-const month =
-calendarCursor
-.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+  for(let day = 1; day <= daysInMonth; day++){
+    const date = new Date(year, month, day);
+    const key = dateKey(date);
+    const chip = document.createElement('div');
 
-$('calendarMonthTitle')
-.textContent =
-MONTHS[month]
-+
-' '
-+
-year;
+    chip.className = 'day-chip';
 
+    if(!hasActivity(key)){
+      chip.classList.add('no-activity');
+    }
 
-const strip =
-$('monthStrip');
+    if(key === selectedCalendarDay){
+      chip.classList.add('selected');
+    }
 
+    chip.innerHTML = `
+      <div class="num">${day}</div>
+      <div class="weekday">${WEEKDAYS[date.getDay()]}</div>
+    `;
 
-strip.innerHTML =
-'';
+    chip.onclick = event => {
+      event.stopPropagation();
+      selectedCalendarDay = key;
+      showFullCalendar();
+    };
 
+    strip.appendChild(chip);
+  }
 
-const daysInMonth =
-new Date(
-year,
-month+1,
-0
-)
-.getDate();
+  requestAnimationFrame(() => {
+    const selected = strip.querySelector('.selected');
 
+    if(selected){
+      selected.scrollIntoView({
+        behavior:'smooth',
+        block:'nearest',
+        inline:'center'
+      });
+    }
+  });
 
-for(
-let day=1;
-day<=daysInMonth;
-day++
-){
-
-const date =
-new Date(
-year,
-month,
-day
-);
-
-
-const key =
-dateKey(
-date
-);
-
-
-const chip =
-document.createElement(
-'div'
-);
-
-
-chip.className =
-'day-chip';
-
-
-if(
-!hasActivity(key)
-){
-
-chip.classList.add(
-'no-activity'
-);
-
-}
-
-
-if(
-key===
-selectedCalendarDay
-){
-
-chip.classList.add(
-'selected'
-);
-
-}
-
-
-chip.innerHTML = `
-
-<div class="num">
-${day}
-</div>
-
-<div class="weekday">
-${WEEKDAYS[
-date.getDay()
-]}
-</div>
-
-`;
-
-
-chip.onclick =
-() => {
-
-selectedCalendarDay =
-key;
-
-
-renderCalendar();
-
-};
-
-
-strip.appendChild(
-chip
-);
-
-}
-
-
-requestAnimationFrame(
-() => {
-
-const selected =
-strip.querySelector(
-'.selected'
-);
-
-
-if(selected){
-
-selected.scrollIntoView({
-
-behavior:
-'smooth',
-
-block:
-'nearest',
-
-inline:
-'center'
-
-});
-
-}
-
-}
-);
-
-
-renderCalendarSummary();
-
+  renderCalendarSummary();
 }
 
 
 function renderCalendarSummary(){
+  const stats = calendarDayStats(selectedCalendarDay);
+  const prefix = selectedCalendarDay === dateKey()
+    ? 'Сегодня'
+    : 'За день';
 
-const reps =
-data
-
-.filter(
-x =>
-x.day===
-selectedCalendarDay
-&&
-EXERCISES[x.type]
-?.kind===
-'reps'
-)
-
-.reduce(
-(sum,x) =>
-sum+
-Number(x.total||0),
-0
-);
-
-
-const volume =
-data
-
-.filter(
-x =>
-x.day===
-selectedCalendarDay
-&&
-EXERCISES[x.type]
-?.kind===
-'weight'
-)
-
-.reduce(
-(sum,x) =>
-sum+
-Number(x.volume||0),
-0
-);
-
-
-const plank =
-plankData
-
-.filter(
-x =>
-x.day===
-selectedCalendarDay
-)
-
-.reduce(
-(sum,x) =>
-sum+
-Number(x.seconds||0),
-0
-);
-
-
-const exerciseTypes =
-new Set(
-
-data
-
-.filter(
-x =>
-x.day===
-selectedCalendarDay
-)
-
-.map(
-x =>
-x.type
-)
-
-);
-
-
-if(
-plank>0
-){
-
-exerciseTypes.add(
-'plank'
-);
-
+  $('calendarSummary').textContent =
+    `${prefix}: ${stats.count} упражнений • ${stats.reps} повторений`
+    + (stats.volume ? ` • ${kg(stats.volume)}` : '')
+    + ` • Планка ${fmt(stats.plank)}`;
 }
 
 
-const count =
-exerciseTypes.size;
+function renderCalendarDayDetails(){
+  const stats = calendarDayStats(selectedCalendarDay);
+  const results = $('calendarDayResults');
 
+  $('calendarDayTitle').textContent = calendarDateTitle(selectedCalendarDay);
+  $('calendarDayTotals').innerHTML = `
+    <div class="calendar-day-total">
+      <b>${stats.reps}</b>
+      <span>ПОВТОРЕНИЙ</span>
+    </div>
+    <div class="calendar-day-total">
+      <b>${kg(stats.volume)}</b>
+      <span>ОБЪЁМ</span>
+    </div>
+    <div class="calendar-day-total">
+      <b>${fmt(stats.plank)}</b>
+      <span>ПЛАНКА</span>
+    </div>
+  `;
 
-const selectedIsToday =
-selectedCalendarDay===
-dateKey();
+  results.innerHTML = '';
 
+  const types = [...new Set(stats.records.map(item => item.type))]
+    .filter(type => EXERCISES[type])
+    .sort((a,b) => ORDER.indexOf(a) - ORDER.indexOf(b));
 
-const prefix =
-selectedIsToday
+  types.forEach(type => {
+    const exercise = EXERCISES[type];
+    const entries = stats.records.filter(item => item.type === type);
+    const row = document.createElement('div');
+    let value = '';
+    let detail = '';
 
-?
+    if(exercise.kind === 'weight'){
+      const total = entries.reduce(
+        (sum,item) => sum + Number(item.total || 0),
+        0
+      );
+      const volume = entries.reduce(
+        (sum,item) => sum + Number(item.volume || 0),
+        0
+      );
+      const sets = entries.flatMap(item => (
+        Array.isArray(item.sets) ? item.sets : []
+      )).map(set => {
+        if(!set || typeof set !== 'object'){
+          return '';
+        }
 
-'Сегодня'
+        return `${Number(set.weight || 0).toLocaleString('ru-RU')} кг × ${Number(set.reps || 0)}`;
+      }).filter(Boolean);
 
-:
+      value = `${kg(volume)} • ${total} повторений`;
+      detail = sets.length ? `Подходы: ${sets.join(' • ')}` : '';
+    }
+    else{
+      const total = entries.reduce(
+        (sum,item) => sum + Number(item.total || 0),
+        0
+      );
+      const sets = entries.flatMap(item => (
+        Array.isArray(item.sets) ? item.sets : []
+      )).map(set => (
+        typeof set === 'object'
+          ? Number(set.reps || 0)
+          : Number(set || 0)
+      )).filter(Boolean);
 
-'За день';
+      value = `${total} повторений`;
+      detail = sets.length ? `Подходы: ${sets.join(' + ')}` : '';
+    }
 
+    row.className = 'calendar-result';
+    row.innerHTML = `
+      <div class="calendar-result-icon">${exercise.icon}</div>
+      <div>
+        <div class="calendar-result-title">${exercise.name}</div>
+        <div class="calendar-result-value">${value}</div>
+        ${detail ? `<div class="calendar-result-detail">${detail}</div>` : ''}
+      </div>
+    `;
+    results.appendChild(row);
+  });
 
-$('calendarSummary')
-.textContent =
+  if(stats.planks.length){
+    const row = document.createElement('div');
+    const attempts = stats.planks
+      .map(item => fmt(Number(item.seconds || 0)))
+      .join(' • ');
 
-prefix
+    row.className = 'calendar-result';
+    row.innerHTML = `
+      <div class="calendar-result-icon">${EXERCISES.plank.icon}</div>
+      <div>
+        <div class="calendar-result-title">${EXERCISES.plank.name}</div>
+        <div class="calendar-result-value">${fmt(stats.plank)}</div>
+        <div class="calendar-result-detail">Попытки: ${attempts}</div>
+      </div>
+    `;
+    results.appendChild(row);
+  }
 
-+
-
-': '
-
-+
-
-count
-
-+
-
-' упражнений • '
-
-+
-
-reps
-
-+
-
-' повторений'
-
-+
-
-(
-volume
-
-?
-
-' • '
-+
-kg(volume)
-
-:
-
-''
-)
-
-+
-
-' • Планка '
-
-+
-
-fmt(plank);
-
+  if(!types.length && !stats.planks.length){
+    results.innerHTML =
+      '<div class="empty">В этот день тренировок не было</div>';
+  }
 }
 
 
-$('calendarPrev')
-.onclick =
-() => {
+function renderFullCalendar(){
+  const year = calendarCursor.getFullYear();
+  const month = calendarCursor.getMonth();
+  const grid = $('fullCalendarGrid');
+  const firstWeekday = (new Date(year, month, 1).getDay() + 6) % 7;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-calendarCursor =
-new Date(
+  $('fullCalendarMonthTitle').textContent = `${MONTHS[month]} ${year}`;
+  grid.innerHTML = '';
 
-calendarCursor
-.getFullYear(),
+  for(let index = 0; index < firstWeekday; index++){
+    const empty = document.createElement('button');
+    empty.className = 'full-calendar-day empty';
+    empty.disabled = true;
+    grid.appendChild(empty);
+  }
 
-calendarCursor
-.getMonth()-1,
+  for(let day = 1; day <= daysInMonth; day++){
+    const date = new Date(year, month, day);
+    const key = dateKey(date);
+    const button = document.createElement('button');
 
-1
+    button.className = 'full-calendar-day';
+    button.textContent = day;
+    button.setAttribute(
+      'aria-label',
+      `${calendarDateTitle(key)}${hasActivity(key) ? ', есть тренировка' : ''}`
+    );
 
-);
+    if(hasActivity(key)){
+      button.classList.add('has-activity');
+    }
+
+    if(key === dateKey()){
+      button.classList.add('today');
+    }
+
+    if(key === selectedCalendarDay){
+      button.classList.add('selected');
+    }
+
+    button.onclick = () => {
+      selectedCalendarDay = key;
+      renderFullCalendar();
+    };
+
+    grid.appendChild(button);
+  }
+
+  renderCalendarDayDetails();
+}
 
 
-selectedCalendarDay =
-dateKey(
-
-new Date(
-
-calendarCursor
-.getFullYear(),
-
-calendarCursor
-.getMonth(),
-
-1
-
-)
-
-);
+function showFullCalendar(){
+  stopRest();
+  hidePages();
+  $('calendarPage').classList.add('active');
+  activateTab('home');
+  setHeader('Календарь', 'Дни тренировок и результаты');
+  renderFullCalendar();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
 
 
-renderCalendar();
+function shiftCalendarMonth(delta, full){
+  calendarCursor = new Date(
+    calendarCursor.getFullYear(),
+    calendarCursor.getMonth() + delta,
+    1
+  );
+  selectedCalendarDay = dateKey(calendarCursor);
 
+  if(full){
+    renderFullCalendar();
+  }
+  else{
+    renderCalendar();
+  }
+}
+
+
+$('calendarCard').onclick = event => {
+  if(event.target.closest('#calendarPrev, #calendarNext')){
+    return;
+  }
+
+  showFullCalendar();
 };
 
 
-$('calendarNext')
-.onclick =
-() => {
+$('calendarCard').onkeydown = event => {
+  if(event.target !== $('calendarCard')){
+    return;
+  }
 
-calendarCursor =
-new Date(
-
-calendarCursor
-.getFullYear(),
-
-calendarCursor
-.getMonth()+1,
-
-1
-
-);
+  if(event.key === 'Enter' || event.key === ' '){
+    event.preventDefault();
+    showFullCalendar();
+  }
+};
 
 
-selectedCalendarDay =
-dateKey(
-
-new Date(
-
-calendarCursor
-.getFullYear(),
-
-calendarCursor
-.getMonth(),
-
-1
-
-)
-
-);
-
-
-renderCalendar();
-
+$('calendarPrev').onclick = () => shiftCalendarMonth(-1, false);
+$('calendarNext').onclick = () => shiftCalendarMonth(1, false);
+$('fullCalendarPrev').onclick = () => shiftCalendarMonth(-1, true);
+$('fullCalendarNext').onclick = () => shiftCalendarMonth(1, true);
+$('fullCalendarBack').onclick = showHome;
+$('fullCalendarToday').onclick = () => {
+  const today = new Date();
+  calendarCursor = new Date(today.getFullYear(), today.getMonth(), 1);
+  selectedCalendarDay = dateKey(today);
+  renderFullCalendar();
 };
 
 
